@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom", "Boom\Boom\Boom.csproj", "{1C50B81B-3AD0-42EF-A372-33598DF2B93E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoomContent", "Boom\BoomContent\BoomContent.contentproj", "{7D8C1321-A579-4088-B444-7798944BFE71}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Windows Phone = Debug|Windows Phone
+		Release|Windows Phone = Release|Windows Phone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C50B81B-3AD0-42EF-A372-33598DF2B93E}.Debug|Windows Phone.ActiveCfg = Debug|Windows Phone
+		{1C50B81B-3AD0-42EF-A372-33598DF2B93E}.Debug|Windows Phone.Build.0 = Debug|Windows Phone
+		{1C50B81B-3AD0-42EF-A372-33598DF2B93E}.Debug|Windows Phone.Deploy.0 = Debug|Windows Phone
+		{1C50B81B-3AD0-42EF-A372-33598DF2B93E}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
+		{1C50B81B-3AD0-42EF-A372-33598DF2B93E}.Release|Windows Phone.Build.0 = Release|Windows Phone
+		{1C50B81B-3AD0-42EF-A372-33598DF2B93E}.Release|Windows Phone.Deploy.0 = Release|Windows Phone
+		{7D8C1321-A579-4088-B444-7798944BFE71}.Debug|Windows Phone.ActiveCfg = Debug|Windows Phone
+		{7D8C1321-A579-4088-B444-7798944BFE71}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
