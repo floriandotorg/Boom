@@ -25,7 +25,10 @@ namespace Boom
         bool touching = false;
         Random random = new Random(DateTime.Now.Millisecond);
         bool catcher = false;
-        SpriteFont font; 
+        SpriteFont font;
+        int numBallsTotal = 10;
+        int caught;
+        int goal = 2;
 
         public BoomGame()
         {
@@ -82,7 +85,7 @@ namespace Boom
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            CreateBalls(10);
+            CreateBalls(numBallsTotal);
         }
 
         /// <summary>
@@ -120,6 +123,8 @@ namespace Boom
                 }
             }
 
+            caught = balls.Where(x => x.Caught).Count() - 1;
+
             base.Update(gameTime);
         }
 
@@ -129,7 +134,7 @@ namespace Boom
             if (!touching && touches.Count > 0)
             {
                 touching = true;
-                if (!catcher)
+                //if (!catcher)
                 {
                     balls[0] = new Ball(this, Color.White, ballTexture, touches.First().Position, new Vector2(0));
                     balls[0].Collision();
@@ -159,7 +164,7 @@ namespace Boom
                 ball.Draw(spriteBatch);
             }
 
-            string text = "Points: 0/1 from 5";
+            string text = "Points: " + caught + "/" + "1" + " from " + numBallsTotal;
             Vector2 position = new Vector2(10, graphics.GraphicsDevice.Viewport.Height - font.MeasureString(text).Y - 10);
             spriteBatch.DrawString(font, text, position, Color.White);
 

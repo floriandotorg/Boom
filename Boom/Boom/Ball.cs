@@ -63,6 +63,14 @@ namespace Boom
             }
         }
 
+        public bool Caught
+        {
+            get
+            {
+                return state != State.Normal;
+            }
+        }
+
         public void CheckAndHandleCollision(Ball other)
         {
             if (Vector2.Distance(this.center, other.center) <= this.radius + other.radius)
