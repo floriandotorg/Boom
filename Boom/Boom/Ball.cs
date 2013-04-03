@@ -14,16 +14,14 @@ namespace Boom
 
         private const float radiusNormalSize = 10.0f;
         private const float radiusHugeSize = 75.0f;
-        private const double maxRadiusExpandingFactor = Math.PI / 2.0;
-        private const double radiusExpandingFactorInc = maxRadiusExpandingFactor/30.0;
+        private const int radiusSizeingSpeed = 30;
+
+        private SineValue radius = new SineValue(radiusHugeSize, radiusSizeingSpeed) { Value = radiusNormalSize };
 
         private Vector2 velocity;
         private Color color;
         private Texture2D texture;
         private Vector2 center;
-
-        private float radius;
-        private double radiusExpandingFactor = Math.Asin(radiusNormalSize / radiusHugeSize);
 
         private const int numHugeUpdatesToShrink = 20;
         private int numHugeUpdates;
@@ -32,7 +30,7 @@ namespace Boom
         {
             get
             {
-                return new Vector2(center.X - radius, center.Y - radius);
+                return new Vector2(center.X - (float)radius.Value, center.Y - (float)radius.Value);
             }
         }
 
@@ -40,7 +38,7 @@ namespace Boom
         {
             get
             {
-                return (this.radius * 2) / (float)texture.Bounds.Width;
+                return ((float)this.radius.Value * 2f) / (float)texture.Bounds.Width;
             }
         }
 
@@ -73,7 +71,7 @@ namespace Boom
 
         public void CheckAndHandleCollision(Ball other)
         {
-            if (Vector2.Distance(this.center, other.center) <= this.radius + other.radius)
+            if (Vector2.Distance(this.center, other.center) <= this.radius.Value + other.radius.Value)
             {
                 other.Collision();
             }
@@ -105,8 +103,6 @@ namespace Boom
         {
             if (state != State.Destroyed)
             {
-                radius = radiusHugeSize * (float)Math.Sin(radiusExpandingFactor);
-
                 BounceBall();
 
                 center += velocity;
@@ -114,9 +110,9 @@ namespace Boom
 
             if (state == State.Expanding)
             {
-                radiusExpandingFactor += radiusExpandingFactorInc;
+                radius.Inc();
 
-                if (radiusExpandingFactor >= maxRadiusExpandingFactor)
+                if (radius.IsMax)
                 {
                     state = State.Huge;
                 }
@@ -130,9 +126,9 @@ namespace Boom
             }
             else if (state == State.Shrinking)
             {
-                radiusExpandingFactor -= radiusExpandingFactorInc;
+                radius.Dec();
 
-                if (radiusExpandingFactor <= .0f)
+                if (radius.IsMin)
                 {
                     state = State.Destroyed;
                 }
@@ -153,9 +149,9 @@ namespace Boom
             Vector2 newTopLeft = topLeft + velocity;
             float left, right, top, bottom;
             left = newTopLeft.X;
-            right = newTopLeft.X + (radius * 2);
+            right = newTopLeft.X + ((float)radius.Value * 2f);
             top = newTopLeft.Y;
-            bottom = newTopLeft.Y + (radius * 2);
+            bottom = newTopLeft.Y + ((float)radius.Value * 2f);
 
             if (top < 0 || bottom > game.GraphicsDevice.Viewport.Height)
             {
