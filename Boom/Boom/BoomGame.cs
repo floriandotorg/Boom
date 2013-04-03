@@ -17,18 +17,20 @@ namespace Boom
     /// </summary>
     public class BoomGame : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
 
-        Texture2D ballTexture;  
-        IList<Ball> balls = new List<Ball>();
-        bool touching = false;
-        Random random = new Random(DateTime.Now.Millisecond);
-        bool catcher = false;
-        SpriteFont font;
-        int numBallsTotal = 10;
-        int caught;
-        int goal = 2;
+        private Texture2D ballTexture;
+        private IList<Ball> balls = new List<Ball>();
+        private bool touching = false;
+        private Random random = new Random(DateTime.Now.Millisecond);
+        private bool catcher = false;
+        private SpriteFont font;
+        private int numBallsTotal = 10;
+        private int caught;
+        private int goal = 1;
+        private SineValue backgroundColor = new SineValue(220.0, 30) { Value = 0 };
+
 
         public BoomGame()
         {
@@ -125,6 +127,11 @@ namespace Boom
 
             caught = balls.Where(x => x.Caught).Count() - 1;
 
+            if (caught >= goal && !backgroundColor.IsMax)
+            {
+                backgroundColor.Inc();
+            }
+
             base.Update(gameTime);
         }
 
@@ -155,7 +162,7 @@ namespace Boom
         /// <param name="gameTime">Bietet einen Schnappschuss der Timing-Werte.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(new Color((int)backgroundColor.Value, (int)backgroundColor.Value, (int)backgroundColor.Value));
 
             spriteBatch.Begin();
 
@@ -164,7 +171,7 @@ namespace Boom
                 ball.Draw(spriteBatch);
             }
 
-            string text = "Points: " + caught + "/" + "1" + " from " + numBallsTotal;
+            string text = "Points: " + caught + "/" + goal + " from " + numBallsTotal;
             Vector2 position = new Vector2(10, graphics.GraphicsDevice.Viewport.Height - font.MeasureString(text).Y - 10);
             spriteBatch.DrawString(font, text, position, Color.White);
 
