@@ -23,7 +23,8 @@ namespace Boom
         private SpriteFont font;
         private Texture2D ballTexture;
         private Song backgroundSong;
-        private SoundEffect blipSoundEffect;
+        private SoundEffect blipSound;
+        private SoundEffect victorySound;
         
         private IList<Ball> balls = new List<Ball>();
         private bool touching = false;
@@ -65,12 +66,14 @@ namespace Boom
             ballTexture = Content.Load<Texture2D>("Ball");
             font = Content.Load<SpriteFont>("InGameFont");
             backgroundSong = Content.Load<Song>("Background");
-            blipSoundEffect = Content.Load<SoundEffect>("Blip");
+            blipSound = Content.Load<SoundEffect>("Blip");
+            victorySound = Content.Load<SoundEffect>("Victory");
 
             SoundEffect.MasterVolume = .8f;
 
             balls.Add(new Ball());
 
+            MediaPlayer.Volume = .1f;
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(backgroundSong);
 
@@ -133,7 +136,7 @@ namespace Boom
                 {
                     if (collided.CheckAndHandleCollision(free))
                     {
-                        blipSoundEffect.Play();
+                        blipSound.Play(.5f, 0f, 0f);
                     }
                 }
             }
@@ -142,6 +145,11 @@ namespace Boom
 
             if (caught >= goal && !backgroundColor.IsMax)
             {
+                if (backgroundColor.IsMin)
+                {
+                    victorySound.Play(1f, 0f, 0f);
+                }
+
                 backgroundColor.Inc();
             }
 
