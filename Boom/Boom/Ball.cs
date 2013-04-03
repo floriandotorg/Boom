@@ -57,7 +57,7 @@ namespace Boom
         {
             get
             {
-                return state != State.Normal && state != State.Destroyed;
+                return state != State.Normal;
             }
         }
 
@@ -69,12 +69,15 @@ namespace Boom
             }
         }
 
-        public void CheckAndHandleCollision(Ball other)
+        public bool CheckAndHandleCollision(Ball other)
         {
             if (Vector2.Distance(this.center, other.center) <= this.radius.Value + other.radius.Value)
             {
                 other.Collision();
+                return true;
             }
+
+            return false;
         }
 
         public Ball()

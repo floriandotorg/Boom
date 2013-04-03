@@ -20,12 +20,15 @@ namespace Boom
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
+        private SpriteFont font;
         private Texture2D ballTexture;
+        private Song backgroundSong;
+        private SoundEffect blipSoundEffect;
+        
         private IList<Ball> balls = new List<Ball>();
         private bool touching = false;
         private Random random = new Random(DateTime.Now.Millisecond);
         private bool catcher = false;
-        private SpriteFont font;
         private int numBallsTotal = 10;
         private int caught;
         private int goal = 1;
@@ -61,8 +64,15 @@ namespace Boom
         {
             ballTexture = Content.Load<Texture2D>("Ball");
             font = Content.Load<SpriteFont>("InGameFont");
+            backgroundSong = Content.Load<Song>("Background");
+            blipSoundEffect = Content.Load<SoundEffect>("Blip");
+
+            SoundEffect.MasterVolume = .8f;
 
             balls.Add(new Ball());
+
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(backgroundSong);
 
             base.Initialize();
         }
@@ -121,7 +131,10 @@ namespace Boom
             {
                 foreach (Ball free in balls.Where( x => !x.Collided ))
                 {
-                    collided.CheckAndHandleCollision(free);
+                    if (collided.CheckAndHandleCollision(free))
+                    {
+                        blipSoundEffect.Play();
+                    }
                 }
             }
 
@@ -154,7 +167,6 @@ namespace Boom
                 touching = false;
             }
         }
-
 
         /// <summary>
         /// Dies wird aufgerufen, wenn das Spiel selbst zeichnen soll.
