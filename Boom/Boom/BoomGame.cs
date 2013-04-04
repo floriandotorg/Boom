@@ -23,6 +23,7 @@ namespace Boom
         public struct RessourcesStruct
         {
             public SpriteFont font;
+            public SpriteFont gameOverfont;
             public Texture2D ballTexture;
             public Song backgroundSong;
             public SoundEffect blipSound;
@@ -31,7 +32,9 @@ namespace Boom
 
         private RessourcesStruct _ressources = new RessourcesStruct();
         private bool touching = false;
-        private Round _currentRound;
+        private List<Round> _rounds = new List<Round>();
+        private List<Round>.Enumerator _currentRound;
+        private bool _gameOver = false;
 
         public BoomGame()
         {
@@ -68,7 +71,21 @@ namespace Boom
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(_ressources.backgroundSong);
 
-            _currentRound = new Round(graphics.GraphicsDevice.Viewport, _ressources);
+            _rounds.Add(new Round(10, 1, graphics.GraphicsDevice.Viewport, _ressources));
+            _rounds.Add(new Round(10, 2, graphics.GraphicsDevice.Viewport, _ressources));
+            _rounds.Add(new Round(15, 3, graphics.GraphicsDevice.Viewport, _ressources));
+            _rounds.Add(new Round(20, 5, graphics.GraphicsDevice.Viewport, _ressources));
+            _rounds.Add(new Round(25, 7, graphics.GraphicsDevice.Viewport, _ressources));
+            _rounds.Add(new Round(30, 10, graphics.GraphicsDevice.Viewport, _ressources));
+            _rounds.Add(new Round(35, 15, graphics.GraphicsDevice.Viewport, _ressources));
+            _rounds.Add(new Round(40, 21, graphics.GraphicsDevice.Viewport, _ressources));
+            _rounds.Add(new Round(45, 27, graphics.GraphicsDevice.Viewport, _ressources));
+            _rounds.Add(new Round(50, 33, graphics.GraphicsDevice.Viewport, _ressources));
+            _rounds.Add(new Round(55, 44, graphics.GraphicsDevice.Viewport, _ressources));
+            _rounds.Add(new Round(60, 55, graphics.GraphicsDevice.Viewport, _ressources));
+
+            _currentRound = _rounds.GetEnumerator();
+            _currentRound.MoveNext();
         }
         
         /// <summary>
@@ -79,6 +96,7 @@ namespace Boom
         {
             _ressources.ballTexture = Content.Load<Texture2D>("Ball");
             _ressources.font = Content.Load<SpriteFont>("InGameFont");
+            _ressources.gameOverfont = Content.Load<SpriteFont>("GameOverFont");
             _ressources.backgroundSong = Content.Load<Song>("Background");
             _ressources.blipSound = Content.Load<SoundEffect>("Blip");
             _ressources.victorySound = Content.Load<SoundEffect>("Victory");
@@ -106,9 +124,18 @@ namespace Boom
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            HandleTouches();
+            if (!_gameOver)
+            {
+                HandleTouches();
 
-            _currentRound.Update();
+                if (_currentRound.Current.Update())
+                {
+                    if (!_currentRound.MoveNext())
+                    {
+                        _gameOver = true;
+                    }
+                }
+            }
 
             base.Update(gameTime);
         }
@@ -119,7 +146,7 @@ namespace Boom
             if (!touching && touches.Count > 0)
             {
                 touching = true;
-                _currentRound.Touch(touches.First());
+                _currentRound.Current.Touch(touches.First());
             }
             else if (touches.Count == 0)
             {
@@ -133,11 +160,50 @@ namespace Boom
         /// <param name="gameTime">Bietet einen Schnappschuss der Timing-Werte.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(_currentRound.BackgroundColor());
+            if (!_gameOver)
+            {
+                GraphicsDevice.Clear(_currentRound.Current.BackgroundColor());
+            }
+            else
+            {
+                GraphicsDevice.Clear(Color.Black);
+            }
 
             spriteBatch.Begin();
 
-            _currentRound.Draw(spriteBatch);
+            if (!_gameOver)
+            {
+                _currentRound.Current.Draw(spriteBatch);
+            }
+            else
+            {
+                {
+                    string text = "Game Completed!";
+                    Vector2 position = new Vector2((graphics.GraphicsDevice.Viewport.Width - _ressources.gameOverfont.MeasureString(text).X) / 2, (graphics.GraphicsDevice.Viewport.Height / 2) - 100);
+                    spriteBatch.DrawString(_ressources.gameOverfont, text, position, Color.White);
+                }
+
+                {
+                    string text = "Your Score:";
+                    Vector2 position = new Vector2((graphics.GraphicsDevice.Viewport.Width - _ressources.font.MeasureString(text).X) / 2, (graphics.GraphicsDevice.Viewport.Height / 2) - 40);
+                    spriteBatch.DrawString(_ressources.font, text, position, Color.White);
+                }
+
+                {
+                    int score = 0;
+                    int possible = 0;
+
+                    foreach (Round round in _rounds)
+                    {
+                        score += round.Score;
+                        possible += round.Possible;
+                    }
+
+                    string text = score + " of " + possible;
+                    Vector2 position = new Vector2((graphics.GraphicsDevice.Viewport.Width - _ressources.font.MeasureString(text).X) / 2, (graphics.GraphicsDevice.Viewport.Height / 2) - 20);
+                    spriteBatch.DrawString(_ressources.font, text, position, Color.White);
+                }
+            }
 
             spriteBatch.End();
 

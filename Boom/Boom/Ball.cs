@@ -61,11 +61,11 @@ namespace Boom
             }
         }
 
-        public bool Caught
+        public bool Destroyed
         {
             get
             {
-                return state != State.Normal;
+                return state == State.Destroyed;
             }
         }
 
