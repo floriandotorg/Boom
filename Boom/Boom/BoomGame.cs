@@ -20,21 +20,18 @@ namespace Boom
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
 
-        private SpriteFont font;
-        private Texture2D ballTexture;
-        private Song backgroundSong;
-        private SoundEffect blipSound;
-        private SoundEffect victorySound;
-        
-        private IList<Ball> balls = new List<Ball>();
-        private bool touching = false;
-        private Random random = new Random(DateTime.Now.Millisecond);
-        private bool catcher = false;
-        private int numBallsTotal = 10;
-        private int caught;
-        private int goal = 1;
-        private SineValue backgroundColor = new SineValue(220.0, 30) { Value = 0 };
+        public struct RessourcesStruct
+        {
+            public SpriteFont font;
+            public Texture2D ballTexture;
+            public Song backgroundSong;
+            public SoundEffect blipSound;
+            public SoundEffect victorySound;
+        }
 
+        private RessourcesStruct _ressources = new RessourcesStruct();
+        private bool touching = false;
+        private Round _currentRound;
 
         public BoomGame()
         {
@@ -63,44 +60,30 @@ namespace Boom
         /// </summary>
         protected override void Initialize()
         {
-            ballTexture = Content.Load<Texture2D>("Ball");
-            font = Content.Load<SpriteFont>("InGameFont");
-            backgroundSong = Content.Load<Song>("Background");
-            blipSound = Content.Load<SoundEffect>("Blip");
-            victorySound = Content.Load<SoundEffect>("Victory");
+            base.Initialize();
 
             SoundEffect.MasterVolume = .8f;
 
-            balls.Add(new Ball());
-
             MediaPlayer.Volume = .1f;
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(backgroundSong);
+            MediaPlayer.Play(_ressources.backgroundSong);
 
-            base.Initialize();
+            _currentRound = new Round(graphics.GraphicsDevice.Viewport, _ressources);
         }
-
-        void CreateBalls(int num)
-        {
-            for (int i = 0; i < num; i++)
-            {
-                Color ballColor = new Color(random.Next(255), random.Next(255), random.Next(255));
-                Vector2 center = new Vector2((float)random.Next(graphics.GraphicsDevice.Viewport.Width-20)+10, (float)random.Next(graphics.GraphicsDevice.Viewport.Height-20)+10);
-                Vector2 velocity = new Vector2((random.NextDouble() > .5 ? -1 : 1) * 2, (random.NextDouble() > .5 ? -1 : 1) * 2);
-                balls.Add(new Ball(this, ballColor * 0.5f, ballTexture, center, velocity));
-            }
-        }
-
+        
         /// <summary>
         /// LoadContent wird einmal pro Spiel aufgerufen und ist der Platz, wo
         /// Ihr gesamter Content geladen wird.
         /// </summary>
         protected override void LoadContent()
         {
-            // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            _ressources.ballTexture = Content.Load<Texture2D>("Ball");
+            _ressources.font = Content.Load<SpriteFont>("InGameFont");
+            _ressources.backgroundSong = Content.Load<Song>("Background");
+            _ressources.blipSound = Content.Load<SoundEffect>("Blip");
+            _ressources.victorySound = Content.Load<SoundEffect>("Victory");
 
-            CreateBalls(numBallsTotal);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         /// <summary>
@@ -125,33 +108,7 @@ namespace Boom
 
             HandleTouches();
 
-            foreach (Ball ball in balls)
-            {
-                ball.Update();
-            }
-
-            foreach (Ball collided in balls.Where( x => x.Collided ))
-            {
-                foreach (Ball free in balls.Where( x => !x.Collided ))
-                {
-                    if (collided.CheckAndHandleCollision(free))
-                    {
-                        blipSound.Play(.5f, 0f, 0f);
-                    }
-                }
-            }
-
-            caught = balls.Where(x => x.Caught).Count() - 1;
-
-            if (caught >= goal && !backgroundColor.IsMax)
-            {
-                if (backgroundColor.IsMin)
-                {
-                    victorySound.Play(1f, 0f, 0f);
-                }
-
-                backgroundColor.Inc();
-            }
+            _currentRound.Update();
 
             base.Update(gameTime);
         }
@@ -162,13 +119,7 @@ namespace Boom
             if (!touching && touches.Count > 0)
             {
                 touching = true;
-                //if (!catcher)
-                {
-                    balls[0] = new Ball(this, Color.White, ballTexture, touches.First().Position, new Vector2(0));
-                    balls[0].Collision();
-                    catcher = true;
-                }
-                
+                _currentRound.Touch(touches.First());
             }
             else if (touches.Count == 0)
             {
@@ -182,18 +133,11 @@ namespace Boom
         /// <param name="gameTime">Bietet einen Schnappschuss der Timing-Werte.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(new Color((int)backgroundColor.Value, (int)backgroundColor.Value, (int)backgroundColor.Value));
+            GraphicsDevice.Clear(_currentRound.BackgroundColor());
 
             spriteBatch.Begin();
 
-            foreach (Ball ball in balls)
-            {
-                ball.Draw(spriteBatch);
-            }
-
-            string text = "Points: " + caught + "/" + goal + " from " + numBallsTotal;
-            Vector2 position = new Vector2(10, graphics.GraphicsDevice.Viewport.Height - font.MeasureString(text).Y - 10);
-            spriteBatch.DrawString(font, text, position, Color.White);
+            _currentRound.Draw(spriteBatch);
 
             spriteBatch.End();
 

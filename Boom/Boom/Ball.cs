@@ -10,7 +10,7 @@ namespace Boom
 {
     class Ball
     {
-        private Game game;
+        private Viewport viewport;
 
         private const float radiusNormalSize = 10.0f;
         private const float radiusHugeSize = 75.0f;
@@ -85,9 +85,9 @@ namespace Boom
             state = State.Destroyed;
         }
 
-        public Ball(BoomGame game, Color color, Texture2D texture, Vector2 center, Vector2 velocity)
+        public Ball(Viewport viewport, Color color, Texture2D texture, Vector2 center, Vector2 velocity)
         {
-            this.game = game;
+            this.viewport = viewport;
             this.color = color;
             this.texture = texture;
             this.center = center;
@@ -156,12 +156,12 @@ namespace Boom
             top = newTopLeft.Y;
             bottom = newTopLeft.Y + ((float)radius.Value * 2f);
 
-            if (top < 0 || bottom > game.GraphicsDevice.Viewport.Height)
+            if (top < 0 || bottom > viewport.Height)
             {
                 velocity.Y *= -1;
             }
 
-            if (left < 0 || right > game.GraphicsDevice.Viewport.Width)
+            if (left < 0 || right > viewport.Width)
             {
                 velocity.X *= -1;
             }
