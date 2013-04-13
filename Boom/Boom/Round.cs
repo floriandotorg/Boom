@@ -102,7 +102,7 @@ namespace Boom
                     {
                         if (collided.CheckAndHandleCollision(free))
                         {
-                            _ressources.blipSound.Play(.5f, 0f, 0f);
+                            _ressources.blipSound.Play(.3f, 0f, 0f);
                         }
                     }
                 }
@@ -113,7 +113,7 @@ namespace Boom
                     {
                         if (backgroundColor.IsMin)
                         {
-                            _ressources.victorySound.Play(1f, 0f, 0f);
+                            _ressources.victorySound.Play(.9f, 0f, 0f);
                         }
 
                         backgroundColor.Inc();
