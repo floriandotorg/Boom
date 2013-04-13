@@ -13,7 +13,7 @@ namespace Boom
         private Viewport viewport;
 
         private const float radiusNormalSize = 10.0f;
-        private const float radiusHugeSize = 75.0f;
+        private const float radiusHugeSize = 60.0f;
         private const int radiusSizeingSpeed = 30;
 
         private SineValue radius = new SineValue(radiusHugeSize, radiusSizeingSpeed) { Value = radiusNormalSize };
@@ -24,7 +24,8 @@ namespace Boom
         private Vector2 center;
 
         private const int numHugeUpdatesToShrink = 20;
-        private int numHugeUpdates;
+        private const int numHugeUpdatesToDie = 15;
+        private int updateCounter;
 
         private Vector2 topLeft
         {
@@ -48,7 +49,10 @@ namespace Boom
             Expanding,
             Huge,
             Shrinking,
-            Destroyed
+            Destroyed,
+            DyingWait,
+            Dying,
+            Dead
         }
 
         private State state = State.Normal;
@@ -57,7 +61,7 @@ namespace Boom
         {
             get
             {
-                return state != State.Normal;
+                return state != State.Normal && !Dead;
             }
         }
 
@@ -66,6 +70,22 @@ namespace Boom
             get
             {
                 return state == State.Destroyed;
+            }
+        }
+
+        public bool Expanding
+        {
+            get
+            {
+                return state == State.Expanding || state == State.Huge;
+            }
+        }
+
+        public bool Dead
+        {
+            get
+            {
+                return state == State.DyingWait || state == State.Dying || state == State.Dead;
             }
         }
 
@@ -122,9 +142,10 @@ namespace Boom
             }
             else if (state == State.Huge)
             {
-                if (++numHugeUpdates >= numHugeUpdatesToShrink)
+                if (++updateCounter >= numHugeUpdatesToShrink)
                 {
                     state = State.Shrinking;
+                    radius.Reserve();
                 }
             }
             else if (state == State.Shrinking)
@@ -136,6 +157,23 @@ namespace Boom
                     state = State.Destroyed;
                 }
             }
+            else if (state == State.DyingWait)
+            {
+                if (++updateCounter >= numHugeUpdatesToDie)
+                {
+                    state = State.Dying;
+                    radius.Reserve();
+                }
+            }
+            else if (state == State.Dying)
+            {
+                radius.Dec();
+
+                if (radius.IsMin)
+                {
+                    state = State.Dead;
+                }
+            }
         }
 
         public void Collision()
@@ -145,6 +183,12 @@ namespace Boom
                 state = State.Expanding;
                 velocity = new Vector2(0);
             }
+        }
+
+        public void Die()
+        {
+            state = State.DyingWait;
+            updateCounter = 0;
         }
 
         private void BounceBall()

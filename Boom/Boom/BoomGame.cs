@@ -44,6 +44,7 @@ namespace Boom
             graphics.SupportedOrientations = DisplayOrientation.Portrait;
             graphics.PreferredBackBufferWidth = 480;
             graphics.PreferredBackBufferHeight = 800;
+            graphics.PreferMultiSampling = true;
             graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";

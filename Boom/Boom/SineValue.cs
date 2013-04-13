@@ -10,17 +10,32 @@ namespace Boom
         private double _max;
         private double _sineValue;
         private double _inc;
+        private bool _reserve = false;
 
         public double Value
         {
             get
             {
-                return _max * Math.Sin(_sineValue);
+                if (_reserve)
+                {
+                    return _max * (1 - Math.Cos(_sineValue));
+                }
+                else
+                {
+                    return _max * Math.Sin(_sineValue);
+                }
             }
 
             set
             {
-                _sineValue = Math.Asin(value / _max);
+                if (_reserve)
+                {
+                    _sineValue = Math.Acos(1 - value / _max);
+                }
+                else
+                {
+                    _sineValue = Math.Asin(value / _max);
+                }
             }
         }
 
@@ -55,6 +70,13 @@ namespace Boom
         public void Dec()
         {
             _sineValue -= +_inc;
+        }
+
+        public void Reserve()
+        {
+            double value = Value;
+            _reserve = !_reserve;
+            Value = value;
         }
     }
 }

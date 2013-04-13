@@ -6,8 +6,8 @@ using System.Resources;
 // Allgemeine Informationen über eine Assembly werden über den folgenden 
 // Satz von Attributen kontrolliert. Ändern Sie diese Attributwerte, um die mit einer Assembly
 // verbundenen Informationen zu ändern.
-[assembly: AssemblyTitle("PhoneGame")]
-[assembly: AssemblyProduct("PhoneGame")]
+[assembly: AssemblyTitle("Boom!")]
+[assembly: AssemblyProduct("Boom!")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]

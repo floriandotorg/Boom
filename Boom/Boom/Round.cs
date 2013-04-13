@@ -107,6 +107,14 @@ namespace Boom
                     }
                 }
 
+                if (catcher && balls.Where(x => x.Expanding).Count() == 0)
+                {
+                    foreach (Ball ball in balls.Where(x => !x.Collided && !x.Destroyed && !x.Dead))
+                    {
+                        ball.Die();
+                    }
+                }
+
                 if (Score >= goal)
                 {
                     if (!backgroundColor.IsMax)
