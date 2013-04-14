@@ -72,18 +72,18 @@ namespace Boom
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(_ressources.backgroundSong);
 
-            _rounds.Add(new Round(10, 1, graphics.GraphicsDevice.Viewport, _ressources));
-            _rounds.Add(new Round(10, 2, graphics.GraphicsDevice.Viewport, _ressources));
-            _rounds.Add(new Round(15, 3, graphics.GraphicsDevice.Viewport, _ressources));
-            _rounds.Add(new Round(20, 5, graphics.GraphicsDevice.Viewport, _ressources));
-            _rounds.Add(new Round(25, 7, graphics.GraphicsDevice.Viewport, _ressources));
-            _rounds.Add(new Round(30, 10, graphics.GraphicsDevice.Viewport, _ressources));
-            _rounds.Add(new Round(35, 15, graphics.GraphicsDevice.Viewport, _ressources));
-            _rounds.Add(new Round(40, 21, graphics.GraphicsDevice.Viewport, _ressources));
-            _rounds.Add(new Round(45, 27, graphics.GraphicsDevice.Viewport, _ressources));
-            _rounds.Add(new Round(50, 33, graphics.GraphicsDevice.Viewport, _ressources));
-            _rounds.Add(new Round(55, 44, graphics.GraphicsDevice.Viewport, _ressources));
-            _rounds.Add(new Round(60, 55, graphics.GraphicsDevice.Viewport, _ressources));
+            _rounds.Add(new Round(10, 1, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(10, 2, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(15, 3, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(20, 5, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(25, 7, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(30, 10, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(35, 15, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(40, 21, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(45, 27, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(50, 33, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(55, 44, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(60, 55, graphics.GraphicsDevice, _ressources));
 
             _currentRound = _rounds.GetEnumerator();
             _currentRound.MoveNext();

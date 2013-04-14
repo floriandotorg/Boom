@@ -55,23 +55,25 @@ namespace Boom
             }
         }
 
-        public Round(int numBalls, int goal, Viewport viewport, BoomGame.RessourcesStruct ressouces)
+        public Round(int numBalls, int goal, GraphicsDevice graphicsDevice, BoomGame.RessourcesStruct ressouces)
         {
             numBallsTotal = numBalls;
             this.goal = goal;
-            _viewport = viewport;
+            _viewport = graphicsDevice.Viewport;
             _ressources = ressouces;
-            _intermediateScreen = new IntermediateScreen(viewport);
+            _intermediateScreen = new IntermediateScreen(graphicsDevice);
 
             StartScreen();
         }
 
         private void StartScreen()
         {
+            init();
             _state = State.StartScreen;
             _intermediateScreen.Show(new IntermediateScreen.TextLine[] { new IntermediateScreen.TextLine() { Text = "Objective", Pos = -100, Color = Color.White, Font = _ressources.gameOverfont },
                                                                         new IntermediateScreen.TextLine() { Text = goal + " of " + numBallsTotal, Pos = -40, Color = Color.White, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "Tap to start", Pos = 100, Color = Color.White, Font = _ressources.font } });
+                                                                        new IntermediateScreen.TextLine() { Text = "Tap to start", Pos = 100, Color = Color.White, Font = _ressources.font } },
+                                                                        1f, .6f, 0f, Color.Black);
         }
 
         private void FailedScreen()
@@ -79,20 +81,21 @@ namespace Boom
             _state = State.FailedScreen;
             _intermediateScreen.Show(new IntermediateScreen.TextLine[] { new IntermediateScreen.TextLine() { Text = "You failed!", Pos = -100, Color = Color.Red, Font = _ressources.gameOverfont },
                                                                         new IntermediateScreen.TextLine() { Text = Score + "/" + goal + " of " + numBallsTotal, Pos = -40, Color = Color.White, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "Tap to retry", Pos = 100, Color = Color.White, Font = _ressources.font } });
+                                                                        new IntermediateScreen.TextLine() { Text = "Tap to retry", Pos = 100, Color = Color.White, Font = _ressources.font } },
+                                                                        0f, 1f, 0f, Color.Black);
         }
 
         private void SucessScreen()
         {
             _state = State.SucessScreen;
-            _intermediateScreen.Show(new IntermediateScreen.TextLine[] { new IntermediateScreen.TextLine() { Text = "You won!", Pos = -100, Color = Color.LimeGreen, Font = _ressources.gameOverfont },
-                                                                        new IntermediateScreen.TextLine() { Text = Score + "/" + goal + " of " + numBallsTotal, Pos = -40, Color = Color.White, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "Tap to resume", Pos = 100, Color = Color.White, Font = _ressources.font } });
+            _intermediateScreen.Show(new IntermediateScreen.TextLine[] { new IntermediateScreen.TextLine() { Text = "You won!", Pos = -100, Color = Color.Black, Font = _ressources.gameOverfont },
+                                                                        new IntermediateScreen.TextLine() { Text = Score + "/" + goal + " of " + numBallsTotal, Pos = -40, Color = Color.Black, Font = _ressources.font },
+                                                                        new IntermediateScreen.TextLine() { Text = "Tap to resume", Pos = 100, Color = Color.Black, Font = _ressources.font } },
+                                                                        0f, 1f, 0f, Color.White);
         }
 
         private void init()
         {
-            _state = State.InGame;
             catcher = false;
             backgroundColor.Value = 0;
 
@@ -115,13 +118,18 @@ namespace Boom
 
         public bool Update()
         {
+            if (_state == State.RoundEnded)
+            {
+                return true;
+            }
+            
+            foreach (Ball ball in balls)
+            {
+                ball.Update();
+            }
+
             if (_state == State.InGame)
             {
-                foreach (Ball ball in balls)
-                {
-                    ball.Update();
-                }
-
                 foreach (Ball collided in balls.Where(x => x.Collided && !x.Destroyed))
                 {
                     foreach (Ball free in balls.Where(x => !x.Collided && !x.Destroyed))
@@ -154,7 +162,7 @@ namespace Boom
                     }
                 }
 
-                if (catcher && balls.Where(x => x.Collided && !x.Destroyed).Count() == 0)
+                if (balls[1].Size < 5)
                 {
                     if (Score >= goal)
                     {
@@ -176,14 +184,10 @@ namespace Boom
                     }
                     else if (_state == State.StartScreen || _state == State.FailedScreen)
                     {
-                        init();
+                        _state = State.InGame;
                     }
                 }
-            }
-            else if (_state == State.RoundEnded)
-            {
-                return true;
-            }
+            } 
 
             return false;
         }
@@ -203,28 +207,36 @@ namespace Boom
             }
             else if (_state == State.StartScreen || _state == State.FailedScreen || _state == State.SucessScreen)
             {
-                _intermediateScreen.Touch(touch);
-            }
-            else if (_state == State.SucessScreen)
-            {
-                _state = State.RoundEnded;
+                if (_intermediateScreen.Touch(touch))
+                {
+                    if (_state == State.FailedScreen)
+                    {
+                        init();
+                    }
+
+                    if (_state == State.SucessScreen)
+                    {
+                        backgroundColor.Value = 0;
+                    }
+                }
             }
         }
-
+        
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (_state == State.InGame)
+            foreach (Ball ball in balls)
             {
-                foreach (Ball ball in balls)
-                {
-                    ball.Draw(spriteBatch);
-                }
+                ball.Draw(spriteBatch);
+            }
 
+            if (_state == State.InGame || _state == State.StartScreen || _state == State.FailedScreen)
+            {
                 string text = "Points: " + Score + "/" + goal + " from " + numBallsTotal;
                 Vector2 position = new Vector2(10, _viewport.Height - _ressources.font.MeasureString(text).Y - 10);
                 spriteBatch.DrawString(_ressources.font, text, position, Color.White);
             }
-            else if (_state == State.StartScreen || _state == State.FailedScreen || _state == State.SucessScreen)
+
+            if (_state == State.StartScreen || _state == State.FailedScreen || _state == State.SucessScreen)
             {
                 _intermediateScreen.Draw(spriteBatch);
             }

@@ -89,6 +89,14 @@ namespace Boom
             }
         }
 
+        public double Size
+        {
+            get
+            {
+                return radius.Value;
+            }
+        }
+
         public bool CheckAndHandleCollision(Ball other)
         {
             if (Vector2.Distance(this.center, other.center) <= this.radius.Value + other.radius.Value)
