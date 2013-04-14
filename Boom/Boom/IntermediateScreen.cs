@@ -35,11 +35,11 @@ namespace Boom
 
         private Viewport _viewport;
         private State _state;
-        private int _updateCounter;
         private IEnumerable<TextLine> _lines;
         private float _from, _background, _to;
         private Color _backgroundColor;
         private Texture2D _rectTexture;
+        private SineValue _fadeProcess = new SineValue(1, NumFadingUpdates);
 
         public IntermediateScreen(GraphicsDevice graphicsDevice)
         {
@@ -52,7 +52,6 @@ namespace Boom
         public void Show(IEnumerable<TextLine> lines, float from, float background, float to, Color backgroundColor)
         {
             _state = State.FadeIn;
-            _updateCounter = 0;
             _lines = lines;
             _from = from;
             _background = background;
@@ -62,12 +61,12 @@ namespace Boom
 
         public bool Update()
         {
-            if (_state == State.FadeIn && ++_updateCounter >= NumFadingUpdates)
+            if (_state == State.FadeIn && _fadeProcess.Inc())
             {
                 _state = State.Visible;
             }
 
-            if (_state == State.FadeOut && --_updateCounter <= 0)
+            if (_state == State.FadeOut && _fadeProcess.Dec())
             {
                 _state = State.Finished;
             }            
@@ -87,7 +86,6 @@ namespace Boom
             if (_state == State.Visible)
             {
                 _state = State.FadeOut;
-                _updateCounter = NumFadingUpdates;
                 return true;
             }
             return false;
@@ -95,13 +93,11 @@ namespace Boom
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            float fadeProcess = (float)_updateCounter / (float)NumFadingUpdates;
-
             float alpha = -1;
 
             if (_state == State.FadeIn)
             {
-                alpha = _from - fadeProcess * (_from - _background);
+                alpha = _from - (float)_fadeProcess.Value * (_from - _background);
             }
             else if (_state == State.Visible)
             {
@@ -109,7 +105,7 @@ namespace Boom
             }
             else if (_state == State.FadeOut)
             {
-                alpha = _to - fadeProcess * (_to - _background);
+                alpha = _to - (float)_fadeProcess.Value * (_to - _background);
             }
             else if (_state == State.Finished)
             {
@@ -121,7 +117,7 @@ namespace Boom
             foreach (TextLine line in _lines)
             {
                 Vector2 position = new Vector2((_viewport.Width - line.Font.MeasureString(line.Text).X) / 2, (_viewport.Height / 2) + line.Pos);
-                spriteBatch.DrawString(line.Font, line.Text, position, line.Color * fadeProcess);
+                spriteBatch.DrawString(line.Font, line.Text, position, line.Color * (float)_fadeProcess.Value);
             }
         }
     }

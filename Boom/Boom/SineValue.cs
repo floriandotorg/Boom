@@ -62,17 +62,19 @@ namespace Boom
             _sineValue = 0;
         }
 
-        public void Inc()
+        public bool Inc()
         {
             _sineValue += _inc;
+            return IsMax;
         }
 
-        public void Dec()
+        public bool Dec()
         {
             _sineValue -= +_inc;
+            return IsMin;
         }
 
-        public void Reserve()
+        public void Reverse()
         {
             double value = Value;
             _reserve = !_reserve;

@@ -153,7 +153,7 @@ namespace Boom
                 if (++updateCounter >= numHugeUpdatesToShrink)
                 {
                     state = State.Shrinking;
-                    radius.Reserve();
+                    radius.Reverse();
                 }
             }
             else if (state == State.Shrinking)
@@ -170,7 +170,7 @@ namespace Boom
                 if (++updateCounter >= numHugeUpdatesToDie)
                 {
                     state = State.Dying;
-                    radius.Reserve();
+                    radius.Reverse();
                 }
             }
             else if (state == State.Dying)
