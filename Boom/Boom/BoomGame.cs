@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO.IsolatedStorage;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -30,11 +31,14 @@ namespace Boom
             public SoundEffect victorySound;
         }
 
+        private const string CurrentRoundSettingsKey = "CurrentRound";
+
         private RessourcesStruct _ressources = new RessourcesStruct();
         private bool touching = false;
         private List<Round> _rounds = new List<Round>();
         private List<Round>.Enumerator _currentRound;
         private bool _gameOver = false;
+        private IsolatedStorageSettings _applicationSettings = IsolatedStorageSettings.ApplicationSettings;
 
         public BoomGame()
         {
@@ -86,7 +90,19 @@ namespace Boom
             _rounds.Add(new Round(60, 55, graphics.GraphicsDevice, _ressources));
 
             _currentRound = _rounds.GetEnumerator();
-            _currentRound.MoveNext();
+
+            try
+            {
+                for (int i = 0; i < (int)_applicationSettings[CurrentRoundSettingsKey]; ++i)
+                {
+                    _currentRound.MoveNext();
+                }
+            }
+            catch (System.Collections.Generic.KeyNotFoundException)
+            {
+                _applicationSettings[CurrentRoundSettingsKey] = 1;
+                _currentRound.MoveNext();
+            }
         }
         
         /// <summary>
@@ -111,7 +127,7 @@ namespace Boom
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Entladen Sie jeglichen Nicht-ContentManager-Inhalt hier
+            
         }
 
         /// <summary>
@@ -134,6 +150,11 @@ namespace Boom
                     if (!_currentRound.MoveNext())
                     {
                         _gameOver = true;
+                        _applicationSettings[CurrentRoundSettingsKey] = 1;
+                    }
+                    else
+                    {
+                        _applicationSettings[CurrentRoundSettingsKey] = (int)_applicationSettings[CurrentRoundSettingsKey] + 1;
                     }
                 }
             }
