@@ -26,6 +26,8 @@ namespace Boom
             public SpriteFont font;
             public SpriteFont gameOverfont;
             public Texture2D ballTexture;
+            public Texture2D speakerTexture;
+            public Texture2D speakerMuteTexture;
             public Song backgroundSong;
             public SoundEffect blipSound;
             public SoundEffect victorySound;
@@ -60,6 +62,23 @@ namespace Boom
             InactiveSleepTime = TimeSpan.FromSeconds(1);
         }
 
+        public static bool IsMute()
+        {
+            return SoundEffect.MasterVolume == 0f;
+        }
+
+        public static void Mute()
+        {
+            SoundEffect.MasterVolume = 0f;
+            MediaPlayer.Volume = 0f;
+        }
+
+        public static void SetDefaultVolume()
+        {
+            SoundEffect.MasterVolume = .8f;
+            MediaPlayer.Volume = .1f;
+        }
+
         /// <summary>
         /// Ermöglicht dem Spiel, alle Initialisierungen durchzuführen, die es benötigt, bevor die Ausführung gestartet wird.
         /// Hier können erforderliche Dienste abgefragt und alle nicht mit Grafiken
@@ -70,9 +89,8 @@ namespace Boom
         {
             base.Initialize();
 
-            SoundEffect.MasterVolume = .8f;
+            SetDefaultVolume();
 
-            MediaPlayer.Volume = .1f;
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(_ressources.backgroundSong);
 
@@ -112,6 +130,8 @@ namespace Boom
         protected override void LoadContent()
         {
             _ressources.ballTexture = Content.Load<Texture2D>("Ball");
+            _ressources.speakerMuteTexture = Content.Load<Texture2D>("SpeakerMute");
+            _ressources.speakerTexture = Content.Load<Texture2D>("Speaker");
             _ressources.font = Content.Load<SpriteFont>("InGameFont");
             _ressources.gameOverfont = Content.Load<SpriteFont>("GameOverFont");
             _ressources.backgroundSong = Content.Load<Song>("Background");

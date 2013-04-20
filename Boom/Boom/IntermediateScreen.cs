@@ -32,8 +32,10 @@ namespace Boom
         }
 
         private const int NumFadingUpdates = 10;
+        private const int SpeakerIconSize = 40;
 
         private Viewport _viewport;
+        private BoomGame.RessourcesStruct _ressources;
         private State _state;
         private IEnumerable<TextLine> _lines;
         private float _from, _background, _to;
@@ -41,9 +43,10 @@ namespace Boom
         private Texture2D _rectTexture;
         private SineValue _fadeProcess = new SineValue(1, NumFadingUpdates);
 
-        public IntermediateScreen(GraphicsDevice graphicsDevice)
+        public IntermediateScreen(GraphicsDevice graphicsDevice, BoomGame.RessourcesStruct ressources)
         {
             _viewport = graphicsDevice.Viewport;
+            _ressources = ressources;
 
             _rectTexture = new Texture2D(graphicsDevice, 1, 1);
             _rectTexture.SetData(new[] { Color.White });
@@ -83,11 +86,26 @@ namespace Boom
 
         public bool Touch(TouchLocation touch)
         {
-            if (_state == State.Visible)
+            if (touch.Position.X > _viewport.Width - SpeakerIconSize - 50 && touch.Position.Y > _viewport.Height - SpeakerIconSize - 50)
             {
-                _state = State.FadeOut;
-                return true;
+                if (BoomGame.IsMute())
+                {
+                    BoomGame.SetDefaultVolume();
+                }
+                else
+                {
+                    BoomGame.Mute();
+                }
             }
+            else
+            {
+                if (_state == State.Visible)
+                {
+                    _state = State.FadeOut;
+                    return true;
+                }
+            }
+           
             return false;
         }
 
@@ -119,6 +137,18 @@ namespace Boom
                 Vector2 position = new Vector2((_viewport.Width - line.Font.MeasureString(line.Text).X) / 2, (_viewport.Height / 2) + line.Pos);
                 spriteBatch.DrawString(line.Font, line.Text, position, line.Color * (float)_fadeProcess.Value);
             }
+
+            Texture2D speaker;
+            if (BoomGame.IsMute())
+            {
+                speaker = _ressources.speakerMuteTexture;
+            }
+            else
+            {
+                speaker = _ressources.speakerTexture;
+            }
+
+            spriteBatch.Draw(speaker, new Rectangle(_viewport.Width - SpeakerIconSize - 13, _viewport.Height - SpeakerIconSize - 10, SpeakerIconSize, SpeakerIconSize), new Color(128,128,128) * (float)_fadeProcess.Value);
         }
     }
 }

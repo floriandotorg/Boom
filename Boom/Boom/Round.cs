@@ -61,7 +61,7 @@ namespace Boom
             this.goal = goal;
             _viewport = graphicsDevice.Viewport;
             _ressources = ressouces;
-            _intermediateScreen = new IntermediateScreen(graphicsDevice);
+            _intermediateScreen = new IntermediateScreen(graphicsDevice, ressouces);
 
             StartScreen();
         }
