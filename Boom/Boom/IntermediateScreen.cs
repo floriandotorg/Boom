@@ -148,7 +148,7 @@ namespace Boom
                 speaker = _ressources.speakerTexture;
             }
 
-            spriteBatch.Draw(speaker, new Rectangle(_viewport.Width - SpeakerIconSize - 13, _viewport.Height - SpeakerIconSize - 10, SpeakerIconSize, SpeakerIconSize), new Color(128,128,128) * (float)_fadeProcess.Value);
+            spriteBatch.Draw(speaker, new Rectangle(_viewport.Width - SpeakerIconSize - 13, _viewport.Height - SpeakerIconSize - 10, SpeakerIconSize, SpeakerIconSize), new Color(128,128,128) * (.5f * (float)_fadeProcess.Value));
         }
     }
 }
