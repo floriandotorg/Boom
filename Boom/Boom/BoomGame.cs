@@ -40,6 +40,8 @@ namespace Boom
         private List<Round> _rounds = new List<Round>();
         private List<Round>.Enumerator _currentRound;
         private bool _gameOver = false;
+        private int _score = 0;
+        private int _currentRoundNo = 1;
         private IsolatedStorageSettings _applicationSettings = IsolatedStorageSettings.ApplicationSettings;
 
         public BoomGame()
@@ -109,6 +111,9 @@ namespace Boom
 
             _currentRound = _rounds.GetEnumerator();
 
+            _currentRound.MoveNext();
+            return;
+
             try
             {
                 for (int i = 0; i < (int)_applicationSettings[CurrentRoundSettingsKey]; ++i)
@@ -150,6 +155,23 @@ namespace Boom
             
         }
 
+        private void NextRound()
+        {
+            _score += _currentRound.Current.Score;
+
+            if (!_currentRound.MoveNext())
+            {
+                _gameOver = true;
+                _applicationSettings[CurrentRoundSettingsKey] = 1;
+            }
+            else
+            {
+                _applicationSettings[CurrentRoundSettingsKey] = (int)_applicationSettings[CurrentRoundSettingsKey] + 1;
+            }
+
+            _currentRound.Current.StartRound(_score, ++_currentRoundNo);
+        }
+
         /// <summary>
         /// Ermöglicht dem Spiel die Ausführung der Logik, wie zum Beispiel Aktualisierung der Welt,
         /// Überprüfung auf Kollisionen, Erfassung von Eingaben und Abspielen von Ton.
@@ -167,15 +189,7 @@ namespace Boom
 
                 if (_currentRound.Current.Update())
                 {
-                    if (!_currentRound.MoveNext())
-                    {
-                        _gameOver = true;
-                        _applicationSettings[CurrentRoundSettingsKey] = 1;
-                    }
-                    else
-                    {
-                        _applicationSettings[CurrentRoundSettingsKey] = (int)_applicationSettings[CurrentRoundSettingsKey] + 1;
-                    }
+                    NextRound();
                 }
             }
 
@@ -232,16 +246,7 @@ namespace Boom
                 }
 
                 {
-                    int score = 0;
-                    int possible = 0;
-
-                    foreach (Round round in _rounds)
-                    {
-                        score += round.Score;
-                        possible += round.Possible;
-                    }
-
-                    string text = score + " of " + possible;
+                    string text = "" + _score;
                     Vector2 position = new Vector2((graphics.GraphicsDevice.Viewport.Width - _ressources.font.MeasureString(text).X) / 2, (graphics.GraphicsDevice.Viewport.Height / 2) - 20);
                     spriteBatch.DrawString(_ressources.font, text, position, Color.White);
                 }
