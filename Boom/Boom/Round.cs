@@ -194,7 +194,7 @@ namespace Boom
                     }
                 }
 
-                if (balls[1].Size < 5)
+                if (balls.Where(x => x.Size >= 5).Count() == 0)
                 {
                     if (Score >= goal)
                     {
