@@ -141,7 +141,12 @@ namespace Boom
         {
             for (int i = 0; i < num; i++)
             {
-                Color ballColor = new Color(random.Next(255), random.Next(255), random.Next(255));
+                Color ballColor = new Color(0,0,0);
+                while(ballColor.R + ballColor.G + ballColor.B < 70)
+                {
+                    ballColor = new Color(random.Next(255), random.Next(255), random.Next(255));
+                }
+               
                 Vector2 center = new Vector2((float)random.Next(_viewport.Width - 20) + 10, (float)random.Next(_viewport.Height - 20) + 10);
                 Vector2 velocity = new Vector2((random.NextDouble() > .5 ? -1 : 1) * _ballVelocity, (random.NextDouble() > .5 ? -1 : 1) * _ballVelocity);
                 balls.Add(new Ball(_viewport, ballColor * 0.5f, _ressources.ballTexture, center, velocity));

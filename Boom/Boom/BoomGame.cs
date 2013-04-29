@@ -111,8 +111,10 @@ namespace Boom
 
             _currentRound = _rounds.GetEnumerator();
 
+#if DEBUG
             _currentRound.MoveNext();
             return;
+#endif
 
             try
             {
@@ -167,9 +169,8 @@ namespace Boom
             else
             {
                 _applicationSettings[CurrentRoundSettingsKey] = (int)_applicationSettings[CurrentRoundSettingsKey] + 1;
+                _currentRound.Current.StartRound(_score, ++_currentRoundNo);
             }
-
-            _currentRound.Current.StartRound(_score, ++_currentRoundNo);
         }
 
         /// <summary>
