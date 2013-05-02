@@ -15,12 +15,27 @@ namespace Boom
 {
     class IntermediateScreen
     {
-        public struct TextLine
+        public interface IDrawable
+        {
+            void Draw(SpriteBatch spriteBatch, Viewport viewport, float fadeProcess);
+            bool Touch(Viewport viewport, TouchLocation touch);
+        }
+
+        public struct TextLine : IDrawable
         {
             public string Text;
             public int Pos;
             public Color Color;
             public SpriteFont Font;
+
+            public void Draw(SpriteBatch spriteBatch, Viewport viewport, float fadeProcess)
+            {
+                Vector2 position = new Vector2((viewport.Width - Font.MeasureString(Text).X) / 2, (viewport.Height / 2) + Pos);
+                spriteBatch.DrawString(Font, Text, position, Color * fadeProcess);
+            }
+
+            public bool Touch(Viewport viewport, TouchLocation touch)
+            { return false; }
         }
 
         private enum State
@@ -37,7 +52,7 @@ namespace Boom
         private Viewport _viewport;
         private BoomGame.RessourcesStruct _ressources;
         private State _state;
-        private IEnumerable<TextLine> _lines;
+        private IEnumerable<IDrawable> _drawables;
         private float _from, _background, _to;
         private Color _backgroundColor;
         private Texture2D _rectTexture;
@@ -52,10 +67,10 @@ namespace Boom
             _rectTexture.SetData(new[] { Color.White });
         }
 
-        public void Show(IEnumerable<TextLine> lines, float from, float background, float to, Color backgroundColor)
+        public void Show(IEnumerable<IDrawable> drawables, float from, float background, float to, Color backgroundColor)
         {
             _state = State.FadeIn;
-            _lines = lines;
+            _drawables = drawables;
             _from = from;
             _background = background;
             _to = to;
@@ -86,23 +101,37 @@ namespace Boom
 
         public bool Touch(TouchLocation touch)
         {
-            if (touch.Position.X > _viewport.Width - SpeakerIconSize - 50 && touch.Position.Y > _viewport.Height - SpeakerIconSize - 50)
+            bool drawableHandledTouch = false;
+
+            foreach (var drawable in _drawables)
             {
-                if (BoomGame.IsMute())
+                if (drawable.Touch(_viewport, touch))
                 {
-                    BoomGame.SetDefaultVolume();
+                    drawableHandledTouch = true;
+                    break;
+                }
+            }
+
+            if (!drawableHandledTouch)
+            {
+                if (touch.Position.X > _viewport.Width - SpeakerIconSize - 50 && touch.Position.Y > _viewport.Height - SpeakerIconSize - 50)
+                {
+                    if (BoomGame.IsMute())
+                    {
+                        BoomGame.SetDefaultVolume();
+                    }
+                    else
+                    {
+                        BoomGame.Mute();
+                    }
                 }
                 else
                 {
-                    BoomGame.Mute();
-                }
-            }
-            else
-            {
-                if (_state == State.Visible)
-                {
-                    _state = State.FadeOut;
-                    return true;
+                    if (_state == State.Visible)
+                    {
+                        _state = State.FadeOut;
+                        return true;
+                    }
                 }
             }
            
@@ -132,10 +161,9 @@ namespace Boom
 
             spriteBatch.Draw(_rectTexture, _viewport.Bounds, _backgroundColor * alpha);
 
-            foreach (TextLine line in _lines)
+            foreach (var drawable in _drawables)
             {
-                Vector2 position = new Vector2((_viewport.Width - line.Font.MeasureString(line.Text).X) / 2, (_viewport.Height / 2) + line.Pos);
-                spriteBatch.DrawString(line.Font, line.Text, position, line.Color * (float)_fadeProcess.Value);
+                drawable.Draw(spriteBatch, _viewport, (float)_fadeProcess.Value);
             }
 
             Texture2D speaker;

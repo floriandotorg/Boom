@@ -80,7 +80,7 @@ namespace Boom
             int l5 = (int)((-h / 2f) + h - 50) + 40;
 
 
-            _intermediateScreen.Show(new IntermediateScreen.TextLine[] { new IntermediateScreen.TextLine() { Text = "Level " + _roundNo, Pos = l1, Color = Color.White, Font = _ressources.gameOverfont },
+            _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = "Level " + _roundNo, Pos = l1, Color = Color.White, Font = _ressources.gameOverfont },
                                                                         new IntermediateScreen.TextLine() { Text = goal + " of " + numBallsTotal, Pos = l2, Color = Color.White, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Tap to start", Pos = l3, Color = Color.White, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Current Score", Pos = l4, Color = Color.White, Font = _ressources.font },
@@ -99,7 +99,7 @@ namespace Boom
             int l4 = (int)((-h / 2f) + h - 50);
             int l5 = (int)((-h / 2f) + h - 50) + 40;
 
-            _intermediateScreen.Show(new IntermediateScreen.TextLine[] { new IntermediateScreen.TextLine() { Text = "You failed!", Pos = l1, Color = Color.Red, Font = _ressources.gameOverfont },
+            _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = "You failed!", Pos = l1, Color = Color.Red, Font = _ressources.gameOverfont },
                                                                         new IntermediateScreen.TextLine() { Text = Score + "/" + goal + " of " + numBallsTotal, Pos = l2, Color = Color.White, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Tap to retry", Pos = l3, Color = Color.White, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Current Score", Pos = l4, Color = Color.White, Font = _ressources.font },
@@ -118,7 +118,7 @@ namespace Boom
             int l4 = (int)((-h / 2f) + h - 50);
             int l5 = (int)((-h / 2f) + h - 50) + 40;
 
-            _intermediateScreen.Show(new IntermediateScreen.TextLine[] { new IntermediateScreen.TextLine() { Text = "You won!", Pos = l1, Color = Color.Black, Font = _ressources.gameOverfont },
+            _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = "You won!", Pos = l1, Color = Color.Black, Font = _ressources.gameOverfont },
                                                                         new IntermediateScreen.TextLine() { Text = Score + "/" + goal + " of " + numBallsTotal, Pos = l2, Color = Color.Black, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Tap to resume", Pos = l3, Color = Color.Black, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Current Score", Pos = l4, Color = Color.Black, Font = _ressources.font },

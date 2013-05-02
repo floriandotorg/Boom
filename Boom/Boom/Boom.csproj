@@ -67,6 +67,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ball.cs" />
+    <Compile Include="Highscore.cs" />
+    <Compile Include="HighscoreTable.cs" />
     <Compile Include="IntermediateScreen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Round.cs" />

@@ -25,6 +25,7 @@ namespace Boom
         {
             public SpriteFont font;
             public SpriteFont gameOverfont;
+            public SpriteFont boldFont;
             public Texture2D ballTexture;
             public Texture2D speakerTexture;
             public Texture2D speakerMuteTexture;
@@ -43,6 +44,8 @@ namespace Boom
         private int _score = 0;
         private int _currentRoundNo = 1;
         private IsolatedStorageSettings _applicationSettings = IsolatedStorageSettings.ApplicationSettings;
+        private Highscore _highscore = new Highscore();
+        private IntermediateScreen _intermediateScreen;
 
         public BoomGame()
         {
@@ -91,28 +94,31 @@ namespace Boom
         {
             base.Initialize();
 
+            //_highscore.Submit(msg => System.Diagnostics.Debug.WriteLine(msg), "Hans", 98);
+
             SetDefaultVolume();
 
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(_ressources.backgroundSong);
 
             _rounds.Add(new Round(10, 1, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(10, 2, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(15, 3, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(20, 5, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(25, 7, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(30, 10, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(35, 15, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(40, 21, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(45, 27, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(50, 33, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(55, 44, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(60, 55, graphics.GraphicsDevice, _ressources));
+            //_rounds.Add(new Round(10, 2, graphics.GraphicsDevice, _ressources));
+            //_rounds.Add(new Round(15, 3, graphics.GraphicsDevice, _ressources));
+            //_rounds.Add(new Round(20, 5, graphics.GraphicsDevice, _ressources));
+            //_rounds.Add(new Round(25, 7, graphics.GraphicsDevice, _ressources));
+            //_rounds.Add(new Round(30, 10, graphics.GraphicsDevice, _ressources));
+            //_rounds.Add(new Round(35, 15, graphics.GraphicsDevice, _ressources));
+            //_rounds.Add(new Round(40, 21, graphics.GraphicsDevice, _ressources));
+            //_rounds.Add(new Round(45, 27, graphics.GraphicsDevice, _ressources));
+            //_rounds.Add(new Round(50, 33, graphics.GraphicsDevice, _ressources));
+            //_rounds.Add(new Round(55, 44, graphics.GraphicsDevice, _ressources));
+            //_rounds.Add(new Round(60, 55, graphics.GraphicsDevice, _ressources));
 
             _currentRound = _rounds.GetEnumerator();
 
 #if DEBUG
             _currentRound.MoveNext();
+            GameOver();
             return;
 #endif
 
@@ -141,11 +147,13 @@ namespace Boom
             _ressources.speakerTexture = Content.Load<Texture2D>("Speaker");
             _ressources.font = Content.Load<SpriteFont>("InGameFont");
             _ressources.gameOverfont = Content.Load<SpriteFont>("GameOverFont");
+            _ressources.boldFont = Content.Load<SpriteFont>("InGameBoldFont");
             _ressources.backgroundSong = Content.Load<Song>("Background");
             _ressources.blipSound = Content.Load<SoundEffect>("Blip");
             _ressources.victorySound = Content.Load<SoundEffect>("Victory");
 
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            _intermediateScreen = new IntermediateScreen(graphics.GraphicsDevice, _ressources);
         }
 
         /// <summary>
@@ -157,13 +165,24 @@ namespace Boom
             
         }
 
+        private void GameOver()
+        {
+            _gameOver = true;
+            _score = new Random(DateTime.Now.Millisecond).Next(1,400);
+            _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = "Game Completed!", Font = _ressources.gameOverfont, Color = Color.White, Pos = -250 },
+                                                                          new IntermediateScreen.TextLine() { Text = "Your Score:", Font = _ressources.font, Color = Color.White, Pos = -150 },
+                                                                          new IntermediateScreen.TextLine() { Text = Convert.ToString(_score), Font = _ressources.font, Color = Color.White, Pos = -120 },
+                                                                          new HighscoreTable(-50, 300, 300, _score, _ressources.font, _ressources.boldFont) },
+                                                                          1, 1, 1, Color.Black);
+        }
+
         private void NextRound()
         {
             _score += _currentRound.Current.Score;
 
             if (!_currentRound.MoveNext())
             {
-                _gameOver = true;
+                GameOver();
                 _applicationSettings[CurrentRoundSettingsKey] = 1;
             }
             else
@@ -184,14 +203,18 @@ namespace Boom
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+            HandleTouches();
+
             if (!_gameOver)
             {
-                HandleTouches();
-
                 if (_currentRound.Current.Update())
                 {
                     NextRound();
                 }
+            }
+            else
+            {
+                _intermediateScreen.Update();
             }
 
             base.Update(gameTime);
@@ -203,7 +226,14 @@ namespace Boom
             if (!touching && touches.Count > 0)
             {
                 touching = true;
-                _currentRound.Current.Touch(touches.First());
+                if (!_gameOver)
+                {
+                    _currentRound.Current.Touch(touches.First());
+                }
+                else
+                {
+                    _intermediateScreen.Touch(touches.First());
+                }
             }
             else if (touches.Count == 0)
             {
@@ -234,23 +264,7 @@ namespace Boom
             }
             else
             {
-                {
-                    string text = "Game Completed!";
-                    Vector2 position = new Vector2((graphics.GraphicsDevice.Viewport.Width - _ressources.gameOverfont.MeasureString(text).X) / 2, (graphics.GraphicsDevice.Viewport.Height / 2) - 100);
-                    spriteBatch.DrawString(_ressources.gameOverfont, text, position, Color.White);
-                }
-
-                {
-                    string text = "Your Score:";
-                    Vector2 position = new Vector2((graphics.GraphicsDevice.Viewport.Width - _ressources.font.MeasureString(text).X) / 2, (graphics.GraphicsDevice.Viewport.Height / 2) - 40);
-                    spriteBatch.DrawString(_ressources.font, text, position, Color.White);
-                }
-
-                {
-                    string text = "" + _score;
-                    Vector2 position = new Vector2((graphics.GraphicsDevice.Viewport.Width - _ressources.font.MeasureString(text).X) / 2, (graphics.GraphicsDevice.Viewport.Height / 2) - 20);
-                    spriteBatch.DrawString(_ressources.font, text, position, Color.White);
-                }
+                _intermediateScreen.Draw(spriteBatch);
             }
 
             spriteBatch.End();
