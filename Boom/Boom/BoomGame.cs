@@ -80,8 +80,8 @@ namespace Boom
 
         public static void SetDefaultVolume()
         {
-            SoundEffect.MasterVolume = .8f;
-            MediaPlayer.Volume = .1f;
+            SoundEffect.MasterVolume = .4f;
+            MediaPlayer.Volume = .7f;
         }
 
         /// <summary>
@@ -102,24 +102,22 @@ namespace Boom
             MediaPlayer.Play(_ressources.backgroundSong);
 
             _rounds.Add(new Round(10, 1, graphics.GraphicsDevice, _ressources));
-            //_rounds.Add(new Round(10, 2, graphics.GraphicsDevice, _ressources));
-            //_rounds.Add(new Round(15, 3, graphics.GraphicsDevice, _ressources));
-            //_rounds.Add(new Round(20, 5, graphics.GraphicsDevice, _ressources));
-            //_rounds.Add(new Round(25, 7, graphics.GraphicsDevice, _ressources));
-            //_rounds.Add(new Round(30, 10, graphics.GraphicsDevice, _ressources));
-            //_rounds.Add(new Round(35, 15, graphics.GraphicsDevice, _ressources));
-            //_rounds.Add(new Round(40, 21, graphics.GraphicsDevice, _ressources));
-            //_rounds.Add(new Round(45, 27, graphics.GraphicsDevice, _ressources));
-            //_rounds.Add(new Round(50, 33, graphics.GraphicsDevice, _ressources));
-            //_rounds.Add(new Round(55, 44, graphics.GraphicsDevice, _ressources));
-            //_rounds.Add(new Round(60, 55, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(10, 2, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(15, 3, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(20, 5, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(25, 7, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(30, 10, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(35, 15, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(40, 21, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(45, 27, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(50, 33, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(55, 44, graphics.GraphicsDevice, _ressources));
+            _rounds.Add(new Round(60, 55, graphics.GraphicsDevice, _ressources));
 
             _currentRound = _rounds.GetEnumerator();
 
 #if DEBUG
-            _currentRound.MoveNext();
-            GameOver();
-            return;
+            _applicationSettings[CurrentRoundSettingsKey] = 1;
 #endif
 
             try
