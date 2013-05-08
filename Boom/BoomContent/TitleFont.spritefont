@@ -17,7 +17,7 @@ sind.
     Größe ist ein Float-Wert, der in Punkten gemessen wird. Ändern Sie diesen Wert, um
     die Größe der Schriftart zu ändern.
     -->
-    <Size>25</Size>
+    <Size>50</Size>
 
     <!--
     Zeichenabstand ist ein Float-Wert, der in Pixel gemessen wird. Ändern Sie diesen Wert, um
