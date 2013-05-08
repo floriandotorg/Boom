@@ -10,6 +10,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
+using System.Reflection;
+using Microsoft.Phone.Tasks;
+using Microsoft.Phone.Info;
 
 namespace Boom
 {
@@ -26,6 +29,9 @@ namespace Boom
             public SpriteFont font;
             public SpriteFont gameOverfont;
             public SpriteFont boldFont;
+            public SpriteFont smallFont;
+            public SpriteFont titelFont;
+            public SpriteFont menuFont;
             public Texture2D ballTexture;
             public Texture2D speakerTexture;
             public Texture2D speakerMuteTexture;
@@ -34,18 +40,34 @@ namespace Boom
             public SoundEffect victorySound;
         }
 
+        private enum State
+        {
+            FadingMainMenu,
+            MainMenu,
+            FadingHighscore,
+            Highscore,
+            FadingInfo,
+            Info,
+            FadingInGame,
+            InGame,
+            GameCompleted
+        }
+
+        private const string SpeakerSettingsKey = "Speaker";
         private const string CurrentRoundSettingsKey = "CurrentRound";
+        private const string CurrentScoreSettingsKey = "CurrentScore";
 
         private RessourcesStruct _ressources = new RessourcesStruct();
         private bool touching = false;
         private List<Round> _rounds = new List<Round>();
         private List<Round>.Enumerator _currentRound;
-        private bool _gameOver = false;
         private int _score = 0;
         private int _currentRoundNo = 1;
         private IsolatedStorageSettings _applicationSettings = IsolatedStorageSettings.ApplicationSettings;
         private Highscore _highscore = new Highscore();
         private IntermediateScreen _intermediateScreen;
+        private State _state;
+        private Round _backroundRound;
 
         public BoomGame()
         {
@@ -94,46 +116,17 @@ namespace Boom
         {
             base.Initialize();
 
-            //_highscore.Submit(msg => System.Diagnostics.Debug.WriteLine(msg), "Hans", 98);
-
             SetDefaultVolume();
 
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(_ressources.backgroundSong);
 
-            _rounds.Add(new Round(10, 1, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(10, 2, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(15, 3, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(20, 5, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(25, 7, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(30, 10, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(35, 15, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(40, 21, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(45, 27, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(50, 33, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(55, 44, graphics.GraphicsDevice, _ressources));
-            _rounds.Add(new Round(60, 55, graphics.GraphicsDevice, _ressources));
+            _backroundRound = new Round(20, 1, graphics.GraphicsDevice, _ressources, true);
 
-            _currentRound = _rounds.GetEnumerator();
-
-#if DEBUG
-            _applicationSettings[CurrentRoundSettingsKey] = 1;
-#endif
-
-            try
-            {
-                for (int i = 0; i < (int)_applicationSettings[CurrentRoundSettingsKey]; ++i)
-                {
-                    _currentRound.MoveNext();
-                }
-            }
-            catch (System.Collections.Generic.KeyNotFoundException)
-            {
-                _applicationSettings[CurrentRoundSettingsKey] = 1;
-                _currentRound.MoveNext();
-            }
+            InitNewGame();
+            MainMenu();
         }
-        
+
         /// <summary>
         /// LoadContent wird einmal pro Spiel aufgerufen und ist der Platz, wo
         /// Ihr gesamter Content geladen wird.
@@ -144,8 +137,11 @@ namespace Boom
             _ressources.speakerMuteTexture = Content.Load<Texture2D>("SpeakerMute");
             _ressources.speakerTexture = Content.Load<Texture2D>("Speaker");
             _ressources.font = Content.Load<SpriteFont>("InGameFont");
+            _ressources.titelFont = Content.Load<SpriteFont>("TitleFont");
             _ressources.gameOverfont = Content.Load<SpriteFont>("GameOverFont");
             _ressources.boldFont = Content.Load<SpriteFont>("InGameBoldFont");
+            _ressources.smallFont = Content.Load<SpriteFont>("InGameSmallFont");
+            _ressources.menuFont = Content.Load<SpriteFont>("MenuFont");
             _ressources.backgroundSong = Content.Load<Song>("Background");
             _ressources.blipSound = Content.Load<SoundEffect>("Blip");
             _ressources.victorySound = Content.Load<SoundEffect>("Victory");
@@ -165,13 +161,169 @@ namespace Boom
 
         private void GameOver()
         {
-            _gameOver = true;
-            _score = new Random(DateTime.Now.Millisecond).Next(1,400);
+            _state = State.GameCompleted;
             _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = "Game Completed!", Font = _ressources.gameOverfont, Color = Color.White, Pos = -250 },
                                                                           new IntermediateScreen.TextLine() { Text = "Your Score:", Font = _ressources.font, Color = Color.White, Pos = -150 },
                                                                           new IntermediateScreen.TextLine() { Text = Convert.ToString(_score), Font = _ressources.font, Color = Color.White, Pos = -120 },
                                                                           new HighscoreTable(-50, 300, 300, _score, _ressources.font, _ressources.boldFont) },
-                                                                          1, 1, 1, Color.Black);
+                                                                          1, 1, 1, Color.Black, false);
+        }
+
+        private void InitNewGame()
+        {
+            _rounds.Clear();
+
+            _rounds.Add(new Round(10, 1, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(10, 2, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(15, 3, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(20, 5, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(25, 7, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(30, 10, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(35, 15, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(40, 21, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(45, 27, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(50, 33, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(55, 44, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(60, 55, graphics.GraphicsDevice, _ressources, false));
+
+            _currentRound = _rounds.GetEnumerator();
+            _currentRoundNo = 0;
+
+            try
+            {
+                _score = (int)_applicationSettings[CurrentScoreSettingsKey];
+
+                for (int i = 0; i < (int)_applicationSettings[CurrentRoundSettingsKey]; ++i)
+                {
+                    ++_currentRoundNo;
+                    _currentRound.MoveNext();
+                }
+            }
+            catch (System.Collections.Generic.KeyNotFoundException)
+            {
+                _applicationSettings[CurrentScoreSettingsKey] = 0;
+                _applicationSettings[CurrentRoundSettingsKey] = 1;
+                _currentRound.MoveNext();
+            }
+
+            _currentRound.Current.StartRound(_score, _currentRoundNo);
+        }
+
+        private void MenuStartGame()
+        {
+            _state = State.FadingInGame;
+            _applicationSettings[CurrentScoreSettingsKey] = 0;
+            _applicationSettings[CurrentRoundSettingsKey] = 1;
+            InitNewGame();
+            _intermediateScreen.Hide();
+        }
+
+        private void MenuResumeGame()
+        {
+            _state = State.FadingInGame;
+            InitNewGame();
+            _intermediateScreen.Hide();
+        }
+
+        private void MenuHighscore()
+        {
+            _state = State.FadingHighscore;
+            _intermediateScreen.Hide();
+        }
+
+        private void Highscore()
+        {
+            _state = State.Highscore;
+            _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = "Highscore", Font = _ressources.gameOverfont, Color = Color.White, Pos = -250 },
+                                                                          new HighscoreTable(-150, 300, 300, -1, _ressources.font, _ressources.boldFont) },
+                                                                          .6f, .6f, .6f, Color.Black, true);
+        }
+
+        private void InfoReview()
+        {
+            MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
+            marketplaceReviewTask.Show();
+        }
+
+        private void InfoSupport()
+        {
+            var versionAttrib = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
+            string version_str = versionAttrib.Version.ToString().Substring(0, 3);
+
+            EmailComposeTask emailComposeTask = new EmailComposeTask();
+
+            string result = "unknown device";
+            object deviceName;
+            if (DeviceExtendedProperties.TryGetValue("DeviceName", out deviceName))
+            {
+                result = deviceName.ToString();
+            }
+
+            emailComposeTask.Subject = "Boom Version " + version_str + " on " + result;
+            emailComposeTask.To = "support.boom@floyd-ug.de";
+
+            emailComposeTask.Show();
+        }
+
+        private void Info()
+        {
+            _state = State.Info;
+
+            // Get Version
+            var versionAttrib = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
+            string version_str = versionAttrib.Version.ToString().Substring(0, 3);
+
+            _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = "Boom!", Font = _ressources.gameOverfont, Color = Color.White, Pos = -250 },
+                                                                          new IntermediateScreen.TextLine() { Text = "Version " + version_str, Font = _ressources.font, Color = Color.White, Pos = -150 },
+                                                                          new IntermediateScreen.TextLine() { Text = "by", Font = _ressources.font, Color = Color.White, Pos = -100 },
+                                                                          new IntermediateScreen.TextLine() { Text = "Floyd", Font = _ressources.font, Color = Color.White, Pos = -75 },
+                                                                          new IntermediateScreen.TextLine() { Text = "Music by", Font = _ressources.font, Color = Color.White, Pos = -30 },
+                                                                          new IntermediateScreen.TextLine() { Text = "Chris Zabriskie", Font = _ressources.font, Color = Color.White, Pos = -5 },
+                                                                          new IntermediateScreen.TextLine() { Text = "Review Game", Font = _ressources.font, Color = Color.LightGray, Pos = 200, Tap=InfoReview },
+                                                                          new IntermediateScreen.TextLine() { Text = "Support", Font = _ressources.font, Color = Color.LightGray, Pos = 250, Tap=InfoSupport } },
+                                                                          .6f, .6f, .6f, Color.Black, true);
+        }
+
+        private void MenuInfo()
+        {
+            _state = State.FadingInfo;
+            _intermediateScreen.Hide();
+        }
+
+        private void MainMenu()
+        {
+            _state = State.MainMenu;
+
+            var content = new List<IntermediateScreen.IDrawable>();
+
+            int menuItemGap = 100;
+            int pos = -300;
+
+            content.Add(new IntermediateScreen.TextLine() { Text = "Boom!", Font = _ressources.titelFont, Color = Color.White, Pos = pos });
+            pos += 200;
+
+            if ((int)_applicationSettings[CurrentRoundSettingsKey] == 1)
+            {
+                content.Add(new IntermediateScreen.TextLine() { Text = "Start", Font = _ressources.menuFont, Color = Color.White, Pos = pos, Tap = MenuStartGame });
+                pos += menuItemGap;
+            }
+            else
+            {
+                content.Add(new IntermediateScreen.TextLine() { Text = "Start", Font = _ressources.menuFont, Color = Color.White, Pos = pos, Tap = MenuStartGame });
+                pos += menuItemGap;
+
+                content.Add(new IntermediateScreen.TextLine() { Text = "Resume", Font = _ressources.menuFont, Color = Color.White, Pos = pos, Tap = MenuResumeGame });
+                content.Add(new IntermediateScreen.TextLine() { Text = "Level " + (int)_applicationSettings[CurrentRoundSettingsKey], Font = _ressources.smallFont, Color = Color.White, Pos = pos+30, Tap = MenuResumeGame });
+                pos += menuItemGap;
+            }
+
+            content.Add(new IntermediateScreen.TextLine() { Text = "Highscore", Font = _ressources.menuFont, Color = Color.White, Pos = pos, Tap = MenuHighscore });
+            pos += menuItemGap;
+
+            content.Add(new IntermediateScreen.TextLine() { Text = "Info", Font = _ressources.menuFont, Color = Color.White, Pos = pos, Tap = MenuInfo });
+            pos += menuItemGap;
+
+            _intermediateScreen.Show(content, .6f, .6f, .6f, Color.Black, false);
         }
 
         private void NextRound()
@@ -181,10 +333,12 @@ namespace Boom
             if (!_currentRound.MoveNext())
             {
                 GameOver();
+                _applicationSettings[CurrentScoreSettingsKey] = 0;
                 _applicationSettings[CurrentRoundSettingsKey] = 1;
             }
             else
             {
+                _applicationSettings[CurrentScoreSettingsKey] = _score;
                 _applicationSettings[CurrentRoundSettingsKey] = (int)_applicationSettings[CurrentRoundSettingsKey] + 1;
                 _currentRound.Current.StartRound(_score, ++_currentRoundNo);
             }
@@ -199,11 +353,21 @@ namespace Boom
         {
             // Ermöglicht ein Beenden des Spiels
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                this.Exit();
+            {
+                if (_state == State.InGame || _state == State.Highscore || _state == State.GameCompleted || _state == State.Info)
+                {
+                    _state = State.FadingMainMenu;
+                    _intermediateScreen.Hide();
+                }
+                else
+                {
+                    this.Exit();
+                }
+            }
 
             HandleTouches();
 
-            if (!_gameOver)
+            if (_state == State.InGame)
             {
                 if (_currentRound.Current.Update())
                 {
@@ -212,7 +376,37 @@ namespace Boom
             }
             else
             {
-                _intermediateScreen.Update();
+                if (_state != State.GameCompleted)
+                {
+                    _backroundRound.Update();
+                }
+
+                if (_intermediateScreen.Update())
+                {
+                    switch (_state)
+                    {
+                        case State.FadingInGame:
+                            _state = State.InGame;
+                            break;
+
+                        case State.Info:
+                        case State.Highscore:
+                        case State.FadingMainMenu:
+                            MainMenu();
+                            break;
+
+                        case State.FadingHighscore:
+                            Highscore();
+                            break;
+
+                        case State.FadingInfo:
+                            Info();
+                            break;
+
+                        default:
+                            throw new System.NotImplementedException();
+                    }
+                }
             }
 
             base.Update(gameTime);
@@ -224,7 +418,7 @@ namespace Boom
             if (!touching && touches.Count > 0)
             {
                 touching = true;
-                if (!_gameOver)
+                if (_state == State.InGame)
                 {
                     _currentRound.Current.Touch(touches.First());
                 }
@@ -245,7 +439,7 @@ namespace Boom
         /// <param name="gameTime">Bietet einen Schnappschuss der Timing-Werte.</param>
         protected override void Draw(GameTime gameTime)
         {
-            if (!_gameOver)
+            if (_state == State.InGame)
             {
                 GraphicsDevice.Clear(_currentRound.Current.BackgroundColor());
             }
@@ -256,12 +450,16 @@ namespace Boom
 
             spriteBatch.Begin();
 
-            if (!_gameOver)
+            if (_state == State.InGame)
             {
                 _currentRound.Current.Draw(spriteBatch);
             }
             else
             {
+                if (_state != State.GameCompleted)
+                {
+                    _backroundRound.Draw(spriteBatch);
+                }
                 _intermediateScreen.Draw(spriteBatch);
             }
 

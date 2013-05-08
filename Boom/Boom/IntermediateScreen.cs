@@ -27,6 +27,7 @@ namespace Boom
             public int Pos;
             public Color Color;
             public SpriteFont Font;
+            public Action Tap;
 
             public void Draw(SpriteBatch spriteBatch, Viewport viewport, float fadeProcess)
             {
@@ -35,7 +36,21 @@ namespace Boom
             }
 
             public bool Touch(Viewport viewport, TouchLocation touch)
-            { return false; }
+            {
+                var textSize = Font.MeasureString(Text);
+
+                if (touch.Position.X > (viewport.Width / 2) - (textSize.X / 2) - 10 && touch.Position.X < (viewport.Width / 2) + (textSize.X / 2) + 10
+                    && touch.Position.Y > (viewport.Height / 2) + Pos - 10 && touch.Position.Y < (viewport.Height / 2) + Pos + textSize.Y + 10)
+                {
+                    if (Tap != null)
+                    {
+                        Tap();
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
 
         private enum State
@@ -51,6 +66,7 @@ namespace Boom
 
         private Viewport _viewport;
         private BoomGame.RessourcesStruct _ressources;
+        private bool _disappearOnTouch;
         private State _state;
         private IEnumerable<IDrawable> _drawables;
         private float _from, _background, _to;
@@ -67,7 +83,7 @@ namespace Boom
             _rectTexture.SetData(new[] { Color.White });
         }
 
-        public void Show(IEnumerable<IDrawable> drawables, float from, float background, float to, Color backgroundColor)
+        public void Show(IEnumerable<IDrawable> drawables, float from, float background, float to, Color backgroundColor, bool disappearOnTouch)
         {
             _state = State.FadeIn;
             _drawables = drawables;
@@ -75,6 +91,12 @@ namespace Boom
             _background = background;
             _to = to;
             _backgroundColor = backgroundColor;
+            _disappearOnTouch = disappearOnTouch;
+        }
+
+        public void Hide()
+        {
+            _state = State.FadeOut;
         }
 
         public bool Update()
@@ -127,7 +149,7 @@ namespace Boom
                 }
                 else
                 {
-                    if (_state == State.Visible)
+                    if (_disappearOnTouch && _state == State.Visible)
                     {
                         _state = State.FadeOut;
                         return true;

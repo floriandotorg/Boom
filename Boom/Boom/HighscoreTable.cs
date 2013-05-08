@@ -63,7 +63,7 @@ namespace Boom
                         }
                     }
 
-                    if (_userEntry == null && _entries.Count < ListLenght)
+                    if (_userEntry == null && _entries.Count < ListLenght && _userScore > 0)
                     {
                         _userEntry = new Entry() { Name = "Tap to enter name", Score = _userScore, User = true };
                         _entries.Add(_userEntry);
