@@ -96,12 +96,14 @@ namespace Boom
 
         public static void Mute()
         {
+            IsolatedStorageSettings.ApplicationSettings[SpeakerSettingsKey] = false;
             SoundEffect.MasterVolume = 0f;
             MediaPlayer.Volume = 0f;
         }
 
         public static void SetDefaultVolume()
         {
+            IsolatedStorageSettings.ApplicationSettings[SpeakerSettingsKey] = true;
             SoundEffect.MasterVolume = .4f;
             MediaPlayer.Volume = .7f;
         }
@@ -116,7 +118,21 @@ namespace Boom
         {
             base.Initialize();
 
-            SetDefaultVolume();
+            try
+            {
+                if ((bool)_applicationSettings[SpeakerSettingsKey])
+                {
+                    SetDefaultVolume();
+                }
+                else
+                {
+                    Mute();
+                }
+            }
+            catch (System.Collections.Generic.KeyNotFoundException)
+            {
+                SetDefaultVolume();
+            }
 
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(_ressources.backgroundSong);
