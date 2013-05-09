@@ -30,7 +30,7 @@ namespace Boom
         private Highscore _highscore = new Highscore();
         private List<Entry> _entries = new List<Entry>();
         private int _pos, _height, _width, _userScore;
-        private string _text = "loading ..", _userName;
+        private string _text, _userName;
         private Entry _userEntry;
 
         public HighscoreTable(int pos, int height, int width, int userScore, SpriteFont font, SpriteFont userFont)
@@ -41,6 +41,13 @@ namespace Boom
             _userScore = userScore;
             _font = font;
             _userFont = userFont;
+
+            LoadScores();
+        }
+
+        private void LoadScores()
+        {
+            _text = "loading ..";
 
             _highscore.GetScores(ListLenght,
                 scores =>
@@ -68,10 +75,15 @@ namespace Boom
                         _userEntry = new Entry() { Name = "Tap to enter name", Score = _userScore, User = true };
                         _entries.Add(_userEntry);
                     }
+
+                    if (_entries.Count == 0)
+                    {
+                        _text = "no scores";
+                    }
                 },
                 error =>
                 {
-                    _text = "Unable to load highscores.";
+                    _text = "unable to load highscores";
                 });
         }
 
@@ -81,6 +93,13 @@ namespace Boom
             {
                 Vector2 position = new Vector2((viewport.Width - _font.MeasureString(_text).X) / 2, (viewport.Height / 2) + _pos + (_height / 2));
                 spriteBatch.DrawString(_font, _text, position, Color.White * fadeProcess);
+
+                if (_text == "unable to load highscores")
+                {
+                    string text = "tap to retry";
+                    position = new Vector2((viewport.Width - _font.MeasureString(text).X) / 2, (viewport.Height / 2) + _pos + (_height / 2) + 60);
+                    spriteBatch.DrawString(_font, text, position, Color.White * fadeProcess);
+                }
             }
             else
             {
@@ -98,7 +117,7 @@ namespace Boom
                         font = _userFont;
                     }
 
-                    Vector2 position = new Vector2((viewport.Width  / 2) - (_width / 2), (viewport.Height / 2) + _pos + ++n * gap);
+                    Vector2 position = new Vector2((viewport.Width / 2) - (_width / 2), (viewport.Height / 2) + _pos + ++n * gap);
                     spriteBatch.DrawString(font, entry.Name, position, color * fadeProcess);
 
                     string val = Convert.ToString(entry.Score);
@@ -110,12 +129,20 @@ namespace Boom
 
         public bool Touch(Viewport viewport, TouchLocation touch)
         {
-            if (_entries.Count > 0 && _userEntry != null
-                && touch.Position.X > (viewport.Width  / 2) - (_width / 2) && touch.Position.X < (viewport.Width  / 2) + (_width / 2)
+            if (touch.Position.X > (viewport.Width  / 2) - (_width / 2) && touch.Position.X < (viewport.Width  / 2) + (_width / 2)
                 && touch.Position.Y > (viewport.Height / 2) + _pos && touch.Position.Y < (viewport.Height / 2) + _pos + _height)
             {
-                ShowKeyboardInput("");
-                return true;
+                if (_entries.Count > 0 && _userEntry != null)
+                {
+                    ShowKeyboardInput("");
+                    return true;
+                }
+                else if (_entries.Count == 0)
+                {
+                    LoadScores();
+                    return true;
+                }
+                
             }
             return false;
         }
