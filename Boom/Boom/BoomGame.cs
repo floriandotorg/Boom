@@ -42,6 +42,7 @@ namespace Boom
 
         private enum State
         {
+            InGameFadingMainMenu,
             FadingMainMenu,
             MainMenu,
             FadingHighscore,
@@ -231,6 +232,7 @@ namespace Boom
             _applicationSettings[CurrentScoreSettingsKey] = 0;
             _applicationSettings[CurrentRoundSettingsKey] = 1;
             InitNewGame();
+            _intermediateScreen.To = 1f;
             _intermediateScreen.Hide();
         }
 
@@ -238,6 +240,7 @@ namespace Boom
         {
             _state = State.FadingInGame;
             InitNewGame();
+            _intermediateScreen.To = 1f;
             _intermediateScreen.Hide();
         }
 
@@ -370,10 +373,15 @@ namespace Boom
             // Ermöglicht ein Beenden des Spiels
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
             {
-                if (_state == State.InGame || _state == State.Highscore || _state == State.GameCompleted || _state == State.Info)
+                if (_state == State.Highscore || _state == State.GameCompleted || _state == State.Info)
                 {
                     _state = State.FadingMainMenu;
                     _intermediateScreen.Hide();
+                }
+                else if (_state == State.InGame)
+                {
+                    _state = State.InGameFadingMainMenu;
+                    _currentRound.Current.Hide();
                 }
                 else
                 {
@@ -383,11 +391,18 @@ namespace Boom
 
             HandleTouches();
 
-            if (_state == State.InGame)
+            if (_state == State.InGame || _state == State.InGameFadingMainMenu)
             {
                 if (_currentRound.Current.Update())
                 {
-                    NextRound();
+                    if (_state == State.InGameFadingMainMenu)
+                    {
+                        MainMenu();
+                    }
+                    else
+                    {
+                        NextRound();
+                    }
                 }
             }
             else
@@ -466,7 +481,7 @@ namespace Boom
 
             spriteBatch.Begin();
 
-            if (_state == State.InGame)
+            if (_state == State.InGame || _state == State.InGameFadingMainMenu)
             {
                 _currentRound.Current.Draw(spriteBatch);
             }

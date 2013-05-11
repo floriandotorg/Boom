@@ -74,6 +74,12 @@ namespace Boom
         private Texture2D _rectTexture;
         private SineValue _fadeProcess = new SineValue(1, NumFadingUpdates);
 
+        public float To
+        {
+            get { return _to; }
+            set { _to = value; }
+        }
+
         public IntermediateScreen(GraphicsDevice graphicsDevice, BoomGame.RessourcesStruct ressources)
         {
             _viewport = graphicsDevice.Viewport;
@@ -96,6 +102,7 @@ namespace Boom
 
         public void Hide()
         {
+            _fadeProcess.Value = 1;
             _state = State.FadeOut;
         }
 

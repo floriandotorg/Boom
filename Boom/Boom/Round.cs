@@ -36,6 +36,7 @@ namespace Boom
             InGameSimulation,
             FailedScreen,
             SucessScreen,
+            HideOut,
             RoundEnded
         }
 
@@ -66,6 +67,22 @@ namespace Boom
                 init();
                 _state = State.InGameSimulation;
             }
+        }
+
+        public void Hide()
+        {
+            if (_state == State.StartScreen || _state == State.FailedScreen)
+            {
+                _intermediateScreen.To = 1f;
+            }
+            else if(_state != State.SucessScreen)
+            {
+                _intermediateScreen.Show(new List<IntermediateScreen.IDrawable>(), 0f, 0f, 1f, Color.Black, false);
+            }
+
+            _intermediateScreen.Hide();
+
+            _state = State.HideOut;
         }
 
         public void StartRound(int score, int roundNo)
@@ -220,13 +237,14 @@ namespace Boom
                     }
                 }
             }
-            else if (_state == State.StartScreen || _state == State.FailedScreen || _state == State.SucessScreen)
+            else if (_state == State.StartScreen || _state == State.FailedScreen || _state == State.SucessScreen || _state == State.HideOut)
             {
                 if (_intermediateScreen.Update())
                 {
-                    if (_state == State.SucessScreen)
+                    if (_state == State.SucessScreen || _state == State.HideOut)
                     {
                         _state = State.RoundEnded;
+                        return true;
                     }
                     else if (_state == State.StartScreen || _state == State.FailedScreen)
                     {
@@ -282,7 +300,7 @@ namespace Boom
                 spriteBatch.DrawString(_ressources.font, text, position, Color.White);
             }
 
-            if (_state == State.StartScreen || _state == State.FailedScreen || _state == State.SucessScreen)
+            if (_state == State.StartScreen || _state == State.FailedScreen || _state == State.SucessScreen || _state == State.HideOut)
             {
                 _intermediateScreen.Draw(spriteBatch);
             }
