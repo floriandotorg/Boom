@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Boom</RootNamespace>
-    <AssemblyName>PhoneGame</AssemblyName>
+    <AssemblyName>Boom</AssemblyName>
     <XnaRefreshLevel>1</XnaRefreshLevel>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
