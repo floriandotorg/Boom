@@ -52,6 +52,11 @@
     <XnaCompressContent>false</XnaCompressContent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AdDuplex.Xna">
+      <HintPath>.\AdDuplex.Xna.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Advertising.Mobile, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Advertising.Mobile.Xna, Version=6.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="Microsoft.Xna.Framework.Game" />
@@ -59,14 +64,37 @@
     <Reference Include="Microsoft.Xna.Framework.GamerServices" />
     <Reference Include="Microsoft.Xna.Framework.Input.Touch" />
     <Reference Include="mscorlib" />
+    <Reference Include="SOMAWP7">
+      <HintPath>.\SOMAWP7.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Device, Version=2.0.5.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="System.Windows, Version=2.0.5.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Xml.Serialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdRotator\AdProviderComponents\AdDuplexComponent.cs" />
+    <Compile Include="AdRotator\AdProviderComponents\AdInneractiveComponent.cs" />
+    <Compile Include="AdRotator\AdProviderComponents\AdMobfoxComponent.cs" />
+    <Compile Include="AdRotator\AdProviderComponents\AdRotatorDefaultHouseAdComponent.cs" />
+    <Compile Include="AdRotator\AdProviderComponents\AdSmaatoComponent.cs" />
+    <Compile Include="AdRotator\AdRotatorXNA.cs" />
+    <Compile Include="AdRotator\Helpers\AdRotatorXNAFunctions.cs" />
+    <Compile Include="AdRotator\Helpers\ImageDownload.cs" />
+    <Compile Include="AdRotator\Model\AdCultureDescriptor.cs" />
+    <Compile Include="AdRotator\Model\AdProbability.cs" />
+    <Compile Include="AdRotator\Model\AdSettings.cs" />
+    <Compile Include="AdRotator\Model\AdSlideDirection.cs" />
+    <Compile Include="AdRotator\Model\AdType.cs" />
+    <Compile Include="AdRotator\Model\NoneProvider.cs" />
+    <Compile Include="AdRotator\Networking\AdWebRequest.cs" />
+    <Compile Include="AdRotator\Networking\AdWebResponse.cs" />
+    <Compile Include="AdRotator\Networking\NetworkExtensions.cs" />
+    <Compile Include="AdRotator\Networking\NetworkWire.cs" />
     <Compile Include="Ball.cs" />
     <Compile Include="Highscore.cs" />
     <Compile Include="HighscoreTable.cs" />
@@ -84,6 +112,9 @@
     <Compile Include="BoomGame.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="defaultAdSettings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Game.ico" />
     <Content Include="PhoneGameThumb.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
@@ -99,6 +130,7 @@
       <Project>{7D8C1321-A579-4088-B444-7798944BFE71}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

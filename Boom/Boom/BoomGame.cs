@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Media;
 using System.Reflection;
 using Microsoft.Phone.Tasks;
 using Microsoft.Phone.Info;
+using AdRotatorXNA;
 
 namespace Boom
 {
@@ -109,6 +110,28 @@ namespace Boom
             MediaPlayer.Volume = .7f;
         }
 
+        public static void LogOut(string message)
+        {
+            System.Diagnostics.Debug.WriteLine(message);
+        }
+
+        private void initAdRotator()
+        {
+            AdRotatorXNAComponent.Initialize(this);
+
+#if DEBUG 
+            AdRotatorXNAComponent.Current.Log += LogOut;
+#endif
+
+            AdRotatorXNAComponent.Current.AdPosition = Vector2.Zero;
+
+            AdRotatorXNAComponent.Current.DefaultHouseAdImage = Content.Load<Texture2D>("DefaultAdImage");
+
+            AdRotatorXNAComponent.Current.DefaultSettingsFileUri = "defaultAdSettings.xml";
+
+            Components.Add(AdRotatorXNAComponent.Current);
+        }
+
         /// <summary>
         /// Ermöglicht dem Spiel, alle Initialisierungen durchzuführen, die es benötigt, bevor die Ausführung gestartet wird.
         /// Hier können erforderliche Dienste abgefragt und alle nicht mit Grafiken
@@ -117,6 +140,8 @@ namespace Boom
         /// </summary>
         protected override void Initialize()
         {
+            initAdRotator();
+
             base.Initialize();
 
             try
@@ -195,12 +220,12 @@ namespace Boom
             _rounds.Add(new Round(15, 4, graphics.GraphicsDevice, _ressources, false));  // 11
             _rounds.Add(new Round(20, 10, graphics.GraphicsDevice, _ressources, false)); // 10
             _rounds.Add(new Round(25, 12, graphics.GraphicsDevice, _ressources, false)); // 13
-            _rounds.Add(new Round(30, 16, graphics.GraphicsDevice, _ressources, false)); // 14
+            _rounds.Add(new Round(30, 14, graphics.GraphicsDevice, _ressources, false)); // 16
             _rounds.Add(new Round(35, 20, graphics.GraphicsDevice, _ressources, false)); // 15
-            _rounds.Add(new Round(40, 23, graphics.GraphicsDevice, _ressources, false)); // 17
+            _rounds.Add(new Round(40, 25, graphics.GraphicsDevice, _ressources, false)); // 15
             _rounds.Add(new Round(45, 29, graphics.GraphicsDevice, _ressources, false)); // 16
             _rounds.Add(new Round(50, 35, graphics.GraphicsDevice, _ressources, false)); // 15
-            _rounds.Add(new Round(55, 46, graphics.GraphicsDevice, _ressources, false)); // 9
+            _rounds.Add(new Round(55, 45, graphics.GraphicsDevice, _ressources, false)); // 10
             _rounds.Add(new Round(60, 56, graphics.GraphicsDevice, _ressources, false)); // 4
 
             _currentRound = _rounds.GetEnumerator();
