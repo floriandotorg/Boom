@@ -190,18 +190,18 @@ namespace Boom
         {
             _rounds.Clear();
 
-            _rounds.Add(new Round(10, 1, graphics.GraphicsDevice, _ressources, false));
-            _rounds.Add(new Round(10, 2, graphics.GraphicsDevice, _ressources, false));
-            _rounds.Add(new Round(15, 3, graphics.GraphicsDevice, _ressources, false));
-            _rounds.Add(new Round(20, 5, graphics.GraphicsDevice, _ressources, false));
-            _rounds.Add(new Round(25, 7, graphics.GraphicsDevice, _ressources, false));
-            _rounds.Add(new Round(30, 10, graphics.GraphicsDevice, _ressources, false));
-            _rounds.Add(new Round(35, 15, graphics.GraphicsDevice, _ressources, false));
-            _rounds.Add(new Round(40, 21, graphics.GraphicsDevice, _ressources, false));
-            _rounds.Add(new Round(45, 27, graphics.GraphicsDevice, _ressources, false));
-            _rounds.Add(new Round(50, 33, graphics.GraphicsDevice, _ressources, false));
-            _rounds.Add(new Round(55, 44, graphics.GraphicsDevice, _ressources, false));
-            _rounds.Add(new Round(60, 55, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(10, 1, graphics.GraphicsDevice, _ressources, false));  // 9
+            _rounds.Add(new Round(10, 2, graphics.GraphicsDevice, _ressources, false));  // 8
+            _rounds.Add(new Round(15, 4, graphics.GraphicsDevice, _ressources, false));  // 11
+            _rounds.Add(new Round(20, 10, graphics.GraphicsDevice, _ressources, false)); // 10
+            _rounds.Add(new Round(25, 12, graphics.GraphicsDevice, _ressources, false)); // 13
+            _rounds.Add(new Round(30, 16, graphics.GraphicsDevice, _ressources, false)); // 14
+            _rounds.Add(new Round(35, 20, graphics.GraphicsDevice, _ressources, false)); // 15
+            _rounds.Add(new Round(40, 23, graphics.GraphicsDevice, _ressources, false)); // 17
+            _rounds.Add(new Round(45, 29, graphics.GraphicsDevice, _ressources, false)); // 16
+            _rounds.Add(new Round(50, 35, graphics.GraphicsDevice, _ressources, false)); // 15
+            _rounds.Add(new Round(55, 46, graphics.GraphicsDevice, _ressources, false)); // 9
+            _rounds.Add(new Round(60, 56, graphics.GraphicsDevice, _ressources, false)); // 4
 
             _currentRound = _rounds.GetEnumerator();
             _currentRoundNo = 0;
@@ -359,7 +359,14 @@ namespace Boom
             {
                 _applicationSettings[CurrentScoreSettingsKey] = _score;
                 _applicationSettings[CurrentRoundSettingsKey] = (int)_applicationSettings[CurrentRoundSettingsKey] + 1;
-                _currentRound.Current.StartRound(_score, ++_currentRoundNo);
+                if(++_currentRoundNo == _rounds.Count)
+                {
+                    _currentRound.Current.StartRound(_score, -1);
+                }
+                else
+                {
+                    _currentRound.Current.StartRound(_score, _currentRoundNo);
+                }
             }
         }
 

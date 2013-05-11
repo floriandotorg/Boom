@@ -15,7 +15,7 @@ namespace Boom
 {
     class Round
     {
-        private const float _ballVelocity = 1f;
+        private const float _ballVelocity = 1.5f;
 
         private Viewport _viewport;
         private BoomGame.RessourcesStruct _ressources;
@@ -25,7 +25,7 @@ namespace Boom
         private bool catcher;
         private int numBallsTotal;
         private int goal;
-        private int _score, _roundNo = 1;
+        private int _score, _roundNo = 0;
         private SineValue backgroundColor = new SineValue(220.0, 30);
         private IntermediateScreen _intermediateScreen;
 
@@ -106,7 +106,13 @@ namespace Boom
             int l5 = (int)((-h / 2f) + h - 50) + 40;
 
 
-            _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = "Level " + _roundNo, Pos = l1, Color = Color.White, Font = _ressources.gameOverfont },
+            string roundName = "Level " + _roundNo;
+            if(_roundNo < 0)
+            {
+                roundName = "Final Level";
+            }
+
+            _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = roundName, Pos = l1, Color = Color.White, Font = _ressources.gameOverfont },
                                                                         new IntermediateScreen.TextLine() { Text = goal + " of " + numBallsTotal, Pos = l2, Color = Color.White, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Tap to start", Pos = l3, Color = Color.White, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Current Score", Pos = l4, Color = Color.White, Font = _ressources.font },
@@ -163,18 +169,35 @@ namespace Boom
             createBalls(numBallsTotal);
         }
 
+        float minDistance(Vector2 prostect, IEnumerable<Ball> balls)
+        {
+            float result = float.MaxValue;
+            foreach (var ball in balls)
+            {
+                result = Math.Min(result, Vector2.Distance(ball.Center, prostect));
+            }
+            return result;
+        }
+
         private void createBalls(int num)
         {
             for (int i = 0; i < num; i++)
             {
                 Color ballColor = new Color(0,0,0);
-                while(ballColor.R + ballColor.G + ballColor.B < 70)
+                while (ballColor.R + ballColor.G + ballColor.B < 80)
                 {
                     ballColor = new Color(random.Next(255), random.Next(255), random.Next(255));
                 }
-               
-                Vector2 center = new Vector2((float)random.Next(_viewport.Width - 20) + 10, (float)random.Next(_viewport.Height - 20) + 10);
+
+                Vector2 center;
+                do
+                {
+                    center = new Vector2((float)random.Next(_viewport.Width - 20) + 10, (float)random.Next(_viewport.Height - 20) + 10);
+                }
+                while (minDistance(center, balls) < 30);
+
                 Vector2 velocity = new Vector2((random.NextDouble() > .5 ? -1 : 1) * _ballVelocity, (random.NextDouble() > .5 ? -1 : 1) * _ballVelocity);
+                
                 balls.Add(new Ball(_viewport, ballColor * 0.5f, _ressources.ballTexture, center, velocity));
             }
         }
@@ -295,7 +318,7 @@ namespace Boom
 
             if (_state == State.InGame || _state == State.StartScreen || _state == State.FailedScreen)
             {
-                string text = "Points: " + Score + "/" + goal + " from " + numBallsTotal;
+                string text = "Points: " + Score + "/" + goal + " of " + numBallsTotal;
                 Vector2 position = new Vector2(10, _viewport.Height - _ressources.font.MeasureString(text).Y - 10);
                 spriteBatch.DrawString(_ressources.font, text, position, Color.White);
             }

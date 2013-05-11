@@ -12,9 +12,9 @@ namespace Boom
     {
         private Viewport viewport;
 
-        private const float radiusNormalSize = 10.0f;
-        private const float radiusHugeSize = 60.0f;
-        private const int radiusSizeingSpeed = 30;
+        private const float radiusNormalSize = 10;
+        private const float radiusHugeSize = 65.0f;
+        private const int radiusSizeingSpeed = 25;
 
         private SineValue radius = new SineValue(radiusHugeSize, radiusSizeingSpeed) { Value = radiusNormalSize };
 
@@ -26,6 +26,11 @@ namespace Boom
         private const int numHugeUpdatesToShrink = 20;
         private const int numHugeUpdatesToDie = 15;
         private int updateCounter;
+
+        public Vector2 Center
+        {
+            get { return center; }
+        }
 
         private Vector2 topLeft
         {
