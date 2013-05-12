@@ -122,8 +122,15 @@
     <Content Include="Background.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </Content>
+    <Content Include="StoreWrapper.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\StoreLauncher\StoreLauncher.csproj">
+      <Project>{197E7BF3-EFA9-49B4-8060-6418E7BA9EA0}</Project>
+      <Name>StoreLauncher</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BoomContent\BoomContent.contentproj">
       <Name>BoomContent %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>

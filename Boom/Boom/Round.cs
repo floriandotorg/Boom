@@ -77,7 +77,7 @@ namespace Boom
             }
             else if(_state != State.SucessScreen)
             {
-                _intermediateScreen.Show(new List<IntermediateScreen.IDrawable>(), 0f, 0f, 1f, Color.Black, false);
+                _intermediateScreen.Show(new List<IntermediateScreen.IDrawable>(), 0f, 0f, 1f, Color.Black, false, false);
             }
 
             _intermediateScreen.Hide();
@@ -117,7 +117,7 @@ namespace Boom
                                                                         new IntermediateScreen.TextLine() { Text = "Tap to start", Pos = l3, Color = Color.White, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Current Score", Pos = l4, Color = Color.White, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "" + (_score + Score), Pos = l5, Color = Color.White, Font = _ressources.font } },
-                                                                        1f, .6f, 0f, Color.Black, true);
+                                                                        1f, .6f, 0f, Color.Black, true, false);
         }
 
         private void FailedScreen()
@@ -136,7 +136,7 @@ namespace Boom
                                                                         new IntermediateScreen.TextLine() { Text = "Tap to retry", Pos = l3, Color = Color.White, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Current Score", Pos = l4, Color = Color.White, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "" + (_score + Score), Pos = l5, Color = Color.White, Font = _ressources.font } },
-                                                                        0f, 1f, 0f, Color.Black, true);
+                                                                        0f, 1f, 0f, Color.Black, true, true);
         }
 
         private void SucessScreen()
@@ -155,7 +155,7 @@ namespace Boom
                                                                         new IntermediateScreen.TextLine() { Text = "Tap to resume", Pos = l3, Color = Color.Black, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Current Score", Pos = l4, Color = Color.Black, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "" + (_score + Score), Pos = l5, Color = Color.Black, Font = _ressources.font } },
-                                                                        0f, 1f, 0f, Color.White, true);
+                                                                        0f, 1f, 0f, Color.White, true, true);
         }
 
         private void init()

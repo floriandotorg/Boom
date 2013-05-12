@@ -15,6 +15,7 @@ using Microsoft.Phone.Tasks;
 using Microsoft.Phone.Info;
 using AdRotatorXNA;
 using AdRotator.Model;
+using StoreLauncher;
 
 namespace Boom
 {
@@ -23,8 +24,11 @@ namespace Boom
     /// </summary>
     public class BoomGame : Microsoft.Xna.Framework.Game
     {
+        private const string RemoveAdsProductId = "RemoveAds";
+
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+        private StoreBase _store;
 
         public struct RessourcesStruct
         {
@@ -71,6 +75,7 @@ namespace Boom
         private IntermediateScreen _intermediateScreen;
         private State _state;
         private Round _backroundRound;
+        private bool _hasAds = true;
 
         public BoomGame()
         {
@@ -120,6 +125,9 @@ namespace Boom
         {
             AdRotatorXNAComponent.Initialize(this);
 
+            AdRotatorXNAComponent.Current.Enabled = false;
+            AdRotatorXNAComponent.Current.Visible = false;
+
 #if DEBUG 
             AdRotatorXNAComponent.Current.Log += LogOut;
             AdRotatorXNAComponent.Current.DefaultHouseAdImage = Content.Load<Texture2D>("DefaultAdImage");
@@ -135,6 +143,55 @@ namespace Boom
             Components.Add(AdRotatorXNAComponent.Current);
         }
 
+        private void updateAdStatus()
+        {
+            if (_hasAds)
+            {
+                AdRotatorXNAComponent.Current.Visible = true;
+                AdRotatorXNAComponent.Current.Enabled = true;
+            }
+            else
+            {
+                AdRotatorXNAComponent.Current.Visible = false;
+                AdRotatorXNAComponent.Current.Enabled = false;
+            }
+        }
+
+        private void purchaseAdRemover()
+        {
+            _store.RequestProductPurchaseAsync(RemoveAdsProductId, false).Completed = (IAsyncOperationBase<string> operation, StoreAsyncStatus status) =>
+                {
+                    if (status == StoreAsyncStatus.Completed)
+                    {
+                        _hasAds = false;
+                        IntermediateScreen.hasAds = null;
+                        updateAdStatus();
+                    }
+                };
+        }
+
+        private void initializeStore()
+        {
+            if (Environment.OSVersion.Version.Major >= 8)
+            {
+                _store = StoreLauncher.StoreLauncher.GetStoreInterface("StoreWrapper.Store, StoreWrapper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
+            }
+
+            if (_store != null && _store.LicenseInformation.ProductLicenses.Keys.Contains(RemoveAdsProductId))
+            {
+                if (!_store.LicenseInformation.ProductLicenses[RemoveAdsProductId].IsActive)
+                {
+                    IntermediateScreen.hasAds = new Action(() => purchaseAdRemover());
+                }
+                else
+                {
+                    _hasAds = false;
+                }
+            }
+
+            updateAdStatus();
+        }
+
         /// <summary>
         /// Ermöglicht dem Spiel, alle Initialisierungen durchzuführen, die es benötigt, bevor die Ausführung gestartet wird.
         /// Hier können erforderliche Dienste abgefragt und alle nicht mit Grafiken
@@ -146,6 +203,8 @@ namespace Boom
             initAdRotator();
 
             base.Initialize();
+
+            initializeStore();
 
             try
             {
@@ -211,7 +270,7 @@ namespace Boom
                                                                           new IntermediateScreen.TextLine() { Text = "Your Score:", Font = _ressources.font, Color = Color.White, Pos = -150 },
                                                                           new IntermediateScreen.TextLine() { Text = Convert.ToString(_score), Font = _ressources.font, Color = Color.White, Pos = -120 },
                                                                           new HighscoreTable(-50, 300, 300, _score, _ressources.font, _ressources.boldFont) },
-                                                                          1, 1, 1, Color.Black, false);
+                                                                          1, 1, 1, Color.Black, false, true);
         }
 
         private void InitNewGame()
@@ -283,7 +342,7 @@ namespace Boom
             _state = State.Highscore;
             _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = "Highscore", Font = _ressources.gameOverfont, Color = Color.White, Pos = -250 },
                                                                           new HighscoreTable(-150, 350, 300, -1, _ressources.font, _ressources.boldFont) },
-                                                                          .6f, .6f, .6f, Color.Black, true);
+                                                                          .6f, .6f, .6f, Color.Black, true, true);
         }
 
         private void InfoReview()
@@ -328,7 +387,7 @@ namespace Boom
                                                                           new IntermediateScreen.TextLine() { Text = "Chris Zabriskie", Font = _ressources.font, Color = Color.White, Pos = -5 },
                                                                           new IntermediateScreen.TextLine() { Text = "Rate and Review", Font = _ressources.font, Color = Color.LightGray, Pos = 200, Tap=InfoReview },
                                                                           new IntermediateScreen.TextLine() { Text = "Support", Font = _ressources.font, Color = Color.LightGray, Pos = 250, Tap=InfoSupport } },
-                                                                          .6f, .6f, .6f, Color.Black, true);
+                                                                          .6f, .6f, .6f, Color.Black, true, true);
         }
 
         private void MenuInfo()
@@ -372,7 +431,7 @@ namespace Boom
             content.Add(new IntermediateScreen.TextLine() { Text = "Info", Font = _ressources.menuFont, Color = Color.White, Pos = pos, Tap = MenuInfo });
             pos += menuItemGap;
 
-            _intermediateScreen.Show(content, .6f, .6f, .6f, Color.Black, false);
+            _intermediateScreen.Show(content, .6f, .6f, .6f, Color.Black, false, true);
         }
 
         private void NextRound()

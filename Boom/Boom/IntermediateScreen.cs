@@ -63,16 +63,19 @@ namespace Boom
 
         private const int NumFadingUpdates = 10;
         private const int SpeakerIconSize = 40;
+        private const string RemoveAdsText = "Remove Ads";
 
         private Viewport _viewport;
         private BoomGame.RessourcesStruct _ressources;
-        private bool _disappearOnTouch;
+        private bool _disappearOnTouch, _showRemoveAds;
         private State _state;
         private IEnumerable<IDrawable> _drawables;
         private float _from, _background, _to;
         private Color _backgroundColor;
         private Texture2D _rectTexture;
         private SineValue _fadeProcess = new SineValue(1, NumFadingUpdates);
+
+        public static Action hasAds;
 
         public float To
         {
@@ -89,7 +92,7 @@ namespace Boom
             _rectTexture.SetData(new[] { Color.White });
         }
 
-        public void Show(IEnumerable<IDrawable> drawables, float from, float background, float to, Color backgroundColor, bool disappearOnTouch)
+        public void Show(IEnumerable<IDrawable> drawables, float from, float background, float to, Color backgroundColor, bool disappearOnTouch, bool showRemoveAds)
         {
             _state = State.FadeIn;
             _drawables = drawables;
@@ -98,6 +101,7 @@ namespace Boom
             _to = to;
             _backgroundColor = backgroundColor;
             _disappearOnTouch = disappearOnTouch;
+            _showRemoveAds = showRemoveAds;
         }
 
         public void Hide()
@@ -154,6 +158,10 @@ namespace Boom
                         BoomGame.Mute();
                     }
                 }
+                else if (hasAds != null && touch.Position.X < _ressources.boldFont.MeasureString(RemoveAdsText).X + 10 && touch.Position.Y > _ressources.boldFont.MeasureString(RemoveAdsText).Y + 10)
+                {
+                    hasAds();
+                }
                 else
                 {
                     if (_disappearOnTouch && _state == State.Visible)
@@ -206,6 +214,12 @@ namespace Boom
             }
 
             spriteBatch.Draw(speaker, new Rectangle(_viewport.Width - SpeakerIconSize - 13, _viewport.Height - SpeakerIconSize - 10, SpeakerIconSize, SpeakerIconSize), new Color(128,128,128) * (.5f * (float)_fadeProcess.Value));
+
+            if (_showRemoveAds && hasAds != null)
+            {
+                Vector2 position = new Vector2(10, _viewport.Height - _ressources.boldFont.MeasureString(RemoveAdsText).Y - 10);
+                spriteBatch.DrawString(_ressources.boldFont, RemoveAdsText, position, new Color(128, 128, 128) * (.5f * (float)_fadeProcess.Value));
+            }
         }
     }
 }
