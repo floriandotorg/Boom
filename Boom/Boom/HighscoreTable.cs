@@ -173,19 +173,22 @@ namespace Boom
 
             _userName = name;
 
-            Regex regex = new Regex("^[a-zA-Z]([a-zA-Z0-9]|\\.|-){2,14}$");
-
-            if (!regex.IsMatch(name))
+            if (name != null)
             {
-                Guide.BeginShowMessageBox("Error", "\"" + name + "\" is not a valid name.", new string[] { "Ok" }, 0, MessageBoxIcon.None, new AsyncCallback(OnEndShowMessageBox), null);
-            }
-            else
-            {
-                _userEntry.Name = name;
-                _userEntry.User = false;
-                _userEntry = null;
+                Regex regex = new Regex("([a-zA-Z0-9]|\\.|- ){2,14}$");
 
-                _highscore.Submit(error => System.Diagnostics.Debug.WriteLine(error), name, _userScore);
+                if (!regex.IsMatch(name))
+                {
+                    Guide.BeginShowMessageBox("Error", "Your name must be at least 2 characters long and may contain letters (a-z), numbers (0-9), spaces and dashes (-).\nIt can be up to 14 characters.", new string[] { "Retry" }, 0, MessageBoxIcon.None, new AsyncCallback(OnEndShowMessageBox), null);
+                }
+                else
+                {
+                    _userEntry.Name = name;
+                    _userEntry.User = false;
+                    _userEntry = null;
+
+                    _highscore.Submit(error => System.Diagnostics.Debug.WriteLine(error), name, _userScore);
+                }
             }
         }
     }

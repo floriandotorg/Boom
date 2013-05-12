@@ -220,16 +220,16 @@ namespace Boom
 
             _rounds.Add(new Round(10, 1, graphics.GraphicsDevice, _ressources, false));  // 9
             _rounds.Add(new Round(10, 2, graphics.GraphicsDevice, _ressources, false));  // 8
-            _rounds.Add(new Round(15, 4, graphics.GraphicsDevice, _ressources, false));  // 11
-            _rounds.Add(new Round(20, 10, graphics.GraphicsDevice, _ressources, false)); // 10
-            _rounds.Add(new Round(25, 12, graphics.GraphicsDevice, _ressources, false)); // 13
+            _rounds.Add(new Round(15, 7, graphics.GraphicsDevice, _ressources, false));  // 8
+            _rounds.Add(new Round(20, 8, graphics.GraphicsDevice, _ressources, false));  // 12
+            _rounds.Add(new Round(25, 10, graphics.GraphicsDevice, _ressources, false)); // 15
             _rounds.Add(new Round(30, 14, graphics.GraphicsDevice, _ressources, false)); // 16
             _rounds.Add(new Round(35, 20, graphics.GraphicsDevice, _ressources, false)); // 15
             _rounds.Add(new Round(40, 25, graphics.GraphicsDevice, _ressources, false)); // 15
-            _rounds.Add(new Round(45, 29, graphics.GraphicsDevice, _ressources, false)); // 16
-            _rounds.Add(new Round(50, 35, graphics.GraphicsDevice, _ressources, false)); // 15
+            _rounds.Add(new Round(45, 32, graphics.GraphicsDevice, _ressources, false)); // 13
+            _rounds.Add(new Round(50, 38, graphics.GraphicsDevice, _ressources, false)); // 12
             _rounds.Add(new Round(55, 45, graphics.GraphicsDevice, _ressources, false)); // 10
-            _rounds.Add(new Round(60, 56, graphics.GraphicsDevice, _ressources, false)); // 4
+            _rounds.Add(new Round(60, 55, graphics.GraphicsDevice, _ressources, false)); // 5
 
             _currentRound = _rounds.GetEnumerator();
             _currentRoundNo = 0;
@@ -282,7 +282,7 @@ namespace Boom
         {
             _state = State.Highscore;
             _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = "Highscore", Font = _ressources.gameOverfont, Color = Color.White, Pos = -250 },
-                                                                          new HighscoreTable(-150, 300, 300, -1, _ressources.font, _ressources.boldFont) },
+                                                                          new HighscoreTable(-150, 350, 300, -1, _ressources.font, _ressources.boldFont) },
                                                                           .6f, .6f, .6f, Color.Black, true);
         }
 
@@ -326,7 +326,7 @@ namespace Boom
                                                                           new IntermediateScreen.TextLine() { Text = "Floyd", Font = _ressources.font, Color = Color.White, Pos = -75 },
                                                                           new IntermediateScreen.TextLine() { Text = "Music by", Font = _ressources.font, Color = Color.White, Pos = -30 },
                                                                           new IntermediateScreen.TextLine() { Text = "Chris Zabriskie", Font = _ressources.font, Color = Color.White, Pos = -5 },
-                                                                          new IntermediateScreen.TextLine() { Text = "Review Game", Font = _ressources.font, Color = Color.LightGray, Pos = 200, Tap=InfoReview },
+                                                                          new IntermediateScreen.TextLine() { Text = "Rate and Review", Font = _ressources.font, Color = Color.LightGray, Pos = 200, Tap=InfoReview },
                                                                           new IntermediateScreen.TextLine() { Text = "Support", Font = _ressources.font, Color = Color.LightGray, Pos = 250, Tap=InfoSupport } },
                                                                           .6f, .6f, .6f, Color.Black, true);
         }
@@ -343,8 +343,8 @@ namespace Boom
 
             var content = new List<IntermediateScreen.IDrawable>();
 
-            int menuItemGap = 100;
-            int pos = -300;
+            int menuItemGap = 125;
+            int pos = -265;
 
             content.Add(new IntermediateScreen.TextLine() { Text = "Boom!", Font = _ressources.titelFont, Color = Color.White, Pos = pos });
             pos += 200;
@@ -356,6 +356,8 @@ namespace Boom
             }
             else
             {
+                menuItemGap = 100;
+
                 content.Add(new IntermediateScreen.TextLine() { Text = "Start", Font = _ressources.menuFont, Color = Color.White, Pos = pos, Tap = MenuStartGame });
                 pos += menuItemGap;
 
