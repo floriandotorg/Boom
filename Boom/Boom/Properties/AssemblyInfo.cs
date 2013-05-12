@@ -9,7 +9,7 @@ using System.Resources;
 [assembly: AssemblyTitle("Boom!")]
 [assembly: AssemblyProduct("Boom!")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Floyd UG (haftungsbeschränkt)")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -32,5 +32,5 @@ using System.Resources;
 //      Build-Nummer
 //      Revision
 //
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: NeutralResourcesLanguageAttribute("de-DE")]
+[assembly: AssemblyVersion("0.1.0.0")]
+[assembly: NeutralResourcesLanguageAttribute("en")]
