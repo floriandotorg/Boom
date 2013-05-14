@@ -133,7 +133,7 @@ namespace Boom
             AdRotatorXNAComponent.Current.DefaultHouseAdImage = Content.Load<Texture2D>("DefaultAdImage");
 #endif
 
-            AdRotatorXNAComponent.Current.SlidingAdDirection = SlideDirection.Top;
+            AdRotatorXNAComponent.Current.SlidingAdDirection = SlideDirection.None;
             AdRotatorXNAComponent.Current.AdPosition = Vector2.Zero;
 
             AdRotatorXNAComponent.Current.DefaultSettingsFileUri = "defaultAdSettings.xml";
@@ -170,15 +170,37 @@ namespace Boom
                 };
         }
 
+        void OnEndShowKeyboardInput(IAsyncResult result)
+        {
+        }
+
         private void initializeStore()
         {
+            string text = "_store ";
+
             if (Environment.OSVersion.Version.Major >= 8)
             {
                 _store = StoreLauncher.StoreLauncher.GetStoreInterface("StoreWrapper.Store, StoreWrapper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
             }
 
+            //if (_store != null)
+            //{
+            //    text += "!= null;\n";
+            //    text += "count: " + _store.LicenseInformation.ProductLicenses.Count + "\n";
+            //    foreach(var lic in _store.LicenseInformation.ProductLicenses)
+            //    {
+            //        text += lic.Key + " = " + lic.Value + ";";
+            //    }
+            //    text += "\n" + "AppID: " + _store.AppId;
+            //}
+            //else
+            //{
+            //    text += "== null;";
+            //}
+
             if (_store != null && _store.LicenseInformation.ProductLicenses.Keys.Contains(RemoveAdsProductId))
             {
+
                 if (!_store.LicenseInformation.ProductLicenses[RemoveAdsProductId].IsActive)
                 {
                     IntermediateScreen.hasAds = new Action(() => purchaseAdRemover());
@@ -188,6 +210,9 @@ namespace Boom
                     _hasAds = false;
                 }
             }
+
+
+            //Guide.BeginShowMessageBox("Bla", text, new string[] {"Okay"}, 0, MessageBoxIcon.None, new AsyncCallback(OnEndShowKeyboardInput), null);
 
             updateAdStatus();
         }
@@ -277,18 +302,18 @@ namespace Boom
         {
             _rounds.Clear();
 
-            _rounds.Add(new Round(10, 1, graphics.GraphicsDevice, _ressources, false));  // 9
-            _rounds.Add(new Round(10, 2, graphics.GraphicsDevice, _ressources, false));  // 8
-            _rounds.Add(new Round(15, 7, graphics.GraphicsDevice, _ressources, false));  // 8
-            _rounds.Add(new Round(20, 8, graphics.GraphicsDevice, _ressources, false));  // 12
-            _rounds.Add(new Round(25, 10, graphics.GraphicsDevice, _ressources, false)); // 15
-            _rounds.Add(new Round(30, 14, graphics.GraphicsDevice, _ressources, false)); // 16
-            _rounds.Add(new Round(35, 20, graphics.GraphicsDevice, _ressources, false)); // 15
-            _rounds.Add(new Round(40, 25, graphics.GraphicsDevice, _ressources, false)); // 15
-            _rounds.Add(new Round(45, 32, graphics.GraphicsDevice, _ressources, false)); // 13
-            _rounds.Add(new Round(50, 38, graphics.GraphicsDevice, _ressources, false)); // 12
-            _rounds.Add(new Round(55, 45, graphics.GraphicsDevice, _ressources, false)); // 10
-            _rounds.Add(new Round(60, 55, graphics.GraphicsDevice, _ressources, false)); // 5
+            _rounds.Add(new Round(60, 55, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(10, 1, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(10, 2, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(15, 3, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(20, 5, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(25, 10, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(30, 15, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(35, 20, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(40, 27, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(45, 33, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(50, 38, graphics.GraphicsDevice, _ressources, false));
+            _rounds.Add(new Round(55, 46, graphics.GraphicsDevice, _ressources, false));
 
             _currentRound = _rounds.GetEnumerator();
             _currentRoundNo = 0;

@@ -23,7 +23,7 @@ namespace Boom
         private Texture2D texture;
         private Vector2 center;
 
-        private const int numHugeUpdatesToShrink = 20;
+        private const int numHugeUpdatesToShrink = 22;
         private const int numHugeUpdatesToDie = 15;
         private int updateCounter;
 

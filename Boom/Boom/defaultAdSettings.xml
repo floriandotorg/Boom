@@ -2,7 +2,9 @@
 <AdSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <CultureDescriptors>
     <AdCultureDescriptor CultureName="default">
-      <Probabilities Probability="100" AdType="PubCenter" AppID="03073081-0591-4583-b5c6-6f397780861d" SecondaryID="10072097" />
+      <Probabilities Probability="33" AdType="PubCenter" AppID="03073081-0591-4583-b5c6-6f397780861d" SecondaryID="10072097" />
+      <Probabilities Probability="33" AdType="AdDuplex" AppID="41007" />
+      <Probabilities Probability="33" AdType="MobFox" AppID="5b10a6ae22e0d5659e767965de29c9fb" IsTest="false" />
       <Probabilities AdType="DefaultHouseAd" />
     </AdCultureDescriptor>
   </CultureDescriptors>

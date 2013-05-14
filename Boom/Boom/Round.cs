@@ -135,7 +135,7 @@ namespace Boom
                                                                         new IntermediateScreen.TextLine() { Text = Score + "/" + goal + " of " + numBallsTotal, Pos = l2, Color = Color.White, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Tap to retry", Pos = l3, Color = Color.White, Font = _ressources.font },
                                                                         new IntermediateScreen.TextLine() { Text = "Current Score", Pos = l4, Color = Color.White, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "" + (_score + Score), Pos = l5, Color = Color.White, Font = _ressources.font } },
+                                                                        new IntermediateScreen.TextLine() { Text = "" + _score, Pos = l5, Color = Color.White, Font = _ressources.font } },
                                                                         0f, 1f, 0f, Color.Black, true, true);
         }
 
