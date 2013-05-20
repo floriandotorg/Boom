@@ -222,8 +222,11 @@ namespace Boom
                 SetDefaultVolume();
             }
 
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(_ressources.backgroundSong);
+            if (MediaPlayer.State != MediaState.Playing)
+            {
+                MediaPlayer.IsRepeating = true;
+                MediaPlayer.Play(_ressources.backgroundSong);
+            }
 
             _backroundRound = new Round(20, 1, graphics.GraphicsDevice, _ressources, true);
 
