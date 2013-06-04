@@ -374,6 +374,13 @@ namespace Boom
             emailComposeTask.Show();
         }
 
+        private void InfoPrivacyPolicy()
+        {
+            WebBrowserTask webBrowserTask = new WebBrowserTask();
+            webBrowserTask.Uri = new Uri("http://www.floyd-ug.de/apps/boom/privacy-policy-current.html");
+            webBrowserTask.Show();
+        }
+
         private void Info()
         {
             _state = State.Info;
@@ -388,8 +395,9 @@ namespace Boom
                                                                           new IntermediateScreen.TextLine() { Text = "Floyd", Font = _ressources.font, Color = Color.White, Pos = -75 },
                                                                           new IntermediateScreen.TextLine() { Text = "Music by", Font = _ressources.font, Color = Color.White, Pos = -30 },
                                                                           new IntermediateScreen.TextLine() { Text = "Chris Zabriskie", Font = _ressources.font, Color = Color.White, Pos = -5 },
-                                                                          new IntermediateScreen.TextLine() { Text = "Rate and Review", Font = _ressources.font, Color = Color.LightGray, Pos = 200, Tap=InfoReview },
-                                                                          new IntermediateScreen.TextLine() { Text = "Support", Font = _ressources.font, Color = Color.LightGray, Pos = 250, Tap=InfoSupport } },
+                                                                          new IntermediateScreen.TextLine() { Text = "Rate and Review", Font = _ressources.font, Color = Color.LightGray, Pos = 150, Tap=InfoReview },
+                                                                          new IntermediateScreen.TextLine() { Text = "Support", Font = _ressources.font, Color = Color.LightGray, Pos = 200, Tap=InfoSupport },
+                                                                          new IntermediateScreen.TextLine() { Text = "Privacy Policy", Font = _ressources.font, Color = Color.LightGray, Pos = 250, Tap=InfoPrivacyPolicy }},
                                                                           .6f, .6f, .6f, Color.Black, true, true);
         }
 
