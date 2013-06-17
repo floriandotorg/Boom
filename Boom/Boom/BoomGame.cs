@@ -133,7 +133,9 @@ namespace Boom
             AdRotatorXNAComponent.Current.DefaultHouseAdImage = Content.Load<Texture2D>("DefaultAdImage");
 #endif
 
-            AdRotatorXNAComponent.Current.SlidingAdDirection = SlideDirection.None;
+            AdRotatorXNAComponent.Current.SlidingAdDirection = SlideDirection.Top;
+            AdRotatorXNAComponent.Current.SlidingAdDisplaySeconds = 60;
+            AdRotatorXNAComponent.Current.SlidingAdHiddenSeconds = 0;
             AdRotatorXNAComponent.Current.AdPosition = Vector2.Zero;
 
             AdRotatorXNAComponent.Current.DefaultSettingsFileUri = "defaultAdSettings.xml";
