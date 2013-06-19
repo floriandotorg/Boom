@@ -134,8 +134,8 @@ namespace Boom
 #endif
 
             AdRotatorXNAComponent.Current.SlidingAdDirection = SlideDirection.Top;
-            AdRotatorXNAComponent.Current.SlidingAdDisplaySeconds = 30;
-            AdRotatorXNAComponent.Current.SlidingAdHiddenSeconds = 0;
+            AdRotatorXNAComponent.Current.SlidingAdDisplaySeconds = 50;
+            AdRotatorXNAComponent.Current.SlidingAdHiddenSeconds = 20;
             AdRotatorXNAComponent.Current.AdPosition = Vector2.Zero;
 
             AdRotatorXNAComponent.Current.DefaultSettingsFileUri = "defaultAdSettings.xml";

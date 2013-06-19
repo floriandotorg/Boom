@@ -115,6 +115,7 @@
   <ItemGroup>
     <Content Include="defaultAdSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Game.ico" />
     <Content Include="PhoneGameThumb.png">
