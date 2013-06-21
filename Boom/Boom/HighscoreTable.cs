@@ -165,7 +165,7 @@ namespace Boom
 
         void OnEndShowKeyboardInput(IAsyncResult result)
         {
-            string name = Guide.EndShowKeyboardInput(result);
+            string name = Guide.EndShowKeyboardInput(result).Trim();
             while (Guide.IsVisible)
             {
                 Thread.Sleep(1);
@@ -175,11 +175,11 @@ namespace Boom
 
             if (name != null)
             {
-                Regex regex = new Regex("([a-zA-Z0-9]|\\.|- ){2,14}$");
+                Regex regex = new Regex("^[A-Za-z0-9]+(([A-Za-z0-9]|-|_| )?[A-Za-z0-9]+)*$");
 
-                if (!regex.IsMatch(name))
+                if (name.Length < 2 || name.Length > 14 || !regex.IsMatch(name))
                 {
-                    Guide.BeginShowMessageBox("Error", "Your name must be at least 2 characters long and may contain letters (a-z), numbers (0-9), spaces and dashes (-).\nIt can be up to 14 characters.", new string[] { "Retry" }, 0, MessageBoxIcon.None, new AsyncCallback(OnEndShowMessageBox), null);
+                    Guide.BeginShowMessageBox("Error", "Your name must be at least 2 characters long and may contain letters (a-z), numbers (0-9), spaces, underscores (_) and dashes (-).\nIt can be up to 14 characters.", new string[] { "Retry" }, 0, MessageBoxIcon.None, new AsyncCallback(OnEndShowMessageBox), null);
                 }
                 else
                 {
