@@ -30,8 +30,8 @@
     <Reference Include="Microsoft.Xna.Framework.Content.Pipeline.VideoImporters, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ball.png">
-      <Name>Ball</Name>
+    <Compile Include="BallTexture.png">
+      <Name>BallTexture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -44,42 +44,42 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Background.mp3">
-      <Name>Background</Name>
+    <Compile Include="BackgroundSong.mp3">
+      <Name>BackgroundSong</Name>
       <Importer>Mp3Importer</Importer>
       <Processor>SongProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Blip.wav">
-      <Name>Blip</Name>
+    <Compile Include="BlipSound.wav">
+      <Name>BlipSound</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Victory.wav">
-      <Name>Victory</Name>
+    <Compile Include="VictorySound.wav">
+      <Name>VictorySound</Name>
       <Importer>WavImporter</Importer>
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GameOverFont.spritefont">
-      <Name>GameOverFont</Name>
+    <Compile Include="InGameLargeFont.spritefont">
+      <Name>InGameLargeFont</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
       <SubType>Designer</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Speaker.png">
-      <Name>Speaker</Name>
+    <Compile Include="SpeakerTexture.png">
+      <Name>SpeakerTexture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="SpeakerMute.png">
-      <Name>SpeakerMute</Name>
+    <Compile Include="SpeakerMuteTexture.png">
+      <Name>SpeakerMuteTexture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -113,8 +113,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultAdImage.png">
-      <Name>DefaultAdImage</Name>
+    <Compile Include="DefaultAdImageTexture.png">
+      <Name>DefaultAdImageTexture</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

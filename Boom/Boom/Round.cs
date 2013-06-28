@@ -10,24 +10,44 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
+using Pages;
 
 namespace Boom
 {
+    struct RoundSettings
+    {
+        public RoundSettings(int numBalls, int goal, int roundNo, bool finalRound)
+        {
+            NumBalls = numBalls;
+            Goal = goal;
+            RoundNo = roundNo;
+            IsFinalRound = finalRound;
+        }
+
+        public int RoundNo;
+        public bool IsFinalRound;
+        public int NumBalls;
+        public int Goal;
+    }
+
     class Round
     {
         private const float _ballVelocity = 1.5f;
 
+        private IRoundDelegate _roundDelegate;
+
+        private RoundSettings _roundSettings;
         private Viewport _viewport;
-        private BoomGame.RessourcesStruct _ressources;
+        private Texture2D _ballTexture;
+        private SoundEffect _blipSound;
+        private SoundEffect _victorySound;
+        private SpriteFont _font;
 
         private IList<Ball> balls = new List<Ball>();
         private Random random = new Random(DateTime.Now.Millisecond);
         private bool catcher;
-        private int numBallsTotal;
-        private int goal;
-        private int _score, _roundNo = 0;
+        private int _score;
         private SineValue backgroundColor = new SineValue(220.0, 30);
-        private IntermediateScreen _intermediateScreen;
 
         private enum State
         {
@@ -36,7 +56,6 @@ namespace Boom
             InGameSimulation,
             FailedScreen,
             SucessScreen,
-            HideOut,
             RoundEnded
         }
 
@@ -50,15 +69,18 @@ namespace Boom
             }
         }
 
-        public Round(int numBalls, int goal, GraphicsDevice graphicsDevice, BoomGame.RessourcesStruct ressouces, bool noStartScreen)
+        public Round(IRoundDelegate roundDelegate)
         {
-            numBallsTotal = numBalls;
-            this.goal = goal;
-            _viewport = graphicsDevice.Viewport;
-            _ressources = ressouces;
-            _intermediateScreen = new IntermediateScreen(graphicsDevice, ressouces);
+            _roundDelegate = roundDelegate;
+            _roundSettings = _roundDelegate.RoundSettings;
+            _viewport = roundDelegate.Viewport;
+            _ballTexture = roundDelegate.BallTexture;
+            _blipSound = roundDelegate.BlipSound;
+            _victorySound = roundDelegate.VictorySound;
+            _font = roundDelegate.Font;
+            _score = roundDelegate.Score;
 
-            if (!noStartScreen)
+            if (_roundDelegate.ShouldShowStartScreen)
             {
                 StartScreen();
             }
@@ -69,93 +91,33 @@ namespace Boom
             }
         }
 
-        public void Hide()
-        {
-            if (_state == State.StartScreen || _state == State.FailedScreen)
-            {
-                _intermediateScreen.To = 1f;
-            }
-            else if(_state != State.SucessScreen)
-            {
-                _intermediateScreen.Show(new List<IntermediateScreen.IDrawable>(), 0f, 0f, 1f, Color.Black, false, false);
-            }
-
-            _intermediateScreen.Hide();
-
-            _state = State.HideOut;
-        }
-
-        public void StartRound(int score, int roundNo)
-        {
-            _score = score;
-            _roundNo = roundNo;
-
-            StartScreen();
-        }
-
         private void StartScreen()
         {
             init();
+
             _state = State.StartScreen;
 
-            float h = (float)_viewport.Height / 2f;
-            int l1 = (int)(-h / 2f);
-            int l2 = (int)(-h / 2f) + 60;
-            int l3 = (int)((-h / 2f) + h * .382f);
-            int l4 = (int)((-h / 2f) + h - 50);
-            int l5 = (int)((-h / 2f) + h - 50) + 40;
-
-
-            string roundName = "Level " + _roundNo;
-            if(_roundNo < 0)
+            string roundName = "Level " + _roundSettings.RoundNo;
+            if (_roundSettings.IsFinalRound)
             {
                 roundName = "Final Level";
             }
 
-            _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = roundName, Pos = l1, Color = Color.White, Font = _ressources.gameOverfont },
-                                                                        new IntermediateScreen.TextLine() { Text = goal + " of " + numBallsTotal, Pos = l2, Color = Color.White, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "Tap to start", Pos = l3, Color = Color.White, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "Current Score", Pos = l4, Color = Color.White, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "" + (_score + Score), Pos = l5, Color = Color.White, Font = _ressources.font } },
-                                                                        1f, .6f, 0f, Color.Black, true, false);
+            _roundDelegate.ShowOverlay(new StartScreenView(roundName, "" + _roundSettings.Goal + " of " + _roundSettings.NumBalls, "" + (_score + Score)));
         }
 
         private void FailedScreen()
         {
             _state = State.FailedScreen;
 
-            float h = (float)_viewport.Height / 2f;
-            int l1 = (int)(-h / 2f);
-            int l2 = (int)(-h / 2f) + 60;
-            int l3 = (int)((-h / 2f) + h * .382f);
-            int l4 = (int)((-h / 2f) + h - 50);
-            int l5 = (int)((-h / 2f) + h - 50) + 40;
-
-            _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = "You failed!", Pos = l1, Color = Color.Red, Font = _ressources.gameOverfont },
-                                                                        new IntermediateScreen.TextLine() { Text = Score + "/" + goal + " of " + numBallsTotal, Pos = l2, Color = Color.White, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "Tap to retry", Pos = l3, Color = Color.White, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "Current Score", Pos = l4, Color = Color.White, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "" + _score, Pos = l5, Color = Color.White, Font = _ressources.font } },
-                                                                        0f, 1f, 0f, Color.Black, true, true);
+            _roundDelegate.ShowOverlay(new FailedScreenView(Score + "/" + _roundSettings.Goal + " of " + _roundSettings.NumBalls, "" + _score));
         }
 
         private void SucessScreen()
         {
             _state = State.SucessScreen;
 
-            float h = (float)_viewport.Height / 2f;
-            int l1 = (int)(-h / 2f);
-            int l2 = (int)(-h / 2f) + 60;
-            int l3 = (int)((-h / 2f) + h * .382f);
-            int l4 = (int)((-h / 2f) + h - 50);
-            int l5 = (int)((-h / 2f) + h - 50) + 40;
-
-            _intermediateScreen.Show(new IntermediateScreen.IDrawable[] { new IntermediateScreen.TextLine() { Text = "You won!", Pos = l1, Color = Color.Black, Font = _ressources.gameOverfont },
-                                                                        new IntermediateScreen.TextLine() { Text = Score + "/" + goal + " of " + numBallsTotal, Pos = l2, Color = Color.Black, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "Tap to resume", Pos = l3, Color = Color.Black, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "Current Score", Pos = l4, Color = Color.Black, Font = _ressources.font },
-                                                                        new IntermediateScreen.TextLine() { Text = "" + (_score + Score), Pos = l5, Color = Color.Black, Font = _ressources.font } },
-                                                                        0f, 1f, 0f, Color.White, true, true);
+            _roundDelegate.ShowOverlay(new SucessScreenView(Score + "/" + _roundSettings.Goal + " of " + _roundSettings.NumBalls, "" + (_score + Score)));
         }
 
         private void init()
@@ -166,7 +128,7 @@ namespace Boom
             balls.Clear();
 
             balls.Add(new Ball());
-            createBalls(numBallsTotal);
+            createBalls(_roundSettings.NumBalls);
         }
 
         float minDistance(Vector2 prostect, IEnumerable<Ball> balls)
@@ -197,8 +159,8 @@ namespace Boom
                 while (minDistance(center, balls) < 30);
 
                 Vector2 velocity = new Vector2((random.NextDouble() > .5 ? -1 : 1) * _ballVelocity, (random.NextDouble() > .5 ? -1 : 1) * _ballVelocity);
-                
-                balls.Add(new Ball(_viewport, ballColor * 0.5f, _ressources.ballTexture, center, velocity));
+
+                balls.Add(new Ball(_viewport, ballColor * 0.5f, _ballTexture, center, velocity));
             }
         }
 
@@ -222,7 +184,7 @@ namespace Boom
                     {
                         if (collided.CheckAndHandleCollision(free))
                         {
-                            _ressources.blipSound.Play(.3f, 0f, 0f);
+                            _blipSound.Play(.3f, 0f, 0f);
                         }
                     }
                 }
@@ -235,13 +197,13 @@ namespace Boom
                     }
                 }
 
-                if (Score >= goal)
+                if (Score >= _roundSettings.Goal)
                 {
                     if (!backgroundColor.IsMax)
                     {
                         if (backgroundColor.IsMin)
                         {
-                            _ressources.victorySound.Play(.9f, 0f, 0f);
+                            _victorySound.Play(.9f, 0f, 0f);
                         }
 
                         backgroundColor.Inc();
@@ -250,7 +212,7 @@ namespace Boom
 
                 if (balls.Where(x => x.Size >= 5).Count() == 0)
                 {
-                    if (Score >= goal)
+                    if (Score >= _roundSettings.Goal)
                     {
                         SucessScreen();
                     }
@@ -260,23 +222,36 @@ namespace Boom
                     }
                 }
             }
-            else if (_state == State.StartScreen || _state == State.FailedScreen || _state == State.SucessScreen || _state == State.HideOut)
-            {
-                if (_intermediateScreen.Update())
-                {
-                    if (_state == State.SucessScreen || _state == State.HideOut)
-                    {
-                        _state = State.RoundEnded;
-                        return true;
-                    }
-                    else if (_state == State.StartScreen || _state == State.FailedScreen)
-                    {
-                        _state = State.InGame;
-                    }
-                }
-            } 
 
             return false;
+        }
+
+        public void OverlayWillDismiss()
+        {
+            if (_state == State.FailedScreen)
+            {
+                init();
+            }
+
+            if (_state == State.SucessScreen)
+            {
+                backgroundColor.Value = 0;
+            }
+        }
+
+        public bool OverlayDismissed()
+        {
+            if (_state == State.SucessScreen)
+            {
+                _state = State.RoundEnded;
+                return false;
+            }
+            else if (_state == State.StartScreen || _state == State.FailedScreen)
+            {
+                _state = State.InGame;
+            }
+
+            return true;
         }
 
         public Color BackgroundColor()
@@ -288,45 +263,30 @@ namespace Boom
         {
             if (_state == State.InGame && !catcher)
             {
-                balls[0] = new Ball(_viewport, Color.White, _ressources.ballTexture, touch.Position, new Vector2(0));
+                balls[0] = new Ball(_viewport, Color.White, _ballTexture, touch.Position, new Vector2(0));
                 balls[0].Collision();
                 catcher = true;
             }
-            else if (_state == State.StartScreen || _state == State.FailedScreen || _state == State.SucessScreen)
-            {
-                if (_intermediateScreen.Touch(touch))
-                {
-                    if (_state == State.FailedScreen)
-                    {
-                        init();
-                    }
-
-                    if (_state == State.SucessScreen)
-                    {
-                        backgroundColor.Value = 0;
-                    }
-                }
-            }
         }
         
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, AnimationInfo animationInfo)
         {
             foreach (Ball ball in balls)
             {
-                ball.Draw(spriteBatch);
+                ball.Draw(spriteBatch, animationInfo);
             }
 
             if (_state == State.InGame || _state == State.StartScreen || _state == State.FailedScreen)
             {
-                string text = "Points: " + Score + "/" + goal + " of " + numBallsTotal;
-                Vector2 position = new Vector2(10, _viewport.Height - _ressources.font.MeasureString(text).Y - 10);
-                spriteBatch.DrawString(_ressources.font, text, position, Color.White);
+                string text = "Points: " + Score + "/" + _roundSettings.Goal + " of " + _roundSettings.NumBalls;
+                Vector2 position = new Vector2(10, _viewport.Height - _font.MeasureString(text).Y - 10);
+                spriteBatch.DrawString(_font, text, position, Color.White * animationInfo.Value);
             }
 
-            if (_state == State.StartScreen || _state == State.FailedScreen || _state == State.SucessScreen || _state == State.HideOut)
-            {
-                _intermediateScreen.Draw(spriteBatch);
-            }
+            //if (_state == State.StartScreen || _state == State.FailedScreen || _state == State.SucessScreen || _state == State.HideOut)
+            //{
+            //    _intermediateScreen.Draw(spriteBatch);
+            //}
         }
     }
 }

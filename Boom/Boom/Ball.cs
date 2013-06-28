@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
+using Pages;
 
 namespace Boom
 {
@@ -127,11 +128,11 @@ namespace Boom
             this.velocity = velocity;
         }
 
-        public void Draw(SpriteBatch batch)
+        public void Draw(SpriteBatch batch, AnimationInfo animationInfo)
         {
             if (state != State.Destroyed)
             {
-                batch.Draw(texture, topLeft, null, color, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                batch.Draw(texture, topLeft, null, color * animationInfo.Value, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             }
         }
 
@@ -158,7 +159,7 @@ namespace Boom
                 if (++updateCounter >= numHugeUpdatesToShrink)
                 {
                     state = State.Shrinking;
-                    radius.Reverse();
+                    radius.Mode = ProgressMode.SteepBeginSoftEnd;
                 }
             }
             else if (state == State.Shrinking)
@@ -175,7 +176,7 @@ namespace Boom
                 if (++updateCounter >= numHugeUpdatesToDie)
                 {
                     state = State.Dying;
-                    radius.Reverse();
+                    radius.Mode = ProgressMode.SteepBeginSoftEnd;
                 }
             }
             else if (state == State.Dying)

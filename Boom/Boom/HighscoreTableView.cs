@@ -12,10 +12,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
+using Pages;
 
 namespace Boom
 {
-    class HighscoreTable : IntermediateScreen.IDrawable
+    class HighscoreTableView : View
     {
         private const int ListLenght = 10;
 
@@ -26,21 +27,28 @@ namespace Boom
             public bool User;
         }
 
-        private SpriteFont _font, _userFont;
-        private Highscore _highscore = new Highscore();
-        private List<Entry> _entries = new List<Entry>();
-        private int _pos, _height, _width, _userScore;
+        private Highscore _highscore;
+        private List<Entry> _entries;
+        private int  _userScore;
         private string _text, _userName;
         private Entry _userEntry;
 
-        public HighscoreTable(int pos, int height, int width, int userScore, SpriteFont font, SpriteFont userFont)
+        public HighscoreTableView(int userScore)
         {
-            _pos = pos;
-            _height = height;
-            _width = width;
             _userScore = userScore;
-            _font = font;
-            _userFont = userFont;
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            _highscore = new Highscore();
+            _entries = new List<Entry>();
+        }
+
+        public override void LoadContent()
+        {
+            base.LoadContent();
 
             LoadScores();
         }
@@ -87,50 +95,51 @@ namespace Boom
                 });
         }
 
-        public void Draw(SpriteBatch spriteBatch, Viewport viewport, float fadeProcess)
+        public override void Draw(GameTime gameTime, AnimationInfo animationInfo)
         {
+            base.Draw(gameTime, animationInfo);
+
             if (_entries.Count == 0)
             {
-                Vector2 position = new Vector2((viewport.Width - _font.MeasureString(_text).X) / 2, (viewport.Height / 2) + _pos + (_height / 2));
-                spriteBatch.DrawString(_font, _text, position, Color.White * fadeProcess);
+                Vector2 position = new Vector2((Width - Load<SpriteFont>("InGameFont").MeasureString(_text).X) / 2, (Height / 2));
+                SpriteBatch.DrawString(Load<SpriteFont>("InGameFont"), _text, Vector2ToSystem(position), Color.White * animationInfo.Value);
 
                 if (_text == "unable to load highscores")
                 {
                     string text = "tap to retry";
-                    position = new Vector2((viewport.Width - _font.MeasureString(text).X) / 2, (viewport.Height / 2) + _pos + (_height / 2) + 60);
-                    spriteBatch.DrawString(_font, text, position, Color.White * fadeProcess);
+                    position = new Vector2((Width - Load<SpriteFont>("InGameFont").MeasureString(text).X) / 2, (Height / 2) + 60);
+                    SpriteBatch.DrawString(Load<SpriteFont>("InGameFont"), text, Vector2ToSystem(position), Color.White * animationInfo.Value);
                 }
             }
             else
             {
-                int gap = _height / ListLenght;
+                int gap = Height / ListLenght;
                 int n = 0;
 
                 foreach (var entry in _entries)
                 {
                     Color color = Color.White;
-                    SpriteFont font = _font;
+                    SpriteFont font = Load<SpriteFont>("InGameFont");
 
                     if (entry.User)
                     {
                         color = Color.Red;
-                        font = _userFont;
+                        font = Load<SpriteFont>("InGameBoldFont");
                     }
 
-                    Vector2 position = new Vector2((viewport.Width / 2) - (_width / 2), (viewport.Height / 2) + _pos + ++n * gap);
-                    spriteBatch.DrawString(font, entry.Name, position, color * fadeProcess);
+                    Vector2 position = new Vector2(0, ++n * gap);
+                    SpriteBatch.DrawString(font, entry.Name, Vector2ToSystem(position), color * animationInfo.Value);
 
                     string val = Convert.ToString(entry.Score);
-                    position = new Vector2((viewport.Width / 2) + (_width / 2) - font.MeasureString(val).X, (viewport.Height / 2) + _pos + n * gap);
-                    spriteBatch.DrawString(font, val, position, color * fadeProcess);
+                    position = new Vector2(Width - font.MeasureString(val).X, + n * gap);
+                    SpriteBatch.DrawString(font, val, Vector2ToSystem(position), color * animationInfo.Value);
                 }
             }
         }
 
-        public bool Touch(Viewport viewport, TouchLocation touch)
+        public override bool TouchDown(TouchLocation location)
         {
-            if (touch.Position.X > (viewport.Width  / 2) - (_width / 2) && touch.Position.X < (viewport.Width  / 2) + (_width / 2)
-                && touch.Position.Y > (viewport.Height / 2) + _pos && touch.Position.Y < (viewport.Height / 2) + _pos + _height)
+            if (!base.TouchDown(location))
             {
                 if (_entries.Count > 0 && _userEntry != null)
                 {
@@ -142,9 +151,9 @@ namespace Boom
                     LoadScores();
                     return true;
                 }
-                
             }
-            return false;
+
+            return true;
         }
 
         void ShowKeyboardInput(string text)

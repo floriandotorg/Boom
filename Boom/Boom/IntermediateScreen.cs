@@ -66,7 +66,7 @@ namespace Boom
         private const string RemoveAdsText = "Remove Ads";
 
         private Viewport _viewport;
-        private BoomGame.RessourcesStruct _ressources;
+        private BoomGame_alt.RessourcesStruct _ressources;
         private bool _disappearOnTouch, _showRemoveAds;
         private State _state;
         private IEnumerable<IDrawable> _drawables;
@@ -83,7 +83,7 @@ namespace Boom
             set { _to = value; }
         }
 
-        public IntermediateScreen(GraphicsDevice graphicsDevice, BoomGame.RessourcesStruct ressources)
+        public IntermediateScreen(GraphicsDevice graphicsDevice, BoomGame_alt.RessourcesStruct ressources)
         {
             _viewport = graphicsDevice.Viewport;
             _ressources = ressources;
@@ -149,13 +149,13 @@ namespace Boom
             {
                 if (touch.Position.X > _viewport.Width - SpeakerIconSize - 50 && touch.Position.Y > _viewport.Height - SpeakerIconSize - 50)
                 {
-                    if (BoomGame.IsMute())
+                    if (BoomGame_alt.IsMute())
                     {
-                        BoomGame.SetDefaultVolume();
+                        BoomGame_alt.SetDefaultVolume();
                     }
                     else
                     {
-                        BoomGame.Mute();
+                        BoomGame_alt.Mute();
                     }
                 }
                 else if (hasAds != null && touch.Position.X < _ressources.boldFont.MeasureString(RemoveAdsText).X + 10 && touch.Position.Y > _ressources.boldFont.MeasureString(RemoveAdsText).Y + 10)
@@ -204,7 +204,7 @@ namespace Boom
             }
 
             Texture2D speaker;
-            if (BoomGame.IsMute())
+            if (BoomGame_alt.IsMute())
             {
                 speaker = _ressources.speakerMuteTexture;
             }
