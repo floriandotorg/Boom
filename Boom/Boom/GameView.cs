@@ -51,7 +51,14 @@ namespace Boom
         {
             base.Draw(gameTime, animationInfo);
 
-            _round.Draw(SpriteBatch, animationInfo);
+            AnimationInfo roundAnimationInfo = animationInfo;
+
+            if (OverlayAnimationInfo != null && OverlayAnimationInfo.State == AnimationState.FadeIn)
+            {
+                roundAnimationInfo = OverlayAnimationInfo;
+            }
+
+            _round.Draw(SpriteBatch, roundAnimationInfo);
         }
 
         public override bool TouchDown(TouchLocation location)

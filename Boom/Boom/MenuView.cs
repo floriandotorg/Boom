@@ -103,7 +103,7 @@ namespace Boom
 
             _round.Draw(SpriteBatch, animationInfo);
 
-            SpriteBatch.Draw(Load<Texture2D>("Rectangle"), RectangleToSystem(Viewport.Bounds), Color.Black * .7f);
+            SpriteBatch.Draw(Load<Texture2D>("Rectangle"), RectangleToSystem(Viewport.Bounds), Color.Black * .6f);
         }
 
         #region Round Delegate
