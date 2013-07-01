@@ -218,7 +218,7 @@ namespace Boom
             _allTimeTable.Visible = false;
 
             _dailyButton.AutoResize = false;
-            _dailyButton.HorizontalAlignment = HorizontalAlignment.Left;
+            _dailyButton.HorizontalAlignment = HorizontalAlignment.Center;
             _dailyButton.VerticalAlignment = VerticalAlignment.Center;
             _dailyButton.Text = "Today";
             _dailyButton.Tap += switchToDaily;
@@ -234,7 +234,7 @@ namespace Boom
             _weeklyButton.Visible = false;
 
             _allTimeButton.AutoResize = false;
-            _allTimeButton.HorizontalAlignment = HorizontalAlignment.Right;
+            _allTimeButton.HorizontalAlignment = HorizontalAlignment.Center;
             _allTimeButton.VerticalAlignment = VerticalAlignment.Center;
             _allTimeButton.Text = "All Time";
             _allTimeButton.Tap += switchToAllTime;

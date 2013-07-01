@@ -47,7 +47,7 @@ namespace Boom
             CenterSubview(_titleLabel, -250);
 
             _highscoreTabView.Height = 420;
-            _highscoreTabView.Width = 300;
+            _highscoreTabView.Width = 320;
             CenterSubview(_highscoreTabView, 80);
         }
     }
