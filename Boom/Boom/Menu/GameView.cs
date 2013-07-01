@@ -150,18 +150,25 @@ namespace Boom
                     case 9: return new RoundSettings(45, 33, _currentRoundNo, false);
                     case 10: return new RoundSettings(50, 40, _currentRoundNo, false);
                     case 11: return new RoundSettings(55, 48, _currentRoundNo, false);
-                    case 12: return new RoundSettings(60, 55, _currentRoundNo, true);
-                    default: throw new InvalidOperationException();
+                    case 12: default: return new RoundSettings(60, 55, _currentRoundNo, true);
                 }
             }
 #endif
         }
 
-        public bool ShouldShowStartScreen
+        public bool ShouldShowOverlays
         {
             get
             {
                 return true;
+            }
+        }
+
+        public bool IsTutorial
+        {
+            get
+            {
+                return false;
             }
         }
 

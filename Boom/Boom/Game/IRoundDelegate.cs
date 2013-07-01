@@ -18,7 +18,8 @@ namespace Boom
     {
         RoundSettings RoundSettings { get; }
         int Score { get; }
-        bool ShouldShowStartScreen { get; }
+        bool ShouldShowOverlays { get; }
+        bool IsTutorial { get; }
 
         Viewport Viewport { get; }
         Texture2D BallTexture { get; }

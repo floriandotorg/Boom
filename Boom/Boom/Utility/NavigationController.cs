@@ -30,7 +30,7 @@ namespace Boom
 
         public void Initialize()
         {
-            base.Initialize(new GameOverScreenView(100)); //new MenuView());
+            base.Initialize(new MenuView()); //new GameOverScreenView(100)); //new MenuView());
         }
 
         public override void LoadContent(SpriteBatch spriteBatch, ContentManager content)

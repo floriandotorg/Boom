@@ -24,7 +24,7 @@ namespace Boom
     class MenuMainView : View
     {
         private Label _titleLabel;
-        private Button _startButton, _resumeButton, _resumeSubButton, _highscoreButton, _infoButton;
+        private Button _startButton, _resumeButton, _resumeSubButton, _highscoreButton, _helpButton, _infoButton;
         private Action _startOrResumePressed;
         private int _currentRound;
 
@@ -53,6 +53,9 @@ namespace Boom
 
             _highscoreButton = new Button();
             AddSubview(_highscoreButton);
+
+            _helpButton = new Button();
+            AddSubview(_helpButton);
 
             _infoButton = new Button();
             AddSubview(_infoButton);
@@ -87,6 +90,11 @@ namespace Boom
             _highscoreButton.Color = Color.White;
             _highscoreButton.Tap += _highscoreButton_Tap;
 
+            _helpButton.Text = "Help";
+            _helpButton.Font = Load<SpriteFont>("MenuFont");
+            _helpButton.Color = Color.White;
+            _helpButton.Tap += _helpButton_Tap;
+
             _infoButton.Text = "Info";
             _infoButton.Font = Load<SpriteFont>("MenuFont");
             _infoButton.Color = Color.White;
@@ -111,6 +119,11 @@ namespace Boom
             Dismiss(true);
         }
 
+        void _helpButton_Tap(object sender)
+        {
+            NavigationController.Navigate(new TutorialView(), true);
+        }
+
         void _infoButton_Tap(object sender)
         {
             PressedButton = MenuPressedButton.Info;
@@ -131,7 +144,7 @@ namespace Boom
         {
             base.LayoutSubviews();
 
-            int menuItemGap = 125;
+            int menuItemGap = 100;
             int pos = -265;
 
             CenterSubview(_titleLabel, pos);
@@ -139,7 +152,7 @@ namespace Boom
 
             _currentRound = GameSettings.CurrentRound;
 
-            if (_currentRound < 2)
+            if (true || _currentRound < 2)
             {
                 CenterSubview(_startButton, pos);
                 pos += menuItemGap;
@@ -149,9 +162,10 @@ namespace Boom
             }
             else
             {
-                _resumeSubButton.Text = "Level " + _currentRound; 
+                _resumeSubButton.Text = "Level " + _currentRound;
 
-                menuItemGap = 100;
+                pos -= 25;
+                menuItemGap = 90;
 
                 CenterSubview(_startButton, pos);
                 pos += menuItemGap;
@@ -165,6 +179,9 @@ namespace Boom
             }
 
             CenterSubview(_highscoreButton, pos);
+            pos += menuItemGap;
+
+            CenterSubview(_helpButton, pos);
             pos += menuItemGap;
 
             CenterSubview(_infoButton, pos);

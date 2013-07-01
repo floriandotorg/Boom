@@ -24,7 +24,8 @@
     <TileTitle>Boom!</TileTitle>
     <SupportedCultures>
     </SupportedCultures>
-    <ApplicationIcon>Game.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
     <Thumbnail>PhoneGameThumb.png</Thumbnail>
     <GameStartupType>
     </GameStartupType>
@@ -84,49 +85,49 @@
     <Reference Include="System.Xml.Serialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdRotator\AdProviderComponents\AdDuplexComponent.cs" />
-    <Compile Include="AdRotator\AdProviderComponents\AdInneractiveComponent.cs" />
-    <Compile Include="AdRotator\AdProviderComponents\AdMobfoxComponent.cs" />
-    <Compile Include="AdRotator\AdProviderComponents\AdRotatorDefaultHouseAdComponent.cs" />
-    <Compile Include="AdRotator\AdProviderComponents\AdSmaatoComponent.cs" />
-    <Compile Include="AdRotator\AdRotatorXNA.cs" />
-    <Compile Include="AdRotator\Helpers\AdRotatorXNAFunctions.cs" />
-    <Compile Include="AdRotator\Helpers\ImageDownload.cs" />
-    <Compile Include="AdRotator\Model\AdCultureDescriptor.cs" />
-    <Compile Include="AdRotator\Model\AdProbability.cs" />
-    <Compile Include="AdRotator\Model\AdSettings.cs" />
-    <Compile Include="AdRotator\Model\AdSlideDirection.cs" />
-    <Compile Include="AdRotator\Model\AdType.cs" />
-    <Compile Include="AdRotator\Model\NoneProvider.cs" />
-    <Compile Include="AdRotator\Networking\AdWebRequest.cs" />
-    <Compile Include="AdRotator\Networking\AdWebResponse.cs" />
-    <Compile Include="AdRotator\Networking\NetworkExtensions.cs" />
-    <Compile Include="AdRotator\Networking\NetworkWire.cs" />
-    <Compile Include="Ball.cs" />
-    <Compile Include="BoomGame.cs" />
-    <Compile Include="HighscoreShareView.cs" />
-    <Compile Include="HighscoreTabView.cs" />
-    <Compile Include="NavigationController.cs" />
-    <Compile Include="FailedScreenView.cs" />
-    <Compile Include="GameOverScreenView.cs" />
-    <Compile Include="GameSettings.cs" />
-    <Compile Include="GameView.cs" />
-    <Compile Include="Highscore.cs" />
-    <Compile Include="HighscoreTableView.cs" />
-    <Compile Include="IRoundDelegate.cs" />
-    <Compile Include="PopupView.cs" />
-    <Compile Include="VolumeManager.cs" />
-    <Compile Include="SpeakerButton.cs" />
-    <Compile Include="StartScreenView.cs" />
-    <Compile Include="SucessScreenView.cs" />
-    <None Include="IntermediateScreen.cs" />
-    <Compile Include="MenuHighscoreView.cs" />
-    <Compile Include="MenuInfoView.cs" />
-    <Compile Include="MenuMainView.cs" />
-    <Compile Include="MenuView.cs" />
+    <Compile Include="Ads\AdRotator\AdProviderComponents\AdDuplexComponent.cs" />
+    <Compile Include="Ads\AdRotator\AdProviderComponents\AdInneractiveComponent.cs" />
+    <Compile Include="Ads\AdRotator\AdProviderComponents\AdMobfoxComponent.cs" />
+    <Compile Include="Ads\AdRotator\AdProviderComponents\AdRotatorDefaultHouseAdComponent.cs" />
+    <Compile Include="Ads\AdRotator\AdProviderComponents\AdSmaatoComponent.cs" />
+    <Compile Include="Ads\AdRotator\AdRotatorXNA.cs" />
+    <Compile Include="Ads\AdRotator\Helpers\AdRotatorXNAFunctions.cs" />
+    <Compile Include="Ads\AdRotator\Helpers\ImageDownload.cs" />
+    <Compile Include="Ads\AdRotator\Model\AdCultureDescriptor.cs" />
+    <Compile Include="Ads\AdRotator\Model\AdProbability.cs" />
+    <Compile Include="Ads\AdRotator\Model\AdSettings.cs" />
+    <Compile Include="Ads\AdRotator\Model\AdSlideDirection.cs" />
+    <Compile Include="Ads\AdRotator\Model\AdType.cs" />
+    <Compile Include="Ads\AdRotator\Model\NoneProvider.cs" />
+    <Compile Include="Ads\AdRotator\Networking\AdWebRequest.cs" />
+    <Compile Include="Ads\AdRotator\Networking\AdWebResponse.cs" />
+    <Compile Include="Ads\AdRotator\Networking\NetworkExtensions.cs" />
+    <Compile Include="Ads\AdRotator\Networking\NetworkWire.cs" />
+    <Compile Include="Game\Ball.cs" />
+    <Compile Include="Utility\BoomGame.cs" />
+    <Compile Include="Highscore\HighscoreShareView.cs" />
+    <Compile Include="Highscore\HighscoreTabView.cs" />
+    <Compile Include="Utility\NavigationController.cs" />
+    <Compile Include="Game\FailedScreenView.cs" />
+    <Compile Include="Game\GameOverScreenView.cs" />
+    <Compile Include="Utility\GameSettings.cs" />
+    <Compile Include="Menu\GameView.cs" />
+    <Compile Include="Highscore\Highscore.cs" />
+    <Compile Include="Highscore\HighscoreTableView.cs" />
+    <Compile Include="Game\IRoundDelegate.cs" />
+    <Compile Include="Utility\PopupView.cs" />
+    <Compile Include="Tutorial\TutorialRoundOverlayView.cs" />
+    <Compile Include="Tutorial\TutorialView.cs" />
+    <Compile Include="Utility\VolumeManager.cs" />
+    <Compile Include="Utility\SpeakerButton.cs" />
+    <Compile Include="Game\StartScreenView.cs" />
+    <Compile Include="Game\SucessScreenView.cs" />
+    <Compile Include="Menu\MenuHighscoreView.cs" />
+    <Compile Include="Menu\MenuInfoView.cs" />
+    <Compile Include="Menu\MenuMainView.cs" />
+    <Compile Include="Menu\MenuView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Round.cs" />
-    <None Include="SineValue.cs" />
+    <Compile Include="Game\Round.cs" />
     <None Include="Properties\AppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </None>
@@ -134,15 +135,14 @@
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Program.cs" />
-    <None Include="BoomGame_alt.cs" />
+    <None Include="Utility\Program.cs" />
+    <None Include="Utility\BoomGame_alt.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="defaultAdSettings.xml">
+    <Content Include="Ads\defaultAdSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Game.ico" />
     <Content Include="PhoneGameThumb.png">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </Content>

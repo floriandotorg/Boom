@@ -13,11 +13,11 @@ namespace Boom
     {
         private Viewport viewport;
 
-        private const float radiusNormalSize = 10;
-        private const float radiusHugeSize = 65.0f;
+        public const float RadiusNormalSize = 10;
+        public const float RadiusHugeSize = 65.0f;
         private const int radiusSizeingSpeed = 25;
 
-        private SineValue radius = new SineValue(radiusHugeSize, radiusSizeingSpeed) { Value = radiusNormalSize };
+        private SineValue radius = new SineValue(RadiusHugeSize, radiusSizeingSpeed) { Value = RadiusNormalSize };
 
         private Vector2 velocity;
         private Color color;

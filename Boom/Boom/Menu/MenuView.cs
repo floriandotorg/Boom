@@ -124,7 +124,15 @@ namespace Boom
             }
         }
 
-        public bool ShouldShowStartScreen
+        public bool ShouldShowOverlays
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public bool IsTutorial
         {
             get
             {

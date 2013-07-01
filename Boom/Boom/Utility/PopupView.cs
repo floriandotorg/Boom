@@ -37,9 +37,7 @@ namespace Boom
             {
                 ShowOverlay(_contentView, true);
 
-                Viewport contentViewport = _contentView.Viewport;
-                contentViewport.Bounds = contentRectangle(animationInfo);
-                _contentView.Viewport = contentViewport;
+                _contentView.Bounds = contentRectangle(animationInfo);
             }
         }
         private Rectangle contentRectangle(AnimationInfo animationInfo)
