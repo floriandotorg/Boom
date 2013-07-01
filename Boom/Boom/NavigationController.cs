@@ -30,7 +30,7 @@ namespace Boom
 
         public void Initialize()
         {
-            base.Initialize(new MenuView());//new GameOverScreenView(100)); //new MenuView());
+            base.Initialize(new GameOverScreenView(100)); //new MenuView());
         }
 
         public override void LoadContent(SpriteBatch spriteBatch, ContentManager content)
@@ -40,6 +40,8 @@ namespace Boom
             Load<Texture2D>("BallTexture");
             Load<Texture2D>("SpeakerMuteTexture");
             Load<Texture2D>("SpeakerTexture");
+            Load<Texture2D>("TwitterButtonTexture");
+            Load<Texture2D>("FacebookButtonTexture");
             Load<SpriteFont>("InGameFont");
             Load<SpriteFont>("TitleFont");
             Load<SpriteFont>("InGameLargeFont");

@@ -104,6 +104,7 @@
     <Compile Include="AdRotator\Networking\NetworkWire.cs" />
     <Compile Include="Ball.cs" />
     <Compile Include="BoomGame.cs" />
+    <Compile Include="HighscoreShareView.cs" />
     <Compile Include="HighscoreTabView.cs" />
     <Compile Include="NavigationController.cs" />
     <Compile Include="FailedScreenView.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Highscore.cs" />
     <Compile Include="HighscoreTableView.cs" />
     <Compile Include="IRoundDelegate.cs" />
+    <Compile Include="PopupView.cs" />
     <Compile Include="VolumeManager.cs" />
     <Compile Include="SpeakerButton.cs" />
     <Compile Include="StartScreenView.cs" />

@@ -106,7 +106,21 @@ namespace Boom
                 _weeklyButton.Visible = true;
                 _allTimeButton.Visible = true;
 
-                switchToDaily(null);
+                if (!_allTimeTable.Visible && !_weeklyTable.Visible && !_dailyTable.Visible)
+                {
+                    if (_allTimeTable.HasUserScore)
+                    {
+                        switchToAllTime(null);
+                    }
+                    else if (_weeklyTable.HasUserScore)
+                    {
+                        switchToWeekly(null);
+                    }
+                    else
+                    {
+                        switchToDaily(null);
+                    }
+                }
             }
         }
 
@@ -331,7 +345,7 @@ namespace Boom
 
                 if (name.Length < 2 || name.Length > 14 || !regex.IsMatch(name))
                 {
-                    Guide.BeginShowMessageBox("Error", "Your name must be at least 2 characters long and may contain letters (a-z), numbers (0-9), spaces, underscores (_) and dashes (-).\nIt can be up to 14 characters.", new string[] { "Retry" }, 0, MessageBoxIcon.None, new AsyncCallback(OnEndShowMessageBox), null);
+                    Guide.BeginShowMessageBox("Error", "Your name must be at least 2 characters long and may contain letters (a-z), numbers (0-9), spaces, underscores (_) and dashes (-).\nIt can be up to 14 characters.", new string[] { "Edit" }, 0, MessageBoxIcon.None, new AsyncCallback(OnEndShowMessageBox), null);
                 }
                 else
                 {
