@@ -16,7 +16,7 @@ namespace Boom
     class GameOverScreenView : View
     {
         private Label _titleLabel, _yourScoreLabel, _scoreLabel;
-        private HighscoreTableView _highscoreTableView;
+        private HighscoreTabView _highscoreTabView;
         private int _score;
         private SpeakerButton _speakerButton;
 
@@ -38,8 +38,8 @@ namespace Boom
             _scoreLabel = new Label();
             AddSubview(_scoreLabel);
 
-            _highscoreTableView = new HighscoreTableView(-1);
-            AddSubview(_highscoreTableView);
+            _highscoreTabView = new HighscoreTabView(_score);
+            AddSubview(_highscoreTabView);
 
             _speakerButton = new SpeakerButton();
             AddSubview(_speakerButton);
@@ -51,7 +51,7 @@ namespace Boom
 
             BackgroundColor = Color.Transparent;
 
-            _titleLabel.Text = "Highscore";
+            _titleLabel.Text = "Game Completed!";
             _titleLabel.Font = Load<SpriteFont>("InGameLargeFont");
             _titleLabel.Color = Color.White;
 
@@ -69,12 +69,12 @@ namespace Boom
             base.LayoutSubviews();
 
             CenterSubview(_titleLabel, -250);
-            CenterSubview(_yourScoreLabel, -150);
-            CenterSubview(_scoreLabel, -120);
+            CenterSubview(_yourScoreLabel, -140);
+            CenterSubview(_scoreLabel, -110);
 
-            _highscoreTableView.Height = 300;
-            _highscoreTableView.Width = 300;
-            CenterSubview(_highscoreTableView, 75);
+            _highscoreTabView.Height = 350;
+            _highscoreTabView.Width = 300;
+            CenterSubview(_highscoreTabView, 140);
         }
     }
 }

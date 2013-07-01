@@ -11,7 +11,8 @@ namespace Boom
         private const string SpeakerSettingsKey = "Speaker";
         private const string CurrentRoundSettingsKey = "CurrentRound";
         private const string CurrentScoreSettingsKey = "CurrentScore";
-        private const string HighscoreUsernameSettingsKey = "HighscoreUsername";
+        private const string HighscorePlayerIDSettingsKey = "HighscorePlayerIDSettingsKey";
+        private const string HighscoreLastUsernameSettingsKey = "HighscoreLastUsername";
 
         protected override void Initialize()
         {
@@ -20,7 +21,8 @@ namespace Boom
             AddSetting(SpeakerSettingsKey, true);
             AddSetting(CurrentRoundSettingsKey, 1);
             AddSetting(CurrentScoreSettingsKey, 0);
-            AddSetting(HighscoreUsernameSettingsKey, "");
+            AddSetting(HighscorePlayerIDSettingsKey, "");
+            AddSetting(HighscoreLastUsernameSettingsKey, "");
         }
 
         public static bool Speaker
@@ -59,15 +61,27 @@ namespace Boom
             }
         }
 
-        public static string HighscoreUsername
+        public static string HighscorePlayerID
         {
             get
             {
-                return (string)Get(HighscoreUsernameSettingsKey);
+                return (string)Get(HighscorePlayerIDSettingsKey);
             }
             set
             {
-                Set(HighscoreUsernameSettingsKey, value);
+                Set(HighscorePlayerIDSettingsKey, value);
+            }
+        }
+
+        public static string HighscoreLastUsername
+        {
+            get
+            {
+                return (string)Get(HighscoreLastUsernameSettingsKey);
+            }
+            set
+            {
+                Set(HighscoreLastUsernameSettingsKey, value);
             }
         }
     }

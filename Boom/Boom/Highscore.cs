@@ -70,12 +70,12 @@ namespace Boom
             SKSettings.GameID = GameID;
             SKSettings.SecurityKey = SecurityKey;
             SKSettings.Platform = Platform;
-            SKSettings.PlayerUsername = GameSettings.HighscoreUsername;
+            SKSettings.PlayerUsername = GameSettings.HighscorePlayerID;
 
-            if (String.IsNullOrEmpty(GameSettings.HighscoreUsername))
+            if (String.IsNullOrEmpty(GameSettings.HighscorePlayerID))
             {
-                GameSettings.HighscoreUsername = Guid.NewGuid().ToString();
-                SKSettings.PlayerUsername = GameSettings.HighscoreUsername;
+                GameSettings.HighscorePlayerID = Guid.NewGuid().ToString();
+                SKSettings.PlayerUsername = GameSettings.HighscorePlayerID;
             }
 
             _player = SKLocalPlayer.CreatePlayer();

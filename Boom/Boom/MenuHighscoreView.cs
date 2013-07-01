@@ -16,7 +16,7 @@ namespace Boom
     class MenuHighscoreView : View
     {
         private Label _titleLabel;
-        private HighscoreTableView _highscoreTableView;
+        private HighscoreTabView _highscoreTabView;
 
         public override void Initialize()
         {
@@ -25,8 +25,8 @@ namespace Boom
             _titleLabel = new Label();
             AddSubview(_titleLabel);
 
-            _highscoreTableView = new HighscoreTableView(-1);
-            AddSubview(_highscoreTableView);
+            _highscoreTabView = new HighscoreTabView(-1);
+            AddSubview(_highscoreTabView);
         }
 
         public override void LoadContent()
@@ -46,9 +46,9 @@ namespace Boom
 
             CenterSubview(_titleLabel, -250);
 
-            _highscoreTableView.Height = 350;
-            _highscoreTableView.Width = 300;
-            CenterSubview(_highscoreTableView, 25);
+            _highscoreTabView.Height = 350;
+            _highscoreTabView.Width = 300;
+            CenterSubview(_highscoreTabView, 25);
         }
     }
 }
