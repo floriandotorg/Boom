@@ -68,6 +68,9 @@
     <Reference Include="Pages">
       <HintPath>.\Pages.dll</HintPath>
     </Reference>
+    <Reference Include="Scoreoid.Kit">
+      <HintPath>.\Scoreoid.Kit.dll</HintPath>
+    </Reference>
     <Reference Include="SOMAWP7">
       <HintPath>.\SOMAWP7.dll</HintPath>
     </Reference>

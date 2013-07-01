@@ -2,234 +2,254 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Net;
-using System.Threading;
-using System.Xml.Linq;
-using System.Reflection;
-using System.IO;
+using Scoreoid.Kit;
 
 namespace Boom
 {
+    struct Score
+    {
+        public string Name;
+        public int Value;
+        public bool IsLocalePlayer;
+
+        public Score(string name, int value, bool isLocalePlayer)
+        {
+            Name = name;
+            Value = value;
+            IsLocalePlayer = isLocalePlayer;
+        }
+    }
+
+    //public static class DateTimeExtensions
+    //{
+    //    public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
+    //    {
+    //        int diff = dt.DayOfWeek - startOfWeek;
+    //        if (diff < 0)
+    //        {
+    //            diff += 7;
+    //        }
+
+    //        return dt.AddDays(-1 * diff).Date;
+    //    }
+    //}
+
+    public enum HighscoreState
+    {
+        NotInitialized,
+        Initializing,
+        Initialized
+    }
+
     class Highscore
     {
-        private const string ApiKey = "a59a292915406d8b865c894c9ed5eef94a7c12e3";
-        private const string GameId = "83eb5b8f28";
-        private const string ApiUrl = "https://www.scoreoid.com/api/";
+        public const string LeaderboardID = "1";
 
-        public void GetScores(int num, Action<IEnumerable<KeyValuePair<string,int>>> callback, Action<string> failed)
+        public const string Apikey = "a59a292915406d8b865c894c9ed5eef94a7c12e3";
+        public const string GameID = "f106029924";
+        public const string Platform = "WP7";
+
+        public const string SecurityKey = "3d5fa25b";
+
+        private static HighscoreState _state = HighscoreState.NotInitialized;
+        public static HighscoreState State
         {
-            var result = new List<KeyValuePair<string, int>>();
+            get
+            {
+                return _state;
+            }
+        }
 
-            SubmitRequest("getBestScores", new Dictionary<string, string> { { "order_by", "score" }, { "limit", Convert.ToString(num) } },
-                // Success
-                xml =>
-                {
-                    try
-                    {
-                        XElement xscores = xml.Element("scores");
-                        if (xscores == null)
-                            throw new InvalidOperationException("Scoreid was unable to load scores.");
+        public static string PlayerName
+        {
+            get
+            {
+                _ensureInitialized();
+                return _player.PlayerData.FirstName;
+            }
+        }
 
-                        foreach (XElement xplayer in xscores.Elements("player"))
-                        {
-                            XElement xscore = xplayer.Element("score");
+        private static SKLocalPlayer _player;
 
-                            if (xscore != null)
-                            {
-                                int value = 0;
-                                Int32.TryParse(xscore.Attribute("score").Value, out value);
+        public static void Initialize(Action<SKError> callback)
+        {
+            if (_state != HighscoreState.NotInitialized)
+            {
+                throw new InvalidOperationException("Highscore already initialized or initializing");
+            }
 
-                                string username = xscore.Attribute("data").Value;
+            _state = HighscoreState.Initializing;
 
-                                result.Add(new KeyValuePair<string,int>(username, value));
-                            }
-                        }
+            SKSettings.Apikey = Apikey;
+            SKSettings.GameID = GameID;
+            SKSettings.SecurityKey = SecurityKey;
+            SKSettings.Platform = Platform;
+            SKSettings.PlayerUsername = GameSettings.HighscoreUsername;
 
-                        callback(result);
-                    }
-                    catch (Exception ex)
-                    {
-                        failed(ex.Message);
-                    }
+            if (String.IsNullOrEmpty(GameSettings.HighscoreUsername))
+            {
+                GameSettings.HighscoreUsername = Guid.NewGuid().ToString();
+                SKSettings.PlayerUsername = GameSettings.HighscoreUsername;
+            }
 
-                },
-                // Failure
+            _player = SKLocalPlayer.CreatePlayer();
+
+            authenticate(
                 error =>
                 {
-                    failed(error);
+                    if (error != null)
+                    {
+                        if (error.ErrorCode == SKErrorCode.PlayerNotFound)
+                        {
+                            _player.Create(
+                                create_error =>
+                                {
+                                    if (create_error != null)
+                                    {
+                                        callback(create_error);
+                                    }
+                                    else
+                                    {
+                                        authenticate(callback);
+                                    }
+                                });
+                        }
+                        else
+                        {
+                            callback(error);
+                        }
+                    }
+                    else
+                    {
+                        callback(null);
+                    }
                 });
         }
 
-        public void Submit(Action<string> callback, string playerName, int score)
+        private static void authenticate(Action<SKError> callback)
         {
-            SubmitRequest("createScore", new Dictionary<string, string> { { "username", Guid.NewGuid().ToString() }, { "data", playerName }, { "score", Convert.ToString(score) } },
-                // Success
-                 xml =>
-                 {
-                     try
-                     {
-                         XElement xsuccess = xml.Element("success");
-                         if (xsuccess == null)
-                             throw new InvalidOperationException("Scoreid was unable to submit the score.");
-
-                         callback(null);
-                     }
-                     catch (Exception ex)
-                     {
-                         callback(ex.Message);
-                     }
-
-                 },
-                // Failure
-                 error =>
-                 {
-                     callback(error);
-                 });
-        }
-
-        private void SubmitRequest(string method, Dictionary<string, string> parameters, Action<XDocument> success, Action<string> failed)
-        {
-            // Create a request
-
-            string uri = String.Format("{0}/{1}", ApiUrl, method);
-
-            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(uri);
-            webRequest.Method = "POST";
-
-            // What we are sending
-            string postData = String.Format("api_key={0}&game_id={1}&response={2}",
-                HtmlEncode(ApiKey),
-                HtmlEncode(GameId),
-                HtmlEncode("XML"));
-
-            StringBuilder sb = new StringBuilder();
-            foreach (var param in parameters)
-            {
-                sb.AppendFormat("&{0}={1}", param.Key, HtmlEncode(param.Value));
-            }
-            postData = String.Concat(postData, sb.ToString());
-
-            // Turn our request string into a byte stream
-            byte[] postBuffer = Encoding.UTF8.GetBytes(postData);
-
-            // This is important - make sure you specify type this way
-            webRequest.ContentType = "application/x-www-form-urlencoded";
-
-            int timeoutInterval = 30000;
-
-            DateTime requestDate = DateTime.Now;
-
-            Timer timer = new Timer(
-                (state) =>
+            _player.Authenticate(error =>
                 {
-                    if ((DateTime.Now - requestDate).TotalMilliseconds >= timeoutInterval)
-                        webRequest.Abort();
-
-                }, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(10000));
-
-            try
-            {
-                webRequest.BeginGetRequestStream(
-                    requestAsyncResult =>
+                    if (error != null)
                     {
-                        try
+                        if (_state == HighscoreState.Initializing)
                         {
-                            timer.Change(Timeout.Infinite, Timeout.Infinite);
-
-                            HttpWebRequest request =
-                                ((HttpWebRequest)((object[])requestAsyncResult.AsyncState)[0]);
-
-                            byte[] buffer =
-                                ((byte[])((object[])requestAsyncResult.AsyncState)[1]);
-
-                            Stream requestStream =
-                                request.EndGetRequestStream(requestAsyncResult);
-
-                            requestStream.Write(buffer, 0, buffer.Length);
-                            requestStream.Close();
-
-                            requestDate = DateTime.Now;
-                            timer.Change(TimeSpan.Zero, TimeSpan.FromMilliseconds(1000));
-
-                            request.BeginGetResponse((state) =>
-                            {
-                                 timer.Change(Timeout.Infinite, Timeout.Infinite);
-
-                                 HttpWebResponse response = null;
-
-                                 try
-                                 {
-                                     response =
-                                         (HttpWebResponse)((HttpWebRequest)state.AsyncState).EndGetResponse(state);
-
-                                     if (response.StatusCode == HttpStatusCode.OK)
-                                     {
-                                         // If the request success, then call the success callback
-                                         // or the failed callback by reading the response data     
-                                         using (Stream stream = response.GetResponseStream())
-                                         {
-                                             try
-                                             {
-                                                 XDocument xdoc = XDocument.Load(stream);
-
-                                                 // Data contains error notification.
-                                                 if (xdoc.Root.Name == "error")
-                                                     throw new InvalidOperationException(xdoc.Root.Value);
-
-                                                 success(xdoc);
-                                             }
-                                             catch (Exception ex)
-                                             {
-                                                 failed(ex.Message);
-                                             }
-
-                                             stream.Close();
-                                         }
-                                     }
-                                     else
-                                     {
-                                         // If the request fails, then call the failed callback
-                                         // to notfiy the failing status description of the request
-                                         failed(response.StatusDescription);
-                                     }
-                                 }
-                                 catch (Exception ex)
-                                 {
-                                     // If the request fails, then call the failed callback
-                                     // to notfiy the failing status description of the request
-                                     failed(ex.Message);
-                                 }
-                                 finally
-                                 {
-                                     request.Abort();
-
-                                     if (response != null)
-                                         response.Close();
-                                 }
-
-                             }, request);
-                        }
-                        catch (Exception ex)
-                        {
-                            // Raise an error in case of exception
-                            // when submitting a request
-                            failed(ex.Message);
+                            _state = HighscoreState.NotInitialized;
                         }
 
-                    }, new object[] { webRequest, postBuffer });
-            }
-            catch (Exception ex)
-            {
-                // Raise an error in case of exception
-                // when submitting a request
-                failed(ex.Message);
-            }
+                        callback(error);
+                    }
+                    else
+                    {
+                        if (_state == HighscoreState.Initializing)
+                        {
+                            _state = HighscoreState.Initialized;
+                        }
 
+                        callback(null);
+                    }
+                });
         }
 
-        private string HtmlEncode(string value)
+        private static void _ensureInitialized()
         {
-            return Uri.EscapeUriString(value);
+            if (_state != HighscoreState.Initialized)
+            {
+                throw new InvalidOperationException("call Initialize first");
+            }
+        }
+
+        public static void SubmitScore(string name, int score, Action<SKError> callback)
+        {
+            _ensureInitialized();
+
+            SKScore skScore = new SKScore(LeaderboardID);
+            skScore.Value = score;
+            skScore.Data = name;
+
+            skScore.Submit(
+                error =>
+                {
+                    if (error != null)
+                    {
+                        callback(error);
+                    }
+                    else
+                    {
+                        callback(null);
+                    }
+                });
+        }
+
+        private static void loadScores(SKLeaderboard leaderboard, Action<IEnumerable<Score>> success, Action<SKError> failed)
+        {
+            leaderboard.LoadScores(
+                (scores, error) =>
+                {
+                    if (error != null)
+                    {
+                        failed(error);
+                    }
+                    else
+                    {
+                        var scoreList = new List<Score>();
+
+                        foreach (var score in scores)
+                        {
+                            scoreList.Add(new Score(score.Data, score.Value, score.Username == _player.Username));
+                        }
+
+                        success(scoreList);
+                    }
+                });
+        }
+
+        public static void LoadAllTimeScores(Action<IEnumerable<Score>> success, Action<SKError> failed)
+        {
+            _ensureInitialized();
+
+            SKLeaderboard leaderboard = new SKLeaderboard(LeaderboardID);
+
+            leaderboard.OrderBy = "score";
+            leaderboard.Direction = "desc";
+            leaderboard.PageSize = 10;
+
+            loadScores(leaderboard, success, failed);
+        }
+
+        public static void LoadLast7DaysScores(Action<IEnumerable<Score>> success, Action<SKError> failed)
+        {
+            _ensureInitialized();
+
+            SKLeaderboard leaderboard = new SKLeaderboard(LeaderboardID);
+
+            leaderboard.OrderBy = "score";
+            leaderboard.Direction = "desc";
+            leaderboard.PageSize = 10;
+
+            leaderboard.FromDate = DateTime.Now.AddDays(-7).ToUniversalTime();
+            leaderboard.ToDate = DateTime.Now.ToUniversalTime();
+
+            //leaderboard.FromDate = DateTime.Now.StartOfWeek(DayOfWeek.Monday).ToUniversalTime();
+            //leaderboard.ToDate = DateTime.Now.AddDays(7).StartOfWeek(DayOfWeek.Sunday).AddSeconds(24 * 60 * 60 - 1).ToUniversalTime();
+
+            loadScores(leaderboard, success, failed);
+        }
+
+        public static void LoadLast24HoursScores(Action<IEnumerable<Score>> success, Action<SKError> failed)
+        {
+            _ensureInitialized();
+
+            SKLeaderboard leaderboard = new SKLeaderboard(LeaderboardID);
+
+            leaderboard.OrderBy = "score";
+            leaderboard.Direction = "desc";
+            leaderboard.PageSize = 10;
+
+            leaderboard.FromDate = DateTime.Now.AddHours(-24).ToUniversalTime();
+            leaderboard.ToDate = DateTime.Now.ToUniversalTime();
+
+            loadScores(leaderboard, success, failed);
         }
     }
 }

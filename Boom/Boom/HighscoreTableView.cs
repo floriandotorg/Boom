@@ -27,7 +27,6 @@ namespace Boom
             public bool User;
         }
 
-        private Highscore _highscore;
         private List<Entry> _entries;
         private int  _userScore;
         private string _text, _userName;
@@ -42,7 +41,6 @@ namespace Boom
         {
             base.Initialize();
 
-            _highscore = new Highscore();
             _entries = new List<Entry>();
         }
 
@@ -57,7 +55,7 @@ namespace Boom
         {
             _text = "loading ..";
 
-            _highscore.GetScores(ListLenght,
+            Highscore.LoadAllTimeScores(
                 scores =>
                 {
                     foreach (var score in scores)
@@ -71,7 +69,7 @@ namespace Boom
                         {
                             break;
                         }
-                        _entries.Add(new Entry() { Name = score.Key, Score = score.Value, User = false });
+                        _entries.Add(new Entry() { Name = score.Name, Score = score.Value, User = false });
                         if (_entries.Count >= ListLenght)
                         {
                             break;
@@ -196,7 +194,7 @@ namespace Boom
                     _userEntry.User = false;
                     _userEntry = null;
 
-                    _highscore.Submit(error => System.Diagnostics.Debug.WriteLine(error), name, _userScore);
+                    Highscore.SubmitScore(name, _userScore, error => System.Diagnostics.Debug.WriteLine(error));
                 }
             }
         }

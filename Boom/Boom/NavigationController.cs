@@ -18,6 +18,8 @@ namespace Boom
         public NavigationController(GraphicsDeviceManager graphics)
             : base(graphics)
         {
+            Highscore.Initialize(error => { });
+
             graphics.IsFullScreen = true;
             graphics.SupportedOrientations = DisplayOrientation.Portrait;
             graphics.PreferredBackBufferWidth = 480;
