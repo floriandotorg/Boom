@@ -86,25 +86,5 @@ namespace Boom
                 //ShowOverlay(new PopupView(new HighscoreShareView()), true);
             }
         }
-
-        public override bool BackButtonPressed()
-        {
-            if (!base.BackButtonPressed())
-            {
-                if (Overlay != null)
-                {
-                    Overlay.Dismiss(true);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return true;
-            }
-        }
     }
 }
