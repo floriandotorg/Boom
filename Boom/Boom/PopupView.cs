@@ -22,6 +22,13 @@ namespace Boom
             _contentView = contentView;
         }
 
+        public override void LoadContent()
+        {
+            base.LoadContent();
+
+            BackgroundColor = new Color(70, 70, 70) * .8f;
+        }
+
         public override void Update(GameTime gameTime, AnimationInfo animationInfo)
         {
             base.Update(gameTime, animationInfo);
@@ -44,8 +51,6 @@ namespace Boom
         public override void Draw(GameTime gameTime, AnimationInfo animationInfo)
         {
             base.Draw(gameTime, animationInfo);
-
-            SpriteBatch.Draw(Load<Texture2D>("Rectangle"), Superview.RectangleToSystem(Viewport.Bounds), new Color(80, 80, 80) * .8f * animationInfo.Value);
 
             SpriteBatch.Draw(Load<Texture2D>("Rectangle"), contentRectangle(animationInfo), Color.Black);
         }

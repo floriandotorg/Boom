@@ -52,7 +52,7 @@ namespace Boom
             _youAreLabel.Text = "You are";
             _youAreLabel.Font = Load<SpriteFont>("InGameFont");
 
-            _rankLabel.Text = "#10 on today's Highscore";
+            _rankLabel.Text = "#10 on today's highscore";
             _rankLabel.Font = Load<SpriteFont>("InGameFont");
 
             _twitterButton.BackgroundTexture = Load<Texture2D>("TwitterButtonTexture");
