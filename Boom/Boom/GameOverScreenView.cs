@@ -69,10 +69,10 @@ namespace Boom
             base.LayoutSubviews();
 
             CenterSubview(_titleLabel, -250);
-            CenterSubview(_yourScoreLabel, -140);
-            CenterSubview(_scoreLabel, -110);
+            CenterSubview(_yourScoreLabel, -150);
+            CenterSubview(_scoreLabel, -120);
 
-            _highscoreTabView.Height = 350;
+            _highscoreTabView.Height = 385;
             _highscoreTabView.Width = 300;
             CenterSubview(_highscoreTabView, 140);
         }

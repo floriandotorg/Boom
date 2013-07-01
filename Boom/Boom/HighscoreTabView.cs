@@ -150,6 +150,10 @@ namespace Boom
             _weeklyTable.Visible = false;
             _allTimeTable.Visible = false;
 
+            _dailyButton.Color = Color.White;
+            _weeklyButton.Color = Color.Gray;
+            _allTimeButton.Color = Color.Gray;
+
             _dailyButton.Font = Load<SpriteFont>("InGameBoldFont");
             _weeklyButton.Font = Load<SpriteFont>("InGameFont");
             _allTimeButton.Font = Load<SpriteFont>("InGameFont");
@@ -163,6 +167,10 @@ namespace Boom
             _weeklyTable.Visible = true;
             _allTimeTable.Visible = false;
 
+            _dailyButton.Color = Color.Gray;
+            _weeklyButton.Color = Color.White;
+            _allTimeButton.Color = Color.Gray;
+
             _dailyButton.Font = Load<SpriteFont>("InGameFont");
             _weeklyButton.Font = Load<SpriteFont>("InGameBoldFont");
             _allTimeButton.Font = Load<SpriteFont>("InGameFont");
@@ -175,6 +183,10 @@ namespace Boom
             _dailyTable.Visible = false;
             _weeklyTable.Visible = false;
             _allTimeTable.Visible = true;
+
+            _dailyButton.Color = Color.Gray;
+            _weeklyButton.Color = Color.Gray;
+            _allTimeButton.Color = Color.White;
 
             _dailyButton.Font = Load<SpriteFont>("InGameFont");
             _weeklyButton.Font = Load<SpriteFont>("InGameFont");
@@ -193,7 +205,7 @@ namespace Boom
 
             _dailyButton.AutoResize = false;
             _dailyButton.HorizontalAlignment = HorizontalAlignment.Left;
-            _dailyButton.VerticalAlignment = VerticalAlignment.Top;
+            _dailyButton.VerticalAlignment = VerticalAlignment.Center;
             _dailyButton.Text = "Today";
             _dailyButton.Tap += switchToDaily;
             _dailyButton.Font = Load<SpriteFont>("InGameFont");
@@ -201,7 +213,7 @@ namespace Boom
 
             _weeklyButton.AutoResize = false;
             _weeklyButton.HorizontalAlignment = HorizontalAlignment.Center;
-            _weeklyButton.VerticalAlignment = VerticalAlignment.Top;
+            _weeklyButton.VerticalAlignment = VerticalAlignment.Center;
             _weeklyButton.Text = "This Week";
             _weeklyButton.Tap += switchToWeekly;
             _weeklyButton.Font = Load<SpriteFont>("InGameFont");
@@ -209,7 +221,7 @@ namespace Boom
 
             _allTimeButton.AutoResize = false;
             _allTimeButton.HorizontalAlignment = HorizontalAlignment.Right;
-            _allTimeButton.VerticalAlignment = VerticalAlignment.Top;
+            _allTimeButton.VerticalAlignment = VerticalAlignment.Center;
             _allTimeButton.Text = "All Time";
             _allTimeButton.Tap += switchToAllTime;
             _allTimeButton.Font = Load<SpriteFont>("InGameFont");
@@ -230,9 +242,9 @@ namespace Boom
         private void layoutTable(View table)
         {
             table.X = 10;
-            table.Y = 15;
+            table.Y = 0;
             table.Width = Width - table.X * 2;
-            table.Height = Height - table.Y;
+            table.Height = Height - 70;
         }
 
         public override void LayoutSubviews()
@@ -243,20 +255,22 @@ namespace Boom
             layoutTable(_weeklyTable);
             layoutTable(_allTimeTable);
 
+            int buttonWidth = Convert.ToInt32((float)Width / 3f);
+
             _dailyButton.X = 0;
-            _dailyButton.Y = 0;
-            _dailyButton.Height = 50;
-            _dailyButton.Width = Convert.ToInt32((float)Width / 3f);
+            _dailyButton.Y = Height - 75;
+            _dailyButton.Height = 75;
+            _dailyButton.Width = buttonWidth;
 
-            _weeklyButton.X = _dailyButton.Width;
-            _weeklyButton.Y = 0;
-            _weeklyButton.Height = 50;
-            _weeklyButton.Width = _dailyButton.Width;
+            _weeklyButton.X = buttonWidth;
+            _weeklyButton.Y = Height - 75;
+            _weeklyButton.Height = 75;
+            _weeklyButton.Width = buttonWidth;
 
-            _allTimeButton.X = _dailyButton.Width * 2;
-            _allTimeButton.Y = 0;
-            _allTimeButton.Height = 50;
-            _allTimeButton.Width = _dailyButton.Width;
+            _allTimeButton.X = buttonWidth * 2;
+            _allTimeButton.Y = Height - 75;
+            _allTimeButton.Height = 75;
+            _allTimeButton.Width = buttonWidth;
 
             CenterSubview(_loadingLabel, 0);
             CenterSubview(_unableToLoadLabel, 0);
@@ -271,9 +285,9 @@ namespace Boom
                 {
                     LoadScores();
                 }
-                else if ((_dailyTable.Visible && _dailyTable.HasUserScore) || 
-                    (_dailyTable.Visible && _weeklyTable.HasUserScore) || 
-                    (_dailyTable.Visible && _allTimeTable.HasUserScore))
+                else if ((_dailyTable.Visible && _dailyTable.HasUserScore) ||
+                    (_weeklyTable.Visible && _weeklyTable.HasUserScore) ||
+                    (_allTimeTable.Visible && _allTimeTable.HasUserScore))
                 {
                     ShowKeyboardInput(GameSettings.HighscoreLastUsername);
                 }

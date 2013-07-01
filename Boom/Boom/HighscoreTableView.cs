@@ -133,12 +133,14 @@ namespace Boom
                         color = Color.Red;
                     }
 
-                    Vector2 position = new Vector2(0, ++n * gap);
+                    Vector2 position = new Vector2(0, n * gap);
                     SpriteBatch.DrawString(font, entry.Name, Vector2ToSystem(position), color * animationInfo.Value);
 
                     string val = Convert.ToString(entry.Score);
                     position = new Vector2(Width - font.MeasureString(val).X, + n * gap);
                     SpriteBatch.DrawString(font, val, Vector2ToSystem(position), color * animationInfo.Value);
+
+                    ++n;
                 }
             }
         }
