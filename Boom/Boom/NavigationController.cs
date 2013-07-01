@@ -18,7 +18,7 @@ namespace Boom
         public NavigationController(GraphicsDeviceManager graphics)
             : base(graphics)
         {
-            Highscore.Initialize(error => { });
+            Highscore.Initialize(error => { if (error != null) System.Diagnostics.Debug.WriteLine(error.LocalizedDescription); else System.Diagnostics.Debug.WriteLine("Highscore sccuess"); });
 
             graphics.IsFullScreen = true;
             graphics.SupportedOrientations = DisplayOrientation.Portrait;

@@ -20,20 +20,6 @@ namespace Boom
         }
     }
 
-    //public static class DateTimeExtensions
-    //{
-    //    public static DateTime StartOfWeek(this DateTime dt, DayOfWeek startOfWeek)
-    //    {
-    //        int diff = dt.DayOfWeek - startOfWeek;
-    //        if (diff < 0)
-    //        {
-    //            diff += 7;
-    //        }
-
-    //        return dt.AddDays(-1 * diff).Date;
-    //    }
-    //}
-
     public enum HighscoreState
     {
         NotInitialized,
@@ -94,7 +80,7 @@ namespace Boom
 
             _player = SKLocalPlayer.CreatePlayer();
 
-            authenticate(
+            _player.Authenticate(
                 error =>
                 {
                     if (error != null)
@@ -106,46 +92,36 @@ namespace Boom
                                 {
                                     if (create_error != null)
                                     {
+                                        _state = HighscoreState.NotInitialized;
                                         callback(create_error);
                                     }
                                     else
                                     {
-                                        authenticate(callback);
+                                        _player.Authenticate(authenticate_error =>
+                                            {
+                                                if (authenticate_error != null)
+                                                {
+                                                    _state = HighscoreState.NotInitialized;
+                                                    callback(authenticate_error);
+                                                }
+                                                else
+                                                {
+                                                    _state = HighscoreState.Initialized;
+                                                    callback(null);
+                                                }
+                                            });
                                     }
                                 });
                         }
                         else
                         {
+                            _state = HighscoreState.NotInitialized;
                             callback(error);
                         }
                     }
                     else
                     {
-                        callback(null);
-                    }
-                });
-        }
-
-        private static void authenticate(Action<SKError> callback)
-        {
-            _player.Authenticate(error =>
-                {
-                    if (error != null)
-                    {
-                        if (_state == HighscoreState.Initializing)
-                        {
-                            _state = HighscoreState.NotInitialized;
-                        }
-
-                        callback(error);
-                    }
-                    else
-                    {
-                        if (_state == HighscoreState.Initializing)
-                        {
-                            _state = HighscoreState.Initialized;
-                        }
-
+                        _state = HighscoreState.Initialized;
                         callback(null);
                     }
                 });
@@ -229,9 +205,6 @@ namespace Boom
 
             leaderboard.FromDate = DateTime.Now.AddDays(-7).ToUniversalTime();
             leaderboard.ToDate = DateTime.Now.ToUniversalTime();
-
-            //leaderboard.FromDate = DateTime.Now.StartOfWeek(DayOfWeek.Monday).ToUniversalTime();
-            //leaderboard.ToDate = DateTime.Now.AddDays(7).StartOfWeek(DayOfWeek.Sunday).AddSeconds(24 * 60 * 60 - 1).ToUniversalTime();
 
             loadScores(leaderboard, success, failed);
         }
