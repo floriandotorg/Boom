@@ -26,7 +26,7 @@ namespace Boom
 
     class HighscoreTableView : View
     {
-        private const int ListLenght = 10;
+        private readonly int ListLenght = 10;
 
         private class Entry
         {
@@ -69,9 +69,9 @@ namespace Boom
 
                     foreach (var score in scores)
                     {
-                        if (_userEntry == null && _highscoreTabView.UserScore > score.Value)
+                        if (_userEntry == null && _highscoreTabView.UserScore != null && _highscoreTabView.UserScore > score.Value)
                         {
-                            _userEntry = new Entry() { Name = "Tap to enter name", Score = _highscoreTabView.UserScore, NewScore = true, UserScore = true };
+                            _userEntry = new Entry() { Name = "Tap to enter name", Score = _highscoreTabView.UserScore.Value, NewScore = true, UserScore = true };
                             _entries.Add(_userEntry);
                             HasUserScore = true;
                         }
@@ -86,9 +86,9 @@ namespace Boom
                         }
                     }
 
-                    if (_userEntry == null && _entries.Count < ListLenght && _highscoreTabView.UserScore > 0)
+                    if (_userEntry == null && _entries.Count < ListLenght && _highscoreTabView.UserScore != null)
                     {
-                        _userEntry = new Entry() { Name = "Tap to enter name", Score = _highscoreTabView.UserScore, NewScore = true, UserScore = true };
+                        _userEntry = new Entry() { Name = "Tap to enter name", Score = _highscoreTabView.UserScore.Value, NewScore = true, UserScore = true };
                         _entries.Add(_userEntry);
                         HasUserScore = true;
                     }

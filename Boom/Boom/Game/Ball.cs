@@ -13,9 +13,9 @@ namespace Boom
     {
         private Viewport viewport;
 
-        public const float RadiusNormalSize = 10;
-        public const float RadiusHugeSize = 65.0f;
-        private const int radiusSizeingSpeed = 25;
+        public static readonly float RadiusNormalSize = 10;
+        public static readonly float RadiusHugeSize = 65.0f;
+        private static readonly int radiusSizeingSpeed = 25;
 
         private SineValue radius = new SineValue(RadiusHugeSize, radiusSizeingSpeed) { Value = RadiusNormalSize };
 
@@ -24,8 +24,8 @@ namespace Boom
         private Texture2D texture;
         private Vector2 center;
 
-        private const int numHugeUpdatesToShrink = 22;
-        private const int numHugeUpdatesToDie = 15;
+        private readonly int numHugeUpdatesToShrink = 22;
+        private readonly int numHugeUpdatesToDie = 15;
         private int updateCounter;
 
         public Vector2 Center

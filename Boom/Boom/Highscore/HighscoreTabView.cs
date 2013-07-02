@@ -18,17 +18,17 @@ namespace Boom
 {
     class HighscoreTabView : View
     {
-        private const int MaxInitHighscoreAttemps = 3;
+        private readonly int MaxInitHighscoreAttemps = 3;
 
         private HighscoreTableView _dailyTable, _weeklyTable, _allTimeTable;
         private Button _dailyButton, _weeklyButton, _allTimeButton;
         private Label _loadingLabel, _unableToLoadLabel, _tapToRetryLabel;
 
         private int _initHighscoreAttemps;
-        public int UserScore;
+        public int? UserScore;
         private string _userName;
 
-        public HighscoreTabView(int userScore)
+        public HighscoreTabView(int? userScore)
         {
             UserScore = userScore;
         }
@@ -110,15 +110,15 @@ namespace Boom
                 {
                     if (_allTimeTable.HasUserScore)
                     {
-                        switchToAllTime(null);
+                        switchToAllTime();
                     }
                     else if (_weeklyTable.HasUserScore)
                     {
-                        switchToWeekly(null);
+                        switchToWeekly();
                     }
                     else
                     {
-                        switchToDaily(null);
+                        switchToDaily();
                     }
                 }
             }
@@ -158,7 +158,7 @@ namespace Boom
             LoadScores();
         }
 
-        private void switchToDaily(object sender)
+        private void switchToDaily()
         {
             _dailyTable.Visible = true;
             _weeklyTable.Visible = false;
@@ -175,7 +175,7 @@ namespace Boom
             NeedsRelayout = true;
         }
 
-        private void switchToWeekly(object sender)
+        private void switchToWeekly()
         {
             _dailyTable.Visible = false;
             _weeklyTable.Visible = true;
@@ -192,7 +192,7 @@ namespace Boom
             NeedsRelayout = true;
         }
 
-        private void switchToAllTime(object sender)
+        private void switchToAllTime()
         {
             _dailyTable.Visible = false;
             _weeklyTable.Visible = false;
@@ -221,7 +221,7 @@ namespace Boom
             _dailyButton.HorizontalAlignment = HorizontalAlignment.Center;
             _dailyButton.VerticalAlignment = VerticalAlignment.Center;
             _dailyButton.Text = "Today";
-            _dailyButton.Tap += switchToDaily;
+            _dailyButton.Tap += (sender) => { switchToDaily(); };
             _dailyButton.Font = Load<SpriteFont>("InGameFont");
             _dailyButton.Visible = false;
 
@@ -229,7 +229,7 @@ namespace Boom
             _weeklyButton.HorizontalAlignment = HorizontalAlignment.Center;
             _weeklyButton.VerticalAlignment = VerticalAlignment.Center;
             _weeklyButton.Text = "This Week";
-            _weeklyButton.Tap += switchToWeekly;
+            _weeklyButton.Tap += (sender) => { switchToWeekly(); };
             _weeklyButton.Font = Load<SpriteFont>("InGameFont");
             _weeklyButton.Visible = false;
 
@@ -237,7 +237,7 @@ namespace Boom
             _allTimeButton.HorizontalAlignment = HorizontalAlignment.Center;
             _allTimeButton.VerticalAlignment = VerticalAlignment.Center;
             _allTimeButton.Text = "All Time";
-            _allTimeButton.Tap += switchToAllTime;
+            _allTimeButton.Tap += (sender) => { switchToAllTime(); };
             _allTimeButton.Font = Load<SpriteFont>("InGameFont");
             _allTimeButton.Visible = false;
 
@@ -349,7 +349,7 @@ namespace Boom
                 }
                 else
                 {
-                    Highscore.SubmitScore(name, UserScore,
+                    Highscore.SubmitScore(name, UserScore.Value,
                         error =>
                         {
                             if (error != null)

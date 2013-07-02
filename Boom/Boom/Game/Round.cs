@@ -32,7 +32,7 @@ namespace Boom
 
     class Round
     {
-        private const float _ballVelocity = 1.5f;
+        private readonly float _ballVelocity = 1.5f;
 
         private IRoundDelegate _roundDelegate;
 

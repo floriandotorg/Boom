@@ -8,13 +8,13 @@ namespace Boom
 {
     class GameSettings : GameSettings<GameSettings>
     {
-        public const string RemoveAdsProductId = "RemoveAds";
+        public static readonly string RemoveAdsProductId = "RemoveAds";
 
-        private const string SpeakerSettingsKey = "Speaker";
-        private const string CurrentRoundSettingsKey = "CurrentRound";
-        private const string CurrentScoreSettingsKey = "CurrentScore";
-        private const string HighscorePlayerIDSettingsKey = "HighscorePlayerIDSettingsKey";
-        private const string HighscoreLastUsernameSettingsKey = "HighscoreLastUsername";
+        private static readonly string SpeakerSettingsKey = "Speaker";
+        private static readonly string CurrentRoundSettingsKey = "CurrentRound";
+        private static readonly string CurrentScoreSettingsKey = "CurrentScore";
+        private static readonly string HighscorePlayerIDSettingsKey = "HighscorePlayerIDSettingsKey";
+        private static readonly string HighscoreLastUsernameSettingsKey = "HighscoreLastUsername";
 
         protected override void Initialize()
         {

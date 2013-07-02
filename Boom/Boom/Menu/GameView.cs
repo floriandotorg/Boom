@@ -16,9 +16,9 @@ namespace Boom
     class GameView : View, IRoundDelegate
     {
 #if DEBUG
-        private const int NumRounds = 3;
+        private readonly int NumRounds = 3;
 #else
-        private const int NumRounds = 12;
+        private readonly int NumRounds = 12;
 #endif
 
         private Round _round;

@@ -29,13 +29,13 @@ namespace Boom
 
     class Highscore
     {
-        public const string LeaderboardID = "1";
+        public static readonly string LeaderboardID = "1";
 
-        public const string Apikey = "a59a292915406d8b865c894c9ed5eef94a7c12e3";
-        public const string GameID = "f106029924";
-        public const string Platform = "WP7";
+        public static readonly string Apikey = "a59a292915406d8b865c894c9ed5eef94a7c12e3";
+        public static readonly string GameID = "f106029924";
+        public static readonly string Platform = "WP7";
 
-        public const string SecurityKey = "3d5fa25b";
+        public static readonly string SecurityKey = "3d5fa25b";
 
         private static HighscoreState _state = HighscoreState.NotInitialized;
         public static HighscoreState State

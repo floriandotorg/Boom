@@ -25,7 +25,7 @@ namespace Boom
             _titleLabel = new Label();
             AddSubview(_titleLabel);
 
-            _highscoreTabView = new HighscoreTabView(-1);
+            _highscoreTabView = new HighscoreTabView(null);
             AddSubview(_highscoreTabView);
         }
 

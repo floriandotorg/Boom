@@ -55,7 +55,7 @@ namespace Boom
         {
             base.OverlayDimissed(overlay);
 
-            if (overlay.GetType() == typeof(MenuMainView))
+            if (overlay is MenuMainView)
             {
                 switch ((overlay as MenuMainView).PressedButton)
                 {
@@ -71,7 +71,7 @@ namespace Boom
                         throw new InvalidOperationException();
                 }
             }
-            else if (overlay.GetType() == typeof(MenuInfoView) || overlay.GetType() == typeof(MenuHighscoreView))
+            else if (overlay is MenuInfoView || overlay is MenuHighscoreView)
             {
                 ShowOverlay(new MenuMainView(startOrResume), true);
             }
@@ -81,7 +81,7 @@ namespace Boom
         {
             if (!base.BackButtonPressed())
             {
-                if (Overlay.GetType() == typeof(MenuInfoView) || Overlay.GetType() == typeof(MenuHighscoreView))
+                if (Overlay is MenuInfoView || Overlay is MenuHighscoreView)
                 {
                     Overlay.Dismiss(true);
                 }

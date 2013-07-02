@@ -140,7 +140,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Utility\Program.cs" />
-    <None Include="Utility\BoomGame_alt.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Ads\defaultAdSettings.xml">
