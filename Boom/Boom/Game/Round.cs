@@ -169,8 +169,8 @@ namespace Boom
 
                 if (_roundDelegate.IsTutorial)
                 {
-                    center = new Vector2(_viewport.Width / 2 - Ball.RadiusNormalSize / 2, 275 + i * Ball.RadiusHugeSize);
-                    velocity = new Vector2(0);
+                    center = new Vector2(_viewport.Width / 2 - Ball.RadiusNormalSize / 2, 265 + i * Ball.RadiusHugeSize);
+                    velocity = Vector2.Zero;
                 }
                 else
                 {
@@ -301,7 +301,7 @@ namespace Boom
         {
             if (_state == State.InGame && !catcher)
             {
-                balls[0] = new Ball(_viewport, Color.White, _ballTexture, touch.Position, new Vector2(0));
+                balls[0] = new Ball(_viewport, Color.White, _ballTexture, touch.Position, Vector2.Zero);
                 balls[0].Collision();
                 catcher = true;
             }

@@ -152,7 +152,7 @@ namespace Boom
 
             _currentRound = GameSettings.CurrentRound;
 
-            if (true || _currentRound < 2)
+            if (_currentRound < 2)
             {
                 CenterSubview(_startButton, pos);
                 pos += menuItemGap;

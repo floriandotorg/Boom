@@ -57,7 +57,7 @@ namespace Boom
         {
             get
             {
-                return new RoundSettings(5, 0, 0, false);
+                return new RoundSettings(8, 0, 0, false);
             }
         }
 
