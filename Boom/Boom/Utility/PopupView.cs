@@ -39,7 +39,8 @@ namespace Boom
 
                 _contentView.Bounds = contentRectangle(animationInfo);
             }
-        }
+        }
+
         private Rectangle contentRectangle(AnimationInfo animationInfo)
         {
             int height = Convert.ToInt32(((float)Height / 4f) * animationInfo.Value);

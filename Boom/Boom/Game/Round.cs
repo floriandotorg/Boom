@@ -314,7 +314,7 @@ namespace Boom
                 ball.Draw(spriteBatch, animationInfo);
             }
 
-            if (_roundDelegate.ShouldShowOverlays && (_state == State.InGame || _state == State.StartScreen || _state == State.FailedScreen))
+            if (_roundDelegate.ShouldShowOverlays && _state == State.InGame)
             {
                 string text = "Points: " + Score + "/" + _roundSettings.Goal + " of " + _roundSettings.NumBalls;
                 Vector2 position = new Vector2(10, _viewport.Height - _font.MeasureString(text).Y - 10);

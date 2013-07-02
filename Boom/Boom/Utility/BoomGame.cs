@@ -45,6 +45,8 @@ namespace Boom
         /// </summary>
         protected override void Initialize()
         {
+            AdManager.Initialize(this);
+
             _navigationController.Initialize();
 
             base.Initialize();

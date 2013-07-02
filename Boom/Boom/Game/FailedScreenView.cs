@@ -13,11 +13,10 @@ using Pages;
 
 namespace Boom
 {
-    class FailedScreenView : View
+    class FailedScreenView : Screen
     {
         private string _scoreText, _goalText;
         private Label _headerLabel, _goalLabel, _tapToRetryLabel, _currentScoreLabel, _scoreLabel;
-        private SpeakerButton _speakerButton;
 
         public FailedScreenView(string goalText, string scoreText)
         {
@@ -43,9 +42,6 @@ namespace Boom
 
             _scoreLabel = new Label();
             AddSubview(_scoreLabel);
-
-            _speakerButton = new SpeakerButton();
-            AddSubview(_speakerButton);
         }
 
         public override void LoadContent()
@@ -82,16 +78,6 @@ namespace Boom
             CenterSubview(_tapToRetryLabel, (int)((-h / 2f) + h * .382f));
             CenterSubview(_currentScoreLabel, (int)((-h / 2f) + h - 50));
             CenterSubview(_scoreLabel, (int)((-h / 2f) + h - 50) + 40);
-        }
-
-        public override bool TouchDown(TouchLocation location)
-        {
-            if (!base.TouchDown(location))
-            {
-                Dismiss(true);
-            }
-
-            return true;
         }
     }
 }

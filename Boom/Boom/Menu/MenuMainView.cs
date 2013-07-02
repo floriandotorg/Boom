@@ -145,10 +145,10 @@ namespace Boom
             base.LayoutSubviews();
 
             int menuItemGap = 100;
-            int pos = -265;
+            int pos = -235;
 
             CenterSubview(_titleLabel, pos);
-            pos += 200;
+            pos += 170;
 
             _currentRound = GameSettings.CurrentRound;
 

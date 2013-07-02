@@ -113,13 +113,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DefaultAdImageTexture.png">
-      <Name>DefaultAdImageTexture</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="TwitterButtonTexture.png">
       <Name>TwitterButtonTexture</Name>
       <Importer>TextureImporter</Importer>

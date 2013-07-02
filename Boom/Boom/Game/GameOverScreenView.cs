@@ -13,14 +13,13 @@ using Pages;
 
 namespace Boom
 {
-    class GameOverScreenView : View
+    class GameOverScreenView : Screen
     {
         private Label _titleLabel, _yourScoreLabel, _scoreLabel;
         private HighscoreTabView _highscoreTabView;
         private int _score;
-        private SpeakerButton _speakerButton;
 
-        public GameOverScreenView(int score)
+        public GameOverScreenView(int score) : base(false)
         {
             _score = score;
         }
@@ -40,9 +39,6 @@ namespace Boom
 
             _highscoreTabView = new HighscoreTabView(_score);
             AddSubview(_highscoreTabView);
-
-            _speakerButton = new SpeakerButton();
-            AddSubview(_speakerButton);
         }
 
         public override void LoadContent()

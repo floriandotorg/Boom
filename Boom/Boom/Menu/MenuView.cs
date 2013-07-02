@@ -17,6 +17,7 @@ namespace Boom
     {
         Round _round;
         SpeakerButton _speakerButton;
+        RemoveAdsButton _removeAdsButton;
 
         public override void Initialize()
         {
@@ -24,6 +25,9 @@ namespace Boom
 
             _speakerButton = new SpeakerButton();
             AddSubview(_speakerButton);
+
+            _removeAdsButton = new RemoveAdsButton();
+            AddSubview(_removeAdsButton);
         }
 
         public override void LoadContent()

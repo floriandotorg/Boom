@@ -5,7 +5,6 @@
       <Probabilities Probability="34" AdType="InnerActive" AppID="Floyd_Boom_WP" />
       <Probabilities Probability="33" AdType="PubCenter" AppID="2d930bca-1fb1-4b4f-90e7-8a810164f4fc" SecondaryID="10072406" />
       <Probabilities Probability="33" AdType="AdDuplex" AppID="41007" />
-      <Probabilities AdType="DefaultHouseAd" />
     </AdCultureDescriptor>
   </CultureDescriptors>
 </AdSettings>

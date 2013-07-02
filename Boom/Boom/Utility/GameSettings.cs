@@ -8,6 +8,8 @@ namespace Boom
 {
     class GameSettings : GameSettings<GameSettings>
     {
+        public const string RemoveAdsProductId = "RemoveAds";
+
         private const string SpeakerSettingsKey = "Speaker";
         private const string CurrentRoundSettingsKey = "CurrentRound";
         private const string CurrentScoreSettingsKey = "CurrentScore";

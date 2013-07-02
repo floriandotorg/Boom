@@ -85,6 +85,7 @@
     <Reference Include="System.Xml.Serialization, Version=2.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ads\AdManager.cs" />
     <Compile Include="Ads\AdRotator\AdProviderComponents\AdDuplexComponent.cs" />
     <Compile Include="Ads\AdRotator\AdProviderComponents\AdInneractiveComponent.cs" />
     <Compile Include="Ads\AdRotator\AdProviderComponents\AdMobfoxComponent.cs" />
@@ -103,7 +104,10 @@
     <Compile Include="Ads\AdRotator\Networking\AdWebResponse.cs" />
     <Compile Include="Ads\AdRotator\Networking\NetworkExtensions.cs" />
     <Compile Include="Ads\AdRotator\Networking\NetworkWire.cs" />
+    <Compile Include="Ads\RemoveAdsButton.cs" />
+    <Compile Include="Ads\Store.cs" />
     <Compile Include="Game\Ball.cs" />
+    <Compile Include="Game\Screen.cs" />
     <Compile Include="Utility\BoomGame.cs" />
     <Compile Include="Highscore\HighscoreShareView.cs" />
     <Compile Include="Highscore\HighscoreTabView.cs" />
