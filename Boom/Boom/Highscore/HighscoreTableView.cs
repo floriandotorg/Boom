@@ -37,7 +37,22 @@ namespace Boom
         }
 
         public HighscoreTableViewState State;
-        public bool HasUserScore;
+
+        public bool HasUserScore
+        {
+            get
+            {
+                return _userEntry != null;
+            }
+        }
+
+        public int UserRank
+        {
+            get
+            {
+                return _entries.IndexOf(_userEntry) + 1;
+            }
+        }
 
         private List<Entry> _entries;
         private Entry _userEntry;
@@ -55,7 +70,6 @@ namespace Boom
         {
             base.Initialize();
 
-            HasUserScore = false;
             _entries = new List<Entry>();
         }
 
@@ -64,8 +78,8 @@ namespace Boom
             _loadHighscoreAction(
                 scores =>
                 {
+                    _userEntry = null;
                     _entries.Clear();
-                    HasUserScore = false;
 
                     foreach (var score in scores)
                     {
@@ -73,13 +87,15 @@ namespace Boom
                         {
                             _userEntry = new Entry() { Name = "Tap to enter name", Score = _highscoreTabView.UserScore.Value, NewScore = true, UserScore = true };
                             _entries.Add(_userEntry);
-                            HasUserScore = true;
                         }
+
                         if (_entries.Count >= ListLenght)
                         {
                             break;
                         }
+
                         _entries.Add(new Entry() { Name = score.Name, Score = score.Value, NewScore = false, UserScore = score.IsLocalePlayer });
+                        
                         if (_entries.Count >= ListLenght)
                         {
                             break;
@@ -90,7 +106,6 @@ namespace Boom
                     {
                         _userEntry = new Entry() { Name = "Tap to enter name", Score = _highscoreTabView.UserScore.Value, NewScore = true, UserScore = true };
                         _entries.Add(_userEntry);
-                        HasUserScore = true;
                     }
 
                     State = HighscoreTableViewState.Loaded;

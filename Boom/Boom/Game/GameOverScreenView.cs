@@ -72,15 +72,5 @@ namespace Boom
             _highscoreTabView.Width = 320;
             CenterSubview(_highscoreTabView, 140);
         }
-
-        public override void Update(GameTime gameTime, AnimationInfo animationInfo)
-        {
-            base.Update(gameTime, animationInfo);
-
-            if (animationInfo.State == AnimationState.Visible && Overlay == null)
-            {
-                //ShowOverlay(new PopupView(new HighscoreShareView()), true);
-            }
-        }
     }
 }

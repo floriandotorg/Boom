@@ -47,11 +47,23 @@ namespace Boom
             return new Rectangle(0, Height / 2 - height / 2, Width, height);
         }
 
+        private Rectangle crossRectangle(AnimationInfo animationInfo)
+        {
+            Rectangle rect = contentRectangle(animationInfo);
+            Texture2D crossTexture = Load<Texture2D>("CrossTexture");
+            return RectangleToSystem(new Rectangle(rect.X + Width - crossTexture.Width - 10, rect.Y + 10, crossTexture.Width, crossTexture.Height));
+        }
+
         public override void Draw(GameTime gameTime, AnimationInfo animationInfo)
         {
             base.Draw(gameTime, animationInfo);
 
             SpriteBatch.Draw(Load<Texture2D>("Rectangle"), contentRectangle(animationInfo), Color.Black);
+
+            if (Overlay != null)
+            {
+                SpriteBatch.Draw(Load<Texture2D>("CrossTexture"), crossRectangle(animationInfo), new Color(30, 30, 30) * OverlayAnimationInfo.Value);
+            }
         }
 
         public override bool TouchDown(TouchLocation location)
@@ -59,13 +71,10 @@ namespace Boom
             if (!base.TouchDown(location))
             {
                 if (Overlay != null && OverlayAnimationInfo.State == AnimationState.Visible
-                    && !contentRectangle(OverlayAnimationInfo).Contains(Utility.Vector2ToPoint(Vector2ToLocale(location.Position))))
+                    && (!contentRectangle(OverlayAnimationInfo).Contains(Utility.Vector2ToPoint(Vector2ToLocale(location.Position)))
+                    || crossRectangle(OverlayAnimationInfo).Contains(Utility.Vector2ToPoint(location.Position))))
                 {
                     Overlay.Dismiss(true);
-                }
-                else
-                {
-                    return false;
                 }
             }
 

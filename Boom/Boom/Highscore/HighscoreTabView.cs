@@ -28,6 +28,51 @@ namespace Boom
         public int? UserScore;
         private string _userName;
 
+        private enum UserRankType
+        {
+            None = 0,
+            Daily,
+            Weekly,
+            AllTime
+        }
+
+        private struct UserRank
+        {
+            public UserRankType RankType;
+            public int Rank;
+
+            private string highscoreText
+            {
+                get
+                {
+                    switch(RankType)
+                    {
+                        case UserRankType.Daily: return "today's";
+                        case UserRankType.Weekly: return "this week's";
+                        case UserRankType.AllTime: default: return "the all-time";
+                    }
+                }
+            }
+
+            public string Text
+            {
+                get
+                {
+                    return "#" + Rank + " on " + highscoreText + " highscore!";
+                }
+            }
+
+            public string ShareText
+            {
+                get
+                {
+                    return "I'm #" + Rank + " on " + highscoreText + " highscore of Boom! for Windows Phone";
+                }
+            }
+        }
+
+        private UserRank _userRank;
+        
         public HighscoreTabView(int? userScore)
         {
             UserScore = userScore;
@@ -76,6 +121,7 @@ namespace Boom
         {
             if (Highscore.State != HighscoreState.Initialized)
             {
+                _initHighscoreAttemps = 0;
                 InitHighscore();
             }
             else
@@ -111,14 +157,28 @@ namespace Boom
                     if (_allTimeTable.HasUserScore)
                     {
                         switchToAllTime();
+                        _userRank.RankType = UserRankType.AllTime;
+                        _userRank.Rank = _allTimeTable.UserRank;
                     }
                     else if (_weeklyTable.HasUserScore)
                     {
                         switchToWeekly();
+
+                        if (_weeklyTable.UserRank <= 5)
+                        {
+                            _userRank.RankType = UserRankType.Weekly;
+                            _userRank.Rank = _weeklyTable.UserRank;
+                        }
                     }
                     else
                     {
                         switchToDaily();
+
+                        if (_dailyTable.UserRank <= 5)
+                        {
+                            _userRank.RankType = UserRankType.Daily;
+                            _userRank.Rank = _dailyTable.UserRank;
+                        }
                     }
                 }
             }
@@ -236,7 +296,7 @@ namespace Boom
             _allTimeButton.AutoResize = false;
             _allTimeButton.HorizontalAlignment = HorizontalAlignment.Center;
             _allTimeButton.VerticalAlignment = VerticalAlignment.Center;
-            _allTimeButton.Text = "All Time";
+            _allTimeButton.Text = "All-Time";
             _allTimeButton.Tap += (sender) => { switchToAllTime(); };
             _allTimeButton.Font = Load<SpriteFont>("InGameFont");
             _allTimeButton.Visible = false;
@@ -359,7 +419,15 @@ namespace Boom
                             else
                             {
                                 GameSettings.HighscoreLastUsername = name;
+
+                                UserScore = null;
+
                                 LoadScores();
+
+                                if (_userRank.RankType != UserRankType.None)
+                                {
+                                    Superview.ShowOverlay(new PopupView(new HighscoreShareView(_userRank.Text, _userRank.ShareText)), true);
+                                }
                             }
                         });
                 }

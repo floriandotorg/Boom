@@ -17,7 +17,14 @@ namespace Boom
     class HighscoreShareView : View
     {
         private Label _headerLabel, _youAreLabel, _rankLabel;
-        private Button _twitterButton, _facebookButton, _closeButton;
+        private Button _twitterButton, _facebookButton;
+        private string _text, _shareText;
+
+        public HighscoreShareView(string text, string shareText)
+        {
+            _text = text;
+            _shareText = shareText;
+        }
 
         public override void Initialize()
         {
@@ -37,9 +44,6 @@ namespace Boom
 
             _facebookButton = new Button();
             AddSubview(_facebookButton);
-
-            _closeButton = new Button();
-            //AddSubview(_closeButton);
         }
 
         public override void LoadContent()
@@ -52,7 +56,7 @@ namespace Boom
             _youAreLabel.Text = "You are";
             _youAreLabel.Font = Load<SpriteFont>("InGameFont");
 
-            _rankLabel.Text = "#10 on today's highscore";
+            _rankLabel.Text = _text;
             _rankLabel.Font = Load<SpriteFont>("InGameFont");
 
             _twitterButton.BackgroundTexture = Load<Texture2D>("TwitterButtonTexture");
@@ -68,10 +72,6 @@ namespace Boom
             _facebookButton.Height = _facebookButton.BackgroundTexture.Height;
             _facebookButton.Width = _facebookButton.BackgroundTexture.Width;
             _facebookButton.Tap += share;
-
-            _closeButton.Text = "Close";
-            _closeButton.Font = Load<SpriteFont>("InGameFont");
-            _closeButton.Tap += _closeButton_Tap;
         }
 
         private void share(object sender)
@@ -79,13 +79,8 @@ namespace Boom
             ShareLinkTask shareLinkTask = new ShareLinkTask();
             shareLinkTask.LinkUri = new Uri("http://bit.ly/19Y4EoN", UriKind.Absolute);
             shareLinkTask.Title = "Boom!";
-            shareLinkTask.Message = "I'm #1 on today's highscore of Boom! for Windows Phone";
+            shareLinkTask.Message = _shareText;
             shareLinkTask.Show();
-        }
-
-        void _closeButton_Tap(object sender)
-        {
-            Dismiss(true);
         }
 
         public override void LayoutSubviews()
@@ -106,9 +101,6 @@ namespace Boom
             CenterSubview(_facebookButton, 0);
             _facebookButton.X += 50;
             _facebookButton.Y = Height - 15 - _facebookButton.Height;
-
-            CenterSubview(_closeButton, 0);
-            _closeButton.Y = Height - 15 - _closeButton.Height;
         }
     }
 }
