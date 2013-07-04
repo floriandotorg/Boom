@@ -54,11 +54,19 @@ namespace Boom
                 }
             }
 
-            public string Text
+            public string TextLine1
             {
                 get
                 {
-                    return "#" + Rank + " on " + highscoreText + " highscore!";
+                    return "You are #" + Rank;
+                }
+            }
+
+            public string TextLine2
+            {
+                get
+                {
+                    return "on " + highscoreText + " highscore!";
                 }
             }
 
@@ -104,6 +112,7 @@ namespace Boom
                 else
                 {
                     unableToLoad();
+                    return;
                 }
             }
 
@@ -164,7 +173,7 @@ namespace Boom
                     {
                         switchToWeekly();
 
-                        if (_weeklyTable.UserRank <= 5)
+                        if (_weeklyTable.UserRank <= 3)
                         {
                             _userRank.RankType = UserRankType.Weekly;
                             _userRank.Rank = _weeklyTable.UserRank;
@@ -346,9 +355,9 @@ namespace Boom
             _allTimeButton.Height = 75;
             _allTimeButton.Width = buttonWidth;
 
-            CenterSubview(_loadingLabel, 0);
-            CenterSubview(_unableToLoadLabel, 0);
-            CenterSubview(_tapToRetryLabel, 60);
+            CenterSubview(_loadingLabel, -60);
+            CenterSubview(_unableToLoadLabel, -60);
+            CenterSubview(_tapToRetryLabel, 0);
         }
 
         public override bool TouchDown(TouchLocation location)
@@ -357,6 +366,17 @@ namespace Boom
             {
                 if (_tapToRetryLabel.Visible)
                 {
+                    _dailyTable.Visible = false;
+                    _weeklyTable.Visible = false;
+                    _allTimeTable.Visible = false;
+                    _dailyButton.Visible = false;
+                    _weeklyButton.Visible = false;
+                    _allTimeButton.Visible = false;
+                    _unableToLoadLabel.Visible = false;
+                    _tapToRetryLabel.Visible = false;
+
+                    _loadingLabel.Visible = true;
+
                     LoadScores();
                 }
                 else if ((_dailyTable.Visible && _dailyTable.HasUserScore) ||
@@ -426,7 +446,7 @@ namespace Boom
 
                                 if (_userRank.RankType != UserRankType.None)
                                 {
-                                    Superview.ShowOverlay(new PopupView(new HighscoreShareView(_userRank.Text, _userRank.ShareText)), true);
+                                    Superview.ShowOverlay(new PopupView(new HighscoreShareView(_userRank.TextLine1, _userRank.TextLine2, _userRank.ShareText)), true);
                                 }
                             }
                         });

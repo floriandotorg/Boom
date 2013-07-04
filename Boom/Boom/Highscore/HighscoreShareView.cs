@@ -18,11 +18,12 @@ namespace Boom
     {
         private Label _headerLabel, _youAreLabel, _rankLabel;
         private Button _twitterButton, _facebookButton;
-        private string _text, _shareText;
+        private string _textLine1, _textLine2, _shareText;
 
-        public HighscoreShareView(string text, string shareText)
+        public HighscoreShareView(string textLine1, string textLine2, string shareText)
         {
-            _text = text;
+            _textLine1 = textLine1;
+            _textLine2 = textLine2;
             _shareText = shareText;
         }
 
@@ -53,10 +54,10 @@ namespace Boom
             _headerLabel.Text = "Congratulations!";
             _headerLabel.Font = Load<SpriteFont>("InGameLargeFont");
 
-            _youAreLabel.Text = "You are";
+            _youAreLabel.Text = _textLine1;
             _youAreLabel.Font = Load<SpriteFont>("InGameFont");
 
-            _rankLabel.Text = _text;
+            _rankLabel.Text = _textLine2;
             _rankLabel.Font = Load<SpriteFont>("InGameFont");
 
             _twitterButton.BackgroundTexture = Load<Texture2D>("TwitterButtonTexture");

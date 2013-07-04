@@ -62,7 +62,7 @@ namespace Boom
 
             if (Overlay != null)
             {
-                SpriteBatch.Draw(Load<Texture2D>("CrossTexture"), crossRectangle(animationInfo), new Color(30, 30, 30) * OverlayAnimationInfo.Value);
+                SpriteBatch.Draw(Load<Texture2D>("CrossTexture"), crossRectangle(animationInfo), new Color(35, 35, 35) * OverlayAnimationInfo.Value);
             }
         }
 

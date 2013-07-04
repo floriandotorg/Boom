@@ -30,7 +30,7 @@ namespace Boom
 
         public void Initialize()
         {
-            base.Initialize(new MenuView()); //new GameOverScreenView(200)); //new MenuView());
+            base.Initialize(new MenuView());//new GameOverScreenView(300)); //new MenuView());
         }
 
         public override void LoadContent(SpriteBatch spriteBatch, ContentManager content)
@@ -51,6 +51,7 @@ namespace Boom
             Load<SpriteFont>("MenuFont");
             Load<SoundEffect>("BlipSound");
             Load<SoundEffect>("VictorySound");
+            Load<Song>("BackgroundSong");
 
             if (GameSettings.Speaker)
             {
