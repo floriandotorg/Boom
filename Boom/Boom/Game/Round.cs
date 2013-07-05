@@ -159,7 +159,7 @@ namespace Boom
             for (int i = 0; i < num; i++)
             {
                 Color ballColor = new Color(0,0,0);
-                while (ballColor.R + ballColor.G + ballColor.B < 80)
+                while (ballColor.R + ballColor.G + ballColor.B < 100)
                 {
                     ballColor = new Color(random.Next(255), random.Next(255), random.Next(255));
                 }
@@ -306,7 +306,7 @@ namespace Boom
                 ball.Draw(spriteBatch, animationInfo);
             }
 
-            if (_roundDelegate.ShouldShowOverlays && _state == State.InGame)
+            if (_roundDelegate.IsScoreVisible && (_state == State.InGame || _state == State.StartScreen))
             {
                 string text = "Points: " + Score + "/" + _roundSettings.Goal + " of " + _roundSettings.NumBalls;
                 Vector2 position = new Vector2(10, _viewport.Height - _font.MeasureString(text).Y - 10);

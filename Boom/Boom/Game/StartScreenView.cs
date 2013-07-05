@@ -18,7 +18,7 @@ namespace Boom
         private string _headerText, _scoreText, _goalText;
         private Label _headerLabel, _goalLabel, _tapToStartLabel, _currentScoreLabel, _scoreLabel;
 
-        public StartScreenView(string headerText, string goalText, string scoreText)
+        public StartScreenView(string headerText, string goalText, string scoreText) : base(true, false)
         {
             _headerText = headerText;
             _scoreText = scoreText;

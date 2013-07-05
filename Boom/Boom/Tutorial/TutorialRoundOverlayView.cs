@@ -124,7 +124,7 @@ namespace Boom
         public override bool TouchInside(TouchLocation location)
         {
             Rectangle bounds = Viewport.Bounds;
-            bounds.Height -= SpeakerButton.SpeakerIconSize;
+            bounds.Height -= SpeakerButton.SpeakerIconSize + 30;
             return bounds.Contains(Utility.Vector2ToPoint(Vector2ToLocale(location.Position)));
         }
 
@@ -165,6 +165,14 @@ namespace Boom
         }
 
         public bool ShouldShowOverlays
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public bool IsScoreVisible
         {
             get
             {

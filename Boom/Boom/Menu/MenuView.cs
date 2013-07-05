@@ -133,6 +133,14 @@ namespace Boom
             }
         }
 
+        public bool IsScoreVisible
+        {
+            get
+            {
+                return false;
+            }
+        }
+
         public bool IsTutorial
         {
             get

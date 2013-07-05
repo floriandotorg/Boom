@@ -15,16 +15,21 @@ namespace Boom
 {
     class Screen : View
     {
-        private bool _dismissOnTap;
+        private readonly bool _dismissOnTap, _hasRemoveAdsButton;
+
         private SpeakerButton _speakerButton;
         private RemoveAdsButton _removeAdsButton;
 
         public Screen() : this(true)
         { }
 
-        public Screen(bool dismissOnTap)
+        public Screen(bool dismissOnTap) : this(dismissOnTap, true)
+        { }
+
+        public Screen(bool dismissOnTap, bool hasRemoveAdsButton)
         {
             _dismissOnTap = dismissOnTap;
+            _hasRemoveAdsButton = hasRemoveAdsButton;
         }
 
         public override void Initialize()
@@ -34,8 +39,11 @@ namespace Boom
             _speakerButton = new SpeakerButton();
             AddSubview(_speakerButton);
 
-            _removeAdsButton = new RemoveAdsButton();
-            AddSubview(_removeAdsButton);
+            if (_hasRemoveAdsButton)
+            {
+                _removeAdsButton = new RemoveAdsButton();
+                AddSubview(_removeAdsButton);
+            }
         }
 
         public override bool TouchDown(TouchLocation location)

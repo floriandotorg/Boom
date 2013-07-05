@@ -60,6 +60,8 @@ namespace Boom
             _againButton.Text = "again, please";
             _againButton.Font = Load<SpriteFont>("InGameFont");
             _againButton.Color = Color.Black;
+            _againButton.AutoResize = false;
+            _againButton.Height = 75;
             _againButton.Tap += _againButton_Tap;
         }
 
@@ -86,7 +88,7 @@ namespace Boom
             CenterSubview(_gotItButton, -50);
             CenterSubview(_letsStartButton, -25);
 
-            CenterSubview(_againButton, 50);
+            CenterSubview(_againButton, 70);
         }
     }
 }

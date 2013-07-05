@@ -164,6 +164,14 @@ namespace Boom
             }
         }
 
+        public bool IsScoreVisible
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         public bool IsTutorial
         {
             get

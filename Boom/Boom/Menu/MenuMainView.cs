@@ -90,7 +90,7 @@ namespace Boom
             _highscoreButton.Color = Color.White;
             _highscoreButton.Tap += _highscoreButton_Tap;
 
-            _helpButton.Text = "Help";
+            _helpButton.Text = "Tutorial";
             _helpButton.Font = Load<SpriteFont>("MenuFont");
             _helpButton.Color = Color.White;
             _helpButton.Tap += _helpButton_Tap;

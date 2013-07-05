@@ -19,6 +19,7 @@ namespace Boom
         RoundSettings RoundSettings { get; }
         int Score { get; }
         bool ShouldShowOverlays { get; }
+        bool IsScoreVisible { get; }
         bool IsTutorial { get; }
 
         Viewport Viewport { get; }
