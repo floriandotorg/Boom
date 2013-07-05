@@ -15,7 +15,7 @@ namespace Boom
 {
     class SpeakerButton : View
     {
-        private readonly int SpeakerIconSize = 40;
+        public static readonly int SpeakerIconSize = 40;
 
         private Rectangle bounds()
         {

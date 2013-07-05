@@ -121,7 +121,7 @@ namespace Boom
 
         void _helpButton_Tap(object sender)
         {
-            NavigationController.Navigate(new TutorialView(), true);
+            NavigationController.Navigate(new TutorialView(false), true);
         }
 
         void _infoButton_Tap(object sender)

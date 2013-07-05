@@ -13,9 +13,16 @@ using Pages;
 
 namespace Boom
 {
-    class TutorialView : View
+    class TutorialView : Screen
     {
+        private readonly bool _preGameTutorial;
+
         private Label _titleLabel;
+
+        public TutorialView(bool preGameTutorial) : base(false)
+        {
+            _preGameTutorial = preGameTutorial;
+        }
 
         public override void Initialize()
         {
@@ -42,7 +49,7 @@ namespace Boom
 
             CenterSubview(_titleLabel, -250);
 
-            ShowOverlay(new TutorialRoundOverlayView(), true);
+            ShowOverlay(new TutorialRoundOverlayView(_preGameTutorial), true);
         }
 
         public override void Update(GameTime gameTime, AnimationInfo animationInfo)
@@ -53,13 +60,46 @@ namespace Boom
         public override void Draw(GameTime gameTime, AnimationInfo animationInfo)
         {
             base.Draw(gameTime, animationInfo);
+
+            if (OverlayAnimationInfo != null && OverlayAnimationInfo.State == AnimationState.FadeOut)
+            {
+                SpriteBatch.Draw(Load<Texture2D>("Rectangle"), RectangleToSystem(Viewport.Bounds), Color.Black * (1f - OverlayAnimationInfo.Value));
+            }
         }
 
-        public override void OverlayDimissed(View overlay)
+        public override void OverlayWillDismiss(View overlay)
         {
-            base.OverlayDimissed(overlay);
+            base.OverlayWillDismiss(overlay);
 
-            ShowOverlay(new TutorialRoundOverlayView(), true);
+            if (_preGameTutorial && (overlay as TutorialRoundOverlayView).Result == TutorialGotItResult.Start)
+            {
+#if !DEBUG
+                GameSettings.DidSeeTutorial = true;
+#endif
+                NavigationController.SwitchTo(new GameView(1, 0), true);
+            }
+        }
+
+        public override void OverlayDismissed(View overlay)
+        {
+            base.OverlayDismissed(overlay);
+
+            ShowOverlay(new TutorialRoundOverlayView(_preGameTutorial), true);
+        }
+
+        public override Color ClearColor
+        {
+            get
+            {
+                if (Overlay != null)
+                {
+                    return Overlay.ClearColor;
+                }
+                else
+                {
+                    return base.ClearColor;
+                }
+            }
         }
     }
 }

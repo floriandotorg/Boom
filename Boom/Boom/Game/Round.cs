@@ -189,79 +189,71 @@ namespace Boom
 
         public bool Update()
         {
-            if (_state == State.RoundEnded)
-            {
-                return true;
-            }
-            
             foreach (Ball ball in balls)
             {
                 ball.Update();
             }
 
-            if (_state == State.InGame)
+            foreach (Ball collided in balls.Where(x => x.Collided && !x.Destroyed))
             {
-                foreach (Ball collided in balls.Where(x => x.Collided && !x.Destroyed))
+                foreach (Ball free in balls.Where(x => !x.Collided && !x.Destroyed))
                 {
-                    foreach (Ball free in balls.Where(x => !x.Collided && !x.Destroyed))
+                    if (collided.CheckAndHandleCollision(free))
                     {
-                        if (collided.CheckAndHandleCollision(free))
-                        {
-                            _blipSound.Play(.3f, 0f, 0f);
-                        }
-                    }
-                }
-
-                if (catcher && balls.Where(x => x.Expanding).Count() == 0 && !_roundDelegate.IsTutorial)
-                {
-                    foreach (Ball ball in balls.Where(x => !x.Collided && !x.Destroyed && !x.Dead))
-                    {
-                        ball.Die();
-                    }
-                }
-
-                if (_roundDelegate.IsTutorial)
-                {
-                    if (balls.Where(x => x.Size > 0).Count() == 0)
-                    {
-                        return true;
-                    }
-                    else if (balls[0].Size <= 0 && balls.Where(x => !x.Collided).Count() == _roundSettings.NumBalls)
-                    {
-                        catcher = false;
-                        balls[0] = new Ball();
-                    }
-
-                    return false;
-                }
-
-                if (Score >= _roundSettings.Goal)
-                {
-                    if (!backgroundColor.IsMax)
-                    {
-                        if (backgroundColor.IsMin)
-                        {
-                            _victorySound.Play(.9f, 0f, 0f);
-                        }
-
-                        backgroundColor.Inc();
-                    }
-                }
-
-                if (balls.Where(x => x.Size >= 5).Count() == 0)
-                {
-                    if (Score >= _roundSettings.Goal)
-                    {
-                        SucessScreen();
-                    }
-                    else
-                    {
-                        FailedScreen();
+                        _blipSound.Play(.3f, 0f, 0f);
                     }
                 }
             }
 
-            return false;
+            if (catcher && balls.Where(x => x.Expanding).Count() == 0)
+            {
+                foreach (Ball ball in balls.Where(x => !x.Collided && !x.Destroyed && !x.Dead))
+                {
+                    ball.Die();
+                }
+            }
+
+            if (_state == State.InGame && Score >= _roundSettings.Goal)
+            {
+                if (!backgroundColor.IsMax)
+                {
+                    if (backgroundColor.IsMin)
+                    {
+                        _victorySound.Play(.9f, 0f, 0f);
+                    }
+
+                    backgroundColor.Inc();
+                }
+            }
+
+            if (_roundDelegate.IsTutorial && _state != State.RoundEnded)
+            {
+                if (!balls[0].Destroyed && !balls[0].Expanding && balls[0].Size <= 55 && balls.Where(x => x.Collided).Count() == 1)
+                {
+                    _state = State.RoundEnded;
+                }
+            }
+
+            if (_state == State.InGame && balls.Where(x => x.Size >= 5).Count() == 0)
+            {
+                if (Score >= _roundSettings.Goal)
+                {
+                    SucessScreen();
+                }
+                else
+                {
+                    FailedScreen();
+                }
+            }
+
+            if (_state == State.RoundEnded)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public void OverlayWillDismiss()

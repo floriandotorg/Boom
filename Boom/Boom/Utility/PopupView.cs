@@ -81,9 +81,9 @@ namespace Boom
             return true;
         }
 
-        public override void OverlayDimissed(View overlay)
+        public override void OverlayDismissed(View overlay)
         {
-            base.OverlayDimissed(overlay);
+            base.OverlayDismissed(overlay);
 
             Dismiss(true);
         }

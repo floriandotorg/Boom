@@ -107,7 +107,8 @@
     <Compile Include="Ads\RemoveAdsButton.cs" />
     <Compile Include="Ads\Store.cs" />
     <Compile Include="Game\Ball.cs" />
-    <Compile Include="Game\Screen.cs" />
+    <Compile Include="Tutorial\TutorialGotItOverlayView.cs" />
+    <Compile Include="Utility\Screen.cs" />
     <Compile Include="Utility\BoomGame.cs" />
     <Compile Include="Highscore\HighscoreShareView.cs" />
     <Compile Include="Highscore\HighscoreTabView.cs" />
@@ -115,7 +116,7 @@
     <Compile Include="Game\FailedScreenView.cs" />
     <Compile Include="Game\GameOverScreenView.cs" />
     <Compile Include="Utility\GameSettings.cs" />
-    <Compile Include="Menu\GameView.cs" />
+    <Compile Include="Game\GameView.cs" />
     <Compile Include="Highscore\Highscore.cs" />
     <Compile Include="Highscore\HighscoreTableView.cs" />
     <Compile Include="Game\IRoundDelegate.cs" />

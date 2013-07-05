@@ -71,16 +71,16 @@ namespace Boom
             return true;
         }
 
-        public override void OverlayWillDimiss(View overlay)
+        public override void OverlayWillDismiss(View overlay)
         {
-            base.OverlayWillDimiss(overlay);
+            base.OverlayWillDismiss(overlay);
 
             _round.OverlayWillDismiss();
         }
 
-        public override void OverlayDimissed(View overlay)
+        public override void OverlayDismissed(View overlay)
         {
-            base.OverlayDimissed(overlay);
+            base.OverlayDismissed(overlay);
 
             if (!_round.OverlayDismissed())
             {

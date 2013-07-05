@@ -13,22 +13,12 @@ using Pages;
 
 namespace Boom
 {
-    class MenuView : View, IRoundDelegate
+    class MenuView : Screen, IRoundDelegate
     {
         Round _round;
-        SpeakerButton _speakerButton;
-        RemoveAdsButton _removeAdsButton;
 
-        public override void Initialize()
-        {
-            base.Initialize();
-
-            _speakerButton = new SpeakerButton();
-            AddSubview(_speakerButton);
-
-            _removeAdsButton = new RemoveAdsButton();
-            AddSubview(_removeAdsButton);
-        }
+        public MenuView() : base(false)
+        { }
 
         public override void LoadContent()
         {
@@ -43,7 +33,14 @@ namespace Boom
         {
             if ((Overlay as MenuMainView).PressedButton == MenuPressedButton.Start)
             {
-                NavigationController.Navigate(new GameView(1, 0), true);
+                if (GameSettings.DidSeeTutorial == false)
+                {
+                    NavigationController.Navigate(new TutorialView(true), true);
+                }
+                else
+                {
+                    NavigationController.Navigate(new GameView(1, 0), true);
+                }
             }
             else
             {
@@ -51,9 +48,9 @@ namespace Boom
             }
         }
 
-        public override void OverlayDimissed(View overlay)
+        public override void OverlayDismissed(View overlay)
         {
-            base.OverlayDimissed(overlay);
+            base.OverlayDismissed(overlay);
 
             if (overlay is MenuMainView)
             {
