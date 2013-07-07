@@ -26,7 +26,7 @@ namespace Boom
             HorizontalAlignment = HorizontalAlignment.Left;
             Tap += RemoveAdsButton_Tap;
 
-            if (Store.HasPurchased(GameSettings.RemoveAdsProductId))
+            if (!Store.Available || Store.HasPurchased(GameSettings.RemoveAdsProductId))
             {
                 Visible = false;
             }

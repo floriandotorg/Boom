@@ -52,7 +52,7 @@ namespace Boom
 
         void _startNewGameButton_Tap(object sender)
         {
-            NavigationController.Navigate(new GameView(1, 0), true);
+            NavigationController.SwitchTo(new GameView(1, 0), true);
         }
 
         public override void LayoutSubviews()
