@@ -72,5 +72,15 @@ namespace Boom
             _highscoreTabView.Width = 320;
             CenterSubview(_highscoreTabView, 140);
         }
+
+        public override bool BackButtonPressed()
+        {
+            if (!base.BackButtonPressed())
+            {
+                ShowOverlay(new PopupView(new StartNewGamePopupView(), false, 5f), true);
+            }
+
+            return true;
+        }
     }
 }

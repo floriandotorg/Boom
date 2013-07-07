@@ -16,11 +16,18 @@ namespace Boom
     class PopupView : View
     {
         private View _contentView;
+        private readonly bool _userCanClose;
+        private readonly float _heightPercentage;
 
-        public PopupView(View contentView)
+        public PopupView(View contentView, bool userCanClose, float heightPercentage)
         {
             _contentView = contentView;
+            _userCanClose = userCanClose;
+            _heightPercentage = heightPercentage;
         }
+
+        public PopupView(View contentView) : this(contentView, true, 4f)
+        { }
 
         public override void LoadContent()
         {
@@ -43,7 +50,7 @@ namespace Boom
 
         private Rectangle contentRectangle(AnimationInfo animationInfo)
         {
-            int height = Convert.ToInt32(((float)Height / 4f) * animationInfo.Value);
+            int height = Convert.ToInt32(((float)Height / _heightPercentage) * animationInfo.Value);
             return new Rectangle(0, Height / 2 - height / 2, Width, height);
         }
 
@@ -60,7 +67,7 @@ namespace Boom
 
             SpriteBatch.Draw(Load<Texture2D>("Rectangle"), contentRectangle(animationInfo), Color.Black);
 
-            if (Overlay != null)
+            if (_userCanClose && Overlay != null)
             {
                 SpriteBatch.Draw(Load<Texture2D>("CrossTexture"), crossRectangle(animationInfo), new Color(35, 35, 35) * OverlayAnimationInfo.Value);
             }
@@ -70,9 +77,13 @@ namespace Boom
         {
             if (!base.TouchDown(location))
             {
-                if (Overlay != null && OverlayAnimationInfo.State == AnimationState.Visible
+                Rectangle crossRect = crossRectangle(OverlayAnimationInfo);
+                crossRect.Inflate(20,20);
+
+                if (_userCanClose && Overlay != null 
+                    && OverlayAnimationInfo.State == AnimationState.Visible
                     && (!contentRectangle(OverlayAnimationInfo).Contains(Utility.Vector2ToPoint(Vector2ToLocale(location.Position)))
-                    || crossRectangle(OverlayAnimationInfo).Contains(Utility.Vector2ToPoint(location.Position))))
+                    || crossRect.Contains(Utility.Vector2ToPoint(location.Position))))
                 {
                     Overlay.Dismiss(true);
                 }
