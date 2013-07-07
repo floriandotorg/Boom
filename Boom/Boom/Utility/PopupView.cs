@@ -18,12 +18,14 @@ namespace Boom
         private View _contentView;
         private readonly bool _userCanClose;
         private readonly float _heightPercentage;
+        private bool _visible;
 
         public PopupView(View contentView, bool userCanClose, float heightPercentage)
         {
             _contentView = contentView;
             _userCanClose = userCanClose;
             _heightPercentage = heightPercentage;
+            _visible = false;
         }
 
         public PopupView(View contentView) : this(contentView, true, 4f)
@@ -39,6 +41,8 @@ namespace Boom
         public override void Update(GameTime gameTime, AnimationInfo animationInfo)
         {
             base.Update(gameTime, animationInfo);
+
+            _visible = animationInfo.State == AnimationState.Visible;
 
             if (animationInfo.State == AnimationState.Visible && Overlay == null)
             {
@@ -75,18 +79,30 @@ namespace Boom
 
         public override bool TouchDown(TouchLocation location)
         {
-            if (!base.TouchDown(location))
+            try
             {
-                Rectangle crossRect = crossRectangle(OverlayAnimationInfo);
-                crossRect.Inflate(20,20);
-
-                if (_userCanClose && Overlay != null 
-                    && OverlayAnimationInfo.State == AnimationState.Visible
-                    && (!contentRectangle(OverlayAnimationInfo).Contains(Utility.Vector2ToPoint(Vector2ToLocale(location.Position)))
-                    || crossRect.Contains(Utility.Vector2ToPoint(location.Position))))
+                if (!base.TouchDown(location))
                 {
-                    Overlay.Dismiss(true);
+                    if (_visible)
+                    {
+                        Rectangle crossRect = crossRectangle(OverlayAnimationInfo);
+                        crossRect.Inflate(20, 20);
+
+                        if (_userCanClose && Overlay != null
+                            && OverlayAnimationInfo.State == AnimationState.Visible
+                            && (!contentRectangle(OverlayAnimationInfo).Contains(Utility.Vector2ToPoint(Vector2ToLocale(location.Position)))
+                            || crossRect.Contains(Utility.Vector2ToPoint(location.Position))))
+                        {
+                            Overlay.Dismiss(true);
+                        }
+                    }
                 }
+            }
+            catch
+            {
+#if DEBUG
+                throw;
+#endif
             }
 
             return true;

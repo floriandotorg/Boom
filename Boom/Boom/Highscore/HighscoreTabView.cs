@@ -27,6 +27,7 @@ namespace Boom
         private int _initHighscoreAttemps;
         public int? UserScore;
         private string _userName;
+        private bool _submittingHighscore;
 
         private enum UserRankType
         {
@@ -107,7 +108,18 @@ namespace Boom
                 if (_initHighscoreAttemps < MaxInitHighscoreAttemps)
                 {
                     ++_initHighscoreAttemps;
-                    Highscore.Initialize(error => { if (error != null) System.Diagnostics.Debug.WriteLine(error.LocalizedDescription); else System.Diagnostics.Debug.WriteLine("Highscore sccuess"); });
+
+                    try
+                    {
+                        Highscore.Initialize(error => { if (error != null) System.Diagnostics.Debug.WriteLine(error.LocalizedDescription); else System.Diagnostics.Debug.WriteLine("Highscore sccuess"); });
+                    }
+                    catch
+                    {
+                        unableToLoad();
+#if DEBUG
+                        throw;
+#endif
+                    }
                 }
                 else
                 {
@@ -128,6 +140,8 @@ namespace Boom
 
         public void LoadScores()
         {
+            _submittingHighscore = false;
+
             if (Highscore.State != HighscoreState.Initialized)
             {
                 _initHighscoreAttemps = 0;
@@ -392,65 +406,96 @@ namespace Boom
 
         void ShowKeyboardInput(string text)
         {
-            Guide.BeginShowKeyboardInput(PlayerIndex.One, "Highscore", "Enter your name:", text, new AsyncCallback(OnEndShowKeyboardInput), null);
+            try
+            {
+                if (!_submittingHighscore)
+                {
+                    Guide.BeginShowKeyboardInput(PlayerIndex.One, "Highscore", "Enter your name:", text, new AsyncCallback(OnEndShowKeyboardInput), null);
+                    _submittingHighscore = true;
+                }
+            }
+            catch
+            {
+#if DEBUG
+                throw;
+#endif
+            }
         }
 
         void OnEndShowMessageBox(IAsyncResult result)
         {
-            Guide.EndShowMessageBox(result);
-            while (Guide.IsVisible)
+            try
             {
-                Thread.Sleep(1);
-            }
+                Guide.EndShowMessageBox(result);
+                while (Guide.IsVisible)
+                {
+                    Thread.Sleep(1);
+                }
 
-            ShowKeyboardInput(_userName);
+                ShowKeyboardInput(_userName);
+            }
+            catch
+            {
+#if DEBUG
+                throw;
+#endif
+            }
         }
 
         void OnEndShowKeyboardInput(IAsyncResult result)
         {
-            string name = Guide.EndShowKeyboardInput(result);
-            while (Guide.IsVisible)
+            try
             {
-                Thread.Sleep(1);
-            }
-
-            _userName = "";
-
-            if (name != null)
-            {
-                name = name.Trim();
-                _userName = name;
-
-                Regex regex = new Regex("^[A-Za-z0-9]+(([A-Za-z0-9]|-|_| )?[A-Za-z0-9]+)*$");
-
-                if (name.Length < 2 || name.Length > 14 || !regex.IsMatch(name))
+                string name = Guide.EndShowKeyboardInput(result);
+                while (Guide.IsVisible)
                 {
-                    Guide.BeginShowMessageBox("Error", "Your name must be at least 2 characters long and may contain letters (a-z), numbers (0-9), spaces, underscores (_) and dashes (-).\nIt can be up to 14 characters.", new string[] { "Edit" }, 0, MessageBoxIcon.None, new AsyncCallback(OnEndShowMessageBox), null);
+                    Thread.Sleep(1);
                 }
-                else
+
+                _userName = "";
+
+                if (name != null)
                 {
-                    Highscore.SubmitScore(name, UserScore.Value,
-                        error =>
-                        {
-                            if (error != null)
+                    name = name.Trim();
+                    _userName = name;
+
+                    Regex regex = new Regex("^[A-Za-z0-9]+(([A-Za-z0-9]|-|_| )?[A-Za-z0-9]+)*$");
+
+                    if (name.Length < 2 || name.Length > 14 || !regex.IsMatch(name))
+                    {
+                        Guide.BeginShowMessageBox("Error", "Your name must be at least 2 characters long and may contain letters (a-z), numbers (0-9), spaces, underscores (_) and dashes (-).\nIt can be up to 14 characters.", new string[] { "Edit" }, 0, MessageBoxIcon.None, new AsyncCallback(OnEndShowMessageBox), null);
+                    }
+                    else
+                    {
+                        Highscore.SubmitScore(name, UserScore.Value,
+                            error =>
                             {
-                                System.Diagnostics.Debug.WriteLine(error);
-                            }
-                            else
-                            {
-                                GameSettings.HighscoreLastUsername = name;
-
-                                UserScore = null;
-
-                                LoadScores();
-
-                                if (_userRank.RankType != UserRankType.None)
+                                if (error != null)
                                 {
-                                    Superview.ShowOverlay(new PopupView(new HighscoreShareView(_userRank.TextLine1, _userRank.TextLine2, _userRank.ShareText)), true);
+                                    System.Diagnostics.Debug.WriteLine(error);
                                 }
-                            }
-                        });
+                                else
+                                {
+                                    GameSettings.HighscoreLastUsername = name;
+
+                                    UserScore = null;
+
+                                    LoadScores();
+
+                                    if (_userRank.RankType != UserRankType.None)
+                                    {
+                                        Superview.ShowOverlay(new PopupView(new HighscoreShareView(_userRank.TextLine1, _userRank.TextLine2, _userRank.ShareText)), true);
+                                    }
+                                }
+                            });
+                    }
                 }
+            }
+            catch
+            {
+#if DEBUG
+                throw;
+#endif
             }
         }
     }

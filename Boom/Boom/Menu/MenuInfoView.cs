@@ -105,7 +105,7 @@ namespace Boom
         void _policyLabel_Tap(object sender)
         {
             WebBrowserTask webBrowserTask = new WebBrowserTask();
-            webBrowserTask.Uri = new Uri("http://www.floyd-ug.de/apps/boom/privacy-policy-current.html");
+            webBrowserTask.Uri = new Uri("http://www.floyd-ug.de/apps/boom/wp/privacy-policy-current.html");
             webBrowserTask.Show();
         }
 

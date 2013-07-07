@@ -27,13 +27,19 @@ namespace Boom
 
         protected Store()
         {
-            if (Environment.OSVersion.Version.Major >= 8)
+            try
             {
-                _store = StoreLauncher.StoreLauncher.GetStoreInterface("StoreWrapper.Store, StoreWrapper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
+                if (Environment.OSVersion.Version.Major >= 8)
+                {
+                    _store = StoreLauncher.StoreLauncher.GetStoreInterface("StoreWrapper.Store, StoreWrapper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null");
+                }
             }
-            else
+            catch
             {
                 _store = null;
+#if DEBUG
+                throw;
+#endif
             }
         }
 
@@ -47,12 +53,21 @@ namespace Boom
 
         public static bool HasPurchased(string productID)
         {
-            if (Available)
+            try
             {
-                if (Instance._store.LicenseInformation.ProductLicenses.Keys.Contains(productID) && Instance._store.LicenseInformation.ProductLicenses[productID].IsActive)
+                if (Available)
                 {
-                    return true;
+                    if (Instance._store.LicenseInformation.ProductLicenses.Keys.Contains(productID) && Instance._store.LicenseInformation.ProductLicenses[productID].IsActive)
+                    {
+                        return true;
+                    }
                 }
+            }
+            catch
+            {
+#if DEBUG
+                throw;
+#endif
             }
 
             return false;
@@ -60,19 +75,24 @@ namespace Boom
 
         public static void Purchase(string productID, Action completed)
         {
-            if (Available)
+            try
             {
-                Instance._store.RequestProductPurchaseAsync(productID, false).Completed = (IAsyncOperationBase<string> operation, StoreAsyncStatus status) =>
+                if (Available)
                 {
-                    if (status == StoreAsyncStatus.Completed)
+                    Instance._store.RequestProductPurchaseAsync(productID, false).Completed = (IAsyncOperationBase<string> operation, StoreAsyncStatus status) =>
                     {
-                        completed();
-                    }
-                };
+                        if (status == StoreAsyncStatus.Completed)
+                        {
+                            completed();
+                        }
+                    };
+                }
             }
-            else
+            catch
             {
-                throw new InvalidOperationException();
+#if DEBUG
+                throw;
+#endif
             }
         }
     }

@@ -30,7 +30,14 @@ namespace Boom
     class Highscore
     {
         public static readonly string Apikey = "a59a292915406d8b865c894c9ed5eef94a7c12e3";
-        public static readonly string Platform = "WP7";
+
+        public static string Platform
+        {
+            get
+            {
+                return String.Format("WP{0}", Environment.OSVersion.Version.Major); 
+            }
+        }
 
 #if DEBUG
         public static readonly string LeaderboardID = "1";

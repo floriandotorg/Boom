@@ -19,24 +19,33 @@ namespace Boom
     {
         public static void Initialize(Game game)
         {
-            if (!Store.HasPurchased(GameSettings.RemoveAdsProductId))
+            try
             {
-                AdRotatorXNAComponent.Initialize(game);
+                if (!Store.HasPurchased(GameSettings.RemoveAdsProductId))
+                {
+                    AdRotatorXNAComponent.Initialize(game);
 
 #if DEBUG
-                AdRotatorXNAComponent.Current.Log += log;
+                    AdRotatorXNAComponent.Current.Log += log;
 #endif
 
-                AdRotatorXNAComponent.Current.SlidingAdDirection = SlideDirection.Top;
-                AdRotatorXNAComponent.Current.SlidingAdDisplaySeconds = 50;
-                AdRotatorXNAComponent.Current.SlidingAdHiddenSeconds = 20;
-                AdRotatorXNAComponent.Current.AdPosition = Vector2.Zero;
+                    AdRotatorXNAComponent.Current.SlidingAdDirection = SlideDirection.Top;
+                    AdRotatorXNAComponent.Current.SlidingAdDisplaySeconds = 50;
+                    AdRotatorXNAComponent.Current.SlidingAdHiddenSeconds = 20;
+                    AdRotatorXNAComponent.Current.AdPosition = Vector2.Zero;
 
-                AdRotatorXNAComponent.Current.DefaultSettingsFileUri = @"Ads/defaultAdSettings.xml";
+                    AdRotatorXNAComponent.Current.DefaultSettingsFileUri = @"Ads/defaultAdSettings.xml";
 
-                AdRotatorXNAComponent.Current.SettingsUrl = "http://floyd-ug.de/23FBCE58-46CA-449A-BBC8-529602D6D368/boom/defaultAdSettings.xml";
+                    AdRotatorXNAComponent.Current.SettingsUrl = "http://floyd-ug.de/23FBCE58-46CA-449A-BBC8-529602D6D368/boom/defaultAdSettings.xml";
 
-                game.Components.Add(AdRotatorXNAComponent.Current);
+                    game.Components.Add(AdRotatorXNAComponent.Current);
+                }
+            }
+            catch
+            {
+#if DEBUG
+                throw;
+#endif
             }
         }
 
