@@ -58,6 +58,11 @@ namespace Boom
                 roundAnimationInfo = OverlayAnimationInfo;
             }
 
+            if (animationInfo.State == AnimationState.FadeOut)
+            {
+                SpriteBatch.Draw(Load<Texture2D>("Rectangle"), RectangleToSystem(Viewport.Bounds), Color.Black * (1f - animationInfo.Value));
+            }
+
             _round.Draw(SpriteBatch, roundAnimationInfo);
         }
 

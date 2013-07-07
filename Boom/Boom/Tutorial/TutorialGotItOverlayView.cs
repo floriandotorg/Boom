@@ -47,7 +47,7 @@ namespace Boom
         {
             base.LoadContent();
 
-            _gotItButton.Text = "I got it";
+            _gotItButton.Text = "I got it.";
             _gotItButton.Font = Load<SpriteFont>("InGameBoldFont");
             _gotItButton.Color = Color.Black;
             _gotItButton.Tap += _gotItButton_Tap;

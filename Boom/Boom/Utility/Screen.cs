@@ -20,6 +20,8 @@ namespace Boom
         private SpeakerButton _speakerButton;
         private RemoveAdsButton _removeAdsButton;
 
+        private bool _visible;
+
         public Screen() : this(true)
         { }
 
@@ -36,6 +38,8 @@ namespace Boom
         {
             base.Initialize();
 
+            _visible = false;
+
             _speakerButton = new SpeakerButton();
             AddSubview(_speakerButton);
 
@@ -46,11 +50,18 @@ namespace Boom
             }
         }
 
+        public override void Update(GameTime gameTime, AnimationInfo animationInfo)
+        {
+            base.Update(gameTime, animationInfo);
+
+            _visible = animationInfo.State == AnimationState.Visible;
+        }
+
         public override bool TouchDown(TouchLocation location)
         {
             if (!base.TouchDown(location))
             {
-                if (_dismissOnTap)
+                if (_dismissOnTap && _visible)
                 {
                     Dismiss(true);
                 }

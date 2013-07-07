@@ -159,7 +159,7 @@ namespace Boom
                 if (++updateCounter >= numHugeUpdatesToShrink)
                 {
                     state = State.Shrinking;
-                    radius.Mode = ProgressMode.SteepBeginSoftEnd;
+                    radius.Mode = ProgressMode.SoftBeginSteepEnd;
                 }
             }
             else if (state == State.Shrinking)
@@ -176,7 +176,7 @@ namespace Boom
                 if (++updateCounter >= numHugeUpdatesToDie)
                 {
                     state = State.Dying;
-                    radius.Mode = ProgressMode.SteepBeginSoftEnd;
+                    radius.Mode = ProgressMode.SoftBeginSteepEnd;
                 }
             }
             else if (state == State.Dying)

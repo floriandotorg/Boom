@@ -306,11 +306,12 @@ namespace Boom
                 ball.Draw(spriteBatch, animationInfo);
             }
 
-            if (_roundDelegate.IsScoreVisible && (_state == State.InGame || _state == State.StartScreen))
+            if (_roundDelegate.IsScoreVisible && (_state == State.InGame || _state == State.StartScreen || _state == State.FailedScreen))
             {
+                float opacity = Convert.ToSingle(Math.Min(1, balls.Skip(1).Max(x => x.Size) / Ball.RadiusNormalSize));
                 string text = "Points: " + Score + "/" + _roundSettings.Goal + " of " + _roundSettings.NumBalls;
                 Vector2 position = new Vector2(10, _viewport.Height - _font.MeasureString(text).Y - 10);
-                spriteBatch.DrawString(_font, text, position, Color.White * animationInfo.Value);
+                spriteBatch.DrawString(_font, text, position, Color.White * animationInfo.Value * opacity);
             }
         }
     }

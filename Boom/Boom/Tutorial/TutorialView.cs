@@ -101,5 +101,15 @@ namespace Boom
                 }
             }
         }
+
+        public override bool BackButtonPressed()
+        {
+            if (Overlay != null)
+            {
+                Overlay.Dismiss(true);
+            }
+
+            return base.BackButtonPressed();
+        }
     }
 }
