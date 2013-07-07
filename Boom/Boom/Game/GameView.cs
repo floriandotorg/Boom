@@ -103,6 +103,11 @@ namespace Boom
 
         private void nextRound()
         {
+            if (_round != null)
+            {
+                _score += _round.Score;
+            }
+
             if (++_currentRoundNo > NumRounds)
             {
                 GameSettings.CurrentRound = 1;
@@ -112,11 +117,6 @@ namespace Boom
             }
             else
             {
-                if (_round != null)
-                {
-                    _score += _round.Score;
-                }
-
                 GameSettings.CurrentRound = _currentRoundNo;
                 GameSettings.CurrentScore = _score;
                 
