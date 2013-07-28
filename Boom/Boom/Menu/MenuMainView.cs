@@ -67,7 +67,7 @@ namespace Boom
 
             BackgroundColor = Color.Transparent;
 
-            _titleLabel.Text = "Boom!";
+            _titleLabel.Text = GameSettings.GameName;
             _titleLabel.Font = Load<SpriteFont>("TitleFont");
             _titleLabel.Color = Color.White;
 

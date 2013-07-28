@@ -8,6 +8,7 @@ namespace Boom
 {
     class GameSettings : GameSettings<GameSettings>
     {
+        public static readonly string GameName = "Boomly";
         public static readonly string RemoveAdsProductId = "RemoveAds";
 
         private static readonly string SpeakerSettingsKey = "Speaker";

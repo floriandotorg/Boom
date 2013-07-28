@@ -75,7 +75,7 @@ namespace Boom
             {
                 get
                 {
-                    return "I'm #" + Rank + " on " + highscoreText + " highscore of Boom! for Windows Phone";
+                    return "I'm #" + Rank + " on " + highscoreText + " highscore of " + GameSettings.GameName + " for Windows Phone";
                 }
             }
         }

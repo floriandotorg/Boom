@@ -79,7 +79,7 @@ namespace Boom
         {
             ShareLinkTask shareLinkTask = new ShareLinkTask();
             shareLinkTask.LinkUri = new Uri("http://bit.ly/19Y4EoN", UriKind.Absolute);
-            shareLinkTask.Title = "Boom!";
+            shareLinkTask.Title = GameSettings.GameName;
             shareLinkTask.Message = _shareText;
             shareLinkTask.Show();
         }
