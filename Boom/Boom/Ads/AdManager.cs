@@ -36,7 +36,7 @@ namespace Boom
 
                     AdRotatorXNAComponent.Current.DefaultSettingsFileUri = @"Ads/defaultAdSettings.xml";
 
-                    AdRotatorXNAComponent.Current.SettingsUrl = "http://floyd-ug.de/23FBCE58-46CA-449A-BBC8-529602D6D368/boom/defaultAdSettings.xml";
+                    AdRotatorXNAComponent.Current.SettingsUrl = "http://floydug.com/23FBCE58-46CA-449A-BBC8-529602D6D368/boomly/wp/defaultAdSettings.xml";
 
                     game.Components.Add(AdRotatorXNAComponent.Current);
                 }

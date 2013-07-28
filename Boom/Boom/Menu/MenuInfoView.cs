@@ -105,7 +105,7 @@ namespace Boom
         void _policyLabel_Tap(object sender)
         {
             WebBrowserTask webBrowserTask = new WebBrowserTask();
-            webBrowserTask.Uri = new Uri("http://www.floyd-ug.de/apps/boom/wp/privacy-policy-current.html");
+            webBrowserTask.Uri = new Uri("http://www.floydug.com/apps/boomly/wp/privacy-policy-current.html");
             webBrowserTask.Show();
         }
 
@@ -123,8 +123,8 @@ namespace Boom
                 result = deviceName.ToString();
             }
 
-            emailComposeTask.Subject = "Boom Version " + version_str + " on " + result;
-            emailComposeTask.To = "support.boom@floyd-ug.de";
+            emailComposeTask.Subject = GameSettings.GameName + " Version " + version_str + " on " + result;
+            emailComposeTask.To = "support.boom@floydug.com";
 
             emailComposeTask.Show();
         }
