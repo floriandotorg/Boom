@@ -108,6 +108,7 @@
     <Compile Include="Ads\Store.cs" />
     <Compile Include="Game\Ball.cs" />
     <Compile Include="Game\StartNewGamePopupView.cs" />
+    <Compile Include="Menu\RateReviewPopupView.cs" />
     <Compile Include="Tutorial\TutorialGotItOverlayView.cs" />
     <Compile Include="Utility\Screen.cs" />
     <Compile Include="Utility\BoomGame.cs" />

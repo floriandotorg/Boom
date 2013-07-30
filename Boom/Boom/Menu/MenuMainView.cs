@@ -104,13 +104,36 @@ namespace Boom
         void _startButton_Tap(object sender)
         {
             PressedButton = MenuPressedButton.Start;
-            _startOrResumePressed();
+
+            if (GameSettings.ShowRateReview)
+            {
+                ShowOverlay(new PopupView(new RateReviewPopupView(), true, 5f), true);
+            }
+            else
+            {
+                _startOrResumePressed();
+            }
         }
 
         void _resumeButton_Tap(object sender)
         {
             PressedButton = MenuPressedButton.Resume;
+
+            if (GameSettings.ShowRateReview)
+            {
+                ShowOverlay(new PopupView(new RateReviewPopupView(), true, 5f), true);
+            }
+            else
+            {
+                _startOrResumePressed();
+            }
+        }
+
+        public override void OverlayWillDismiss(View overlay)
+        {
+ 	         base.OverlayWillDismiss(overlay);
             _startOrResumePressed();
+
         }
 
         void _highscoreButton_Tap(object sender)

@@ -18,6 +18,8 @@ namespace Boom
         public NavigationController(GraphicsDeviceManager graphics)
             : base(graphics)
         {
+            ++GameSettings.GameStarts;
+
             try
             {
                 Highscore.Initialize(error => { if (error != null) System.Diagnostics.Debug.WriteLine(error.LocalizedDescription); else System.Diagnostics.Debug.WriteLine("Highscore sccuess"); });
