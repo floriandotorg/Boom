@@ -16,8 +16,8 @@ namespace Boom
 {
     class RateReviewPopupView : View
     {
-        private Label _likeLabel;
-        private Button _reviewButton, _noButton;
+        private Label _likeLabel, _textLabel;
+        private Button _reviewButton;
 
         public RateReviewPopupView()
         {
@@ -34,8 +34,8 @@ namespace Boom
             _reviewButton = new Button();
             AddSubview(_reviewButton);
 
-            _noButton = new Button();
-            AddSubview(_noButton);
+            _textLabel = new Label();
+            AddSubview(_textLabel);
         }
 
         public override void LoadContent()
@@ -51,11 +51,10 @@ namespace Boom
             _reviewButton.Height = 40;
             _reviewButton.Tap += _reviewButton_Tap;
 
-            _noButton.Text = "no, thanks";
-            _noButton.Font = Load<SpriteFont>("InGameFont");
-            _noButton.AutoResize = false;
-            _noButton.Height = 30;
-            _noButton.Tap += _noButton_Tap;
+            _textLabel.Text = "Please help us to improve this game";
+            _textLabel.Font = Load<SpriteFont>("InGameFont");
+            _textLabel.AutoResize = false;
+            _textLabel.Height = 30;
         }
 
         void _noButton_Tap(object sender)
@@ -78,10 +77,10 @@ namespace Boom
             CenterSubview(_likeLabel, 0);
             _likeLabel.Y = 15;
 
-            CenterSubview(_reviewButton, Convert.ToInt32(Height * .118f));
+            CenterSubview(_textLabel, 0);
 
-            CenterSubview(_noButton, 0);
-            _noButton.Y = Height - 13 - _noButton.Height;
+            CenterSubview(_reviewButton, 0);
+            _reviewButton.Y = Height - 13 - _reviewButton.Height;
         }
     }
 }

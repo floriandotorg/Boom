@@ -25,7 +25,7 @@ namespace Boom
         {
             get
             {
-                return GameSettings.GameStarts == 5 && !String.IsNullOrEmpty(GameSettings.HighscoreLastUsername) && !RateReviewShown;
+                return !RateReviewShown; //GameSettings.GameStarts == 5 && !String.IsNullOrEmpty(GameSettings.HighscoreLastUsername) && !RateReviewShown;
             }
         }
 
