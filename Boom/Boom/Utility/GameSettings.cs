@@ -17,6 +17,17 @@ namespace Boom
         private static readonly string HighscorePlayerIDSettingsKey = "HighscorePlayerIDSettingsKey";
         private static readonly string HighscoreLastUsernameSettingsKey = "HighscoreLastUsername";
         private static readonly string DidSeeTutorialSettingsKey = "DidSeeTutorial";
+        private static readonly string GameStartsSettingsKey = "GameStarts";
+
+        public static bool RateReviewShown = false;
+
+        public static bool ShowRateReview
+        {
+            get
+            {
+                return GameSettings.GameStarts == 3 && !String.IsNullOrEmpty(GameSettings.HighscoreLastUsername) && !RateReviewShown;
+            }
+        }
 
         protected override void Initialize()
         {
@@ -28,6 +39,7 @@ namespace Boom
             AddSetting(HighscorePlayerIDSettingsKey, "");
             AddSetting(HighscoreLastUsernameSettingsKey, "");
             AddSetting(DidSeeTutorialSettingsKey, false);
+            AddSetting(GameStartsSettingsKey, 1);
         }
 
         public static bool Speaker
@@ -103,6 +115,18 @@ namespace Boom
             set
             {
                 Set(DidSeeTutorialSettingsKey, value);
+            }
+        }
+
+        public static int GameStarts
+        {
+            get
+            {
+                return (int)Get(GameStartsSettingsKey);
+            }
+            set
+            {
+                Set(GameStartsSettingsKey, value);
             }
         }
     }
