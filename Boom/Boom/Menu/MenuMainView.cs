@@ -104,36 +104,13 @@ namespace Boom
         void _startButton_Tap(object sender)
         {
             PressedButton = MenuPressedButton.Start;
-
-            if (GameSettings.ShowRateReview)
-            {
-                ShowOverlay(new PopupView(new RateReviewPopupView(), true, 5f), true);
-            }
-            else
-            {
-                _startOrResumePressed();
-            }
+            _startOrResumePressed();
         }
 
         void _resumeButton_Tap(object sender)
         {
             PressedButton = MenuPressedButton.Resume;
-
-            if (GameSettings.ShowRateReview)
-            {
-                ShowOverlay(new PopupView(new RateReviewPopupView(), true, 5f), true);
-            }
-            else
-            {
-                _startOrResumePressed();
-            }
-        }
-
-        public override void OverlayWillDismiss(View overlay)
-        {
- 	         base.OverlayWillDismiss(overlay);
             _startOrResumePressed();
-
         }
 
         void _highscoreButton_Tap(object sender)
@@ -156,6 +133,11 @@ namespace Boom
         public override void Update(GameTime gameTime, AnimationInfo animationInfo)
         {
             base.Update(gameTime, animationInfo);
+
+            if (animationInfo.State == AnimationState.Visible && GameSettings.ShowRateReview)
+            {
+                ShowOverlay(new PopupView(new RateReviewPopupView(), true, 5f), true);
+            }
 
             if (_currentRound != GameSettings.CurrentRound)
             {

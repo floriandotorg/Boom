@@ -19,11 +19,14 @@ namespace Boom
         private Label _likeLabel;
         private Button _reviewButton, _noButton;
 
+        public RateReviewPopupView()
+        {
+            GameSettings.RateReviewShown = true;
+        }
+
         public override void Initialize()
         {
             base.Initialize();
-
-            GameSettings.RateReviewShown = true;
 
             _likeLabel = new Label();
             AddSubview(_likeLabel);
@@ -39,10 +42,10 @@ namespace Boom
         {
             base.LoadContent();
 
-            _likeLabel.Text = "You like " + GameSettings.GameName + "?";
+            _likeLabel.Text = "Do you like " + GameSettings.GameName + "?";
             _likeLabel.Font = Load<SpriteFont>("InGameLargeFont");
 
-            _reviewButton.Text = "Click to Rate & Review";
+            _reviewButton.Text = "Click to Rate and Review";
             _reviewButton.Font = Load<SpriteFont>("InGameBoldFont");
             _reviewButton.AutoResize = false;
             _reviewButton.Height = 40;
