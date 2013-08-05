@@ -94,7 +94,11 @@ namespace Boom
         {
             get
             {
+#if DEBUG
+                return false;
+#else
                 return (bool)Get(DidSeeTutorialSettingsKey);
+#endif
             }
             set
             {

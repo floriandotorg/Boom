@@ -18,8 +18,8 @@ namespace Boom
 {
     class MenuInfoView : View
     {
-        private Label _titleLabel, _versionLabel, _byLabel, _floydLabel, _musicByLabel, _musicAuthorLabel;
-        private Button _rateReviewLabel, _supportLabel, _policyLabel;
+        private Label _titleLabel, _versionLabel, _byLabel, _musicByLabel;
+        private Button _floydButton, _musicAuthorButton, _rateReviewLabel, _supportLabel, _policyLabel;
 
         public override void Initialize()
         {
@@ -34,14 +34,14 @@ namespace Boom
             _byLabel = new Label();
             AddSubview(_byLabel);
 
-            _floydLabel = new Label();
-            AddSubview(_floydLabel);
+            _floydButton = new Button();
+            AddSubview(_floydButton);
 
             _musicByLabel = new Label();
             AddSubview(_musicByLabel);
 
-            _musicAuthorLabel = new Label();
-            AddSubview(_musicAuthorLabel);
+            _musicAuthorButton = new Button();
+            AddSubview(_musicAuthorButton);
 
             _rateReviewLabel = new Button();
             AddSubview(_rateReviewLabel);
@@ -74,17 +74,19 @@ namespace Boom
             _byLabel.Font = Load<SpriteFont>("InGameFont");
             _byLabel.Color = Color.White;
 
-            _floydLabel.Text = "Floyd";
-            _floydLabel.Font = Load<SpriteFont>("InGameFont");
-            _floydLabel.Color = Color.White;
+            _floydButton.Text = "Floyd Games";
+            _floydButton.Font = Load<SpriteFont>("InGameFont");
+            _floydButton.Color = Color.White;
+            //_floydButton.Tap += _floydButton_Tap;
 
             _musicByLabel.Text = "Music by";
             _musicByLabel.Font = Load<SpriteFont>("InGameFont");
             _musicByLabel.Color = Color.White;
 
-            _musicAuthorLabel.Text = "Chris Zabriskie";
-            _musicAuthorLabel.Font = Load<SpriteFont>("InGameFont");
-            _musicAuthorLabel.Color = Color.White;
+            _musicAuthorButton.Text = "Chris Zabriskie";
+            _musicAuthorButton.Font = Load<SpriteFont>("InGameFont");
+            _musicAuthorButton.Color = Color.White;
+            _musicAuthorButton.Tap += _musicAuthorButton_Tap;
 
             _rateReviewLabel.Text = "Rate and Review";
             _rateReviewLabel.Font = Load<SpriteFont>("InGameFont");
@@ -100,6 +102,20 @@ namespace Boom
             _policyLabel.Font = Load<SpriteFont>("InGameFont");
             _policyLabel.Color = Color.White;
             _policyLabel.Tap += _policyLabel_Tap;
+        }
+
+        void _musicAuthorButton_Tap(object sender)
+        {
+            WebBrowserTask webBrowserTask = new WebBrowserTask();
+            webBrowserTask.Uri = new Uri("http://chriszabriskie.com");
+            webBrowserTask.Show();
+        }
+
+        void _floydButton_Tap(object sender)
+        {
+            WebBrowserTask webBrowserTask = new WebBrowserTask();
+            webBrowserTask.Uri = new Uri("http://www.floydgames.com");
+            webBrowserTask.Show();
         }
 
         void _policyLabel_Tap(object sender)
@@ -124,7 +140,7 @@ namespace Boom
             }
 
             emailComposeTask.Subject = GameSettings.GameName + " Version " + version_str + " on " + result;
-            emailComposeTask.To = "support.boom@floydug.com";
+            emailComposeTask.To = "support.boomly@floydgames.com";
 
             emailComposeTask.Show();
         }
@@ -141,10 +157,10 @@ namespace Boom
 
             CenterSubview(_titleLabel, -250);
             CenterSubview(_versionLabel, -150);
-            CenterSubview(_byLabel, -100);
-            CenterSubview(_floydLabel, -75);
-            CenterSubview(_musicByLabel, -30);
-            CenterSubview(_musicAuthorLabel, -5);
+            CenterSubview(_byLabel, -75);
+            CenterSubview(_floydButton, -50);
+            CenterSubview(_musicByLabel, 0);
+            CenterSubview(_musicAuthorButton, 25);
             CenterSubview(_rateReviewLabel, 150);
             CenterSubview(_supportLabel, 200);
             CenterSubview(_policyLabel, 250);

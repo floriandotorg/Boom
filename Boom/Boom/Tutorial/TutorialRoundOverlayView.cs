@@ -62,7 +62,7 @@ namespace Boom
             _tapHereLabel.LayoutSubviews();
 
             CenterSubview(_tapHereLabel, 0);
-            _tapHereLabel.Y = 265 + RoundSettings.NumBalls * (int)Ball.RadiusHugeSize - _tapHereLabel.Height / 2;
+            _tapHereLabel.Y = 260 + RoundSettings.NumBalls * (int)Ball.RadiusHugeSize - _tapHereLabel.Height / 2;
         }
 
         public override void Update(GameTime gameTime, AnimationInfo animationInfo)

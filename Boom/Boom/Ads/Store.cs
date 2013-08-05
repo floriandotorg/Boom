@@ -67,6 +67,8 @@ namespace Boom
             {
 #if DEBUG
                 throw;
+#else
+                return false;
 #endif
             }
 
