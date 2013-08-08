@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{58DA34AB-1BEC-4C75-BDBB-5A6C37723E0A}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Boom_Android</RootNamespace>
+    <AndroidApplication>True</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <AssemblyName>Boom_Android</AssemblyName>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="OpenTK" />
+    <Reference Include="Lidgren.Network">
+      <HintPath>..\..\..\..\Library\Application Support\XamarinStudio-4.0\LocalInstall\Addins\MonoDevelop.MonoGame.3.0.1\assemblies\Android\Lidgren.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\..\..\..\Library\Application Support\XamarinStudio-4.0\LocalInstall\Addins\MonoDevelop.MonoGame.3.0.1\assemblies\Android\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Pages_Android">
+      <HintPath>Pages_Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Scoreoid.Kit.Android">
+      <HintPath>Scoreoid.Kit.Android.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Resources\Resource.designer.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BoomActivity.cs" />
+    <Compile Include="Utility\BoomGame.cs" />
+    <Compile Include="Utility\GameSettings.cs" />
+    <Compile Include="Utility\NavigationController.cs" />
+    <Compile Include="Utility\PopupView.cs" />
+    <Compile Include="Utility\Program.cs" />
+    <Compile Include="Utility\Screen.cs" />
+    <Compile Include="Utility\SpeakerButton.cs" />
+    <Compile Include="Utility\VolumeManager.cs" />
+    <Compile Include="Game\Ball.cs" />
+    <Compile Include="Game\FailedScreenView.cs" />
+    <Compile Include="Game\GameOverScreenView.cs" />
+    <Compile Include="Game\GameView.cs" />
+    <Compile Include="Game\IRoundDelegate.cs" />
+    <Compile Include="Game\Round.cs" />
+    <Compile Include="Game\StartNewGamePopupView.cs" />
+    <Compile Include="Game\StartScreenView.cs" />
+    <Compile Include="Game\SucessScreenView.cs" />
+    <Compile Include="Ads\AdManager.cs" />
+    <Compile Include="Ads\RemoveAdsButton.cs" />
+    <Compile Include="Highscore\Highscore.cs" />
+    <Compile Include="Highscore\HighscoreSharePopupView.cs" />
+    <Compile Include="Highscore\HighscoreTabView.cs" />
+    <Compile Include="Highscore\HighscoreTableView.cs" />
+    <Compile Include="Tutorial\TutorialGotItOverlayView.cs" />
+    <Compile Include="Tutorial\TutorialRoundOverlayView.cs" />
+    <Compile Include="Tutorial\TutorialView.cs" />
+    <Compile Include="Ads\Store_Android.cs" />
+    <Compile Include="Menu\MenuHighscoreView.cs" />
+    <Compile Include="Menu\MenuInfoView.cs" />
+    <Compile Include="Menu\MenuMainView.cs" />
+    <Compile Include="Menu\MenuView.cs" />
+    <Compile Include="Menu\RateReviewPopupView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AboutResources.txt" />
+    <None Include="Properties\AndroidManifest.xml" />
+    <None Include="Ads\defaultAdSettings.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Icon.png" />
+    <AndroidResource Include="Resources\drawable\Splash.png" />
+    <AndroidResource Include="Resources\values\Styles.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Assets\" />
+    <Folder Include="Game\" />
+    <Folder Include="Ads\" />
+    <Folder Include="Highscore\" />
+    <Folder Include="Tutorial\" />
+    <Folder Include="Menu\" />
+    <Folder Include="Content\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Content\BackgroundSong.wma" />
+    <AndroidAsset Include="Content\BackgroundSong.xnb" />
+    <AndroidAsset Include="Content\BallTexture.xnb" />
+    <AndroidAsset Include="Content\BlipSound.xnb" />
+    <AndroidAsset Include="Content\CrossTexture.xnb" />
+    <AndroidAsset Include="Content\FacebookButtonTexture.xnb" />
+    <AndroidAsset Include="Content\InGameBoldFont.xnb" />
+    <AndroidAsset Include="Content\InGameFont.xnb" />
+    <AndroidAsset Include="Content\InGameLargeFont.xnb" />
+    <AndroidAsset Include="Content\InGameSmallFont.xnb" />
+    <AndroidAsset Include="Content\MenuFont.xnb" />
+    <AndroidAsset Include="Content\SpeakerMuteTexture.xnb" />
+    <AndroidAsset Include="Content\SpeakerTexture.xnb" />
+    <AndroidAsset Include="Content\TitleFont.xnb" />
+    <AndroidAsset Include="Content\TwitterButtonTexture.xnb" />
+    <AndroidAsset Include="Content\VictorySound.xnb" />
+  </ItemGroup>
+</Project>

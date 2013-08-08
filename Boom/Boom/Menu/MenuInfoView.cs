@@ -10,8 +10,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 using Pages;
-using Microsoft.Phone.Tasks;
-using Microsoft.Phone.Info;
+//using Microsoft.Phone.Tasks;
+//using Microsoft.Phone.Info;
 using System.Reflection;
 
 namespace Boom
@@ -106,49 +106,49 @@ namespace Boom
 
         void _musicAuthorButton_Tap(object sender)
         {
-            WebBrowserTask webBrowserTask = new WebBrowserTask();
-            webBrowserTask.Uri = new Uri("http://chriszabriskie.com");
-            webBrowserTask.Show();
+//            WebBrowserTask webBrowserTask = new WebBrowserTask();
+//            webBrowserTask.Uri = new Uri("http://chriszabriskie.com");
+//            webBrowserTask.Show();
         }
 
         void _floydButton_Tap(object sender)
         {
-            WebBrowserTask webBrowserTask = new WebBrowserTask();
-            webBrowserTask.Uri = new Uri("http://www.floydgames.com");
-            webBrowserTask.Show();
+//            WebBrowserTask webBrowserTask = new WebBrowserTask();
+//            webBrowserTask.Uri = new Uri("http://www.floydgames.com");
+//            webBrowserTask.Show();
         }
 
         void _policyLabel_Tap(object sender)
         {
-            WebBrowserTask webBrowserTask = new WebBrowserTask();
-            webBrowserTask.Uri = new Uri("http://www.floydug.com/apps/boomly/wp/privacy-policy-current.html");
-            webBrowserTask.Show();
+//            WebBrowserTask webBrowserTask = new WebBrowserTask();
+//            webBrowserTask.Uri = new Uri("http://www.floydug.com/apps/boomly/wp/privacy-policy-current.html");
+//            webBrowserTask.Show();
         }
 
         void _supportLabel_Tap(object sender)
         {
-            var versionAttrib = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
-            string version_str = versionAttrib.Version.ToString().Substring(0, 3);
-
-            EmailComposeTask emailComposeTask = new EmailComposeTask();
-
-            string result = "unknown device";
-            object deviceName;
-            if (DeviceExtendedProperties.TryGetValue("DeviceName", out deviceName))
-            {
-                result = deviceName.ToString();
-            }
-
-            emailComposeTask.Subject = GameSettings.GameName + " Version " + version_str + " on " + result;
-            emailComposeTask.To = "support.boomly@floydgames.com";
-
-            emailComposeTask.Show();
+//            var versionAttrib = new AssemblyName(Assembly.GetExecutingAssembly().FullName);
+//            string version_str = versionAttrib.Version.ToString().Substring(0, 3);
+//
+//            EmailComposeTask emailComposeTask = new EmailComposeTask();
+//
+//            string result = "unknown device";
+//            object deviceName;
+//            if (DeviceExtendedProperties.TryGetValue("DeviceName", out deviceName))
+//            {
+//                result = deviceName.ToString();
+//            }
+//
+//            emailComposeTask.Subject = GameSettings.GameName + " Version " + version_str + " on " + result;
+//            emailComposeTask.To = "support.boomly@floydgames.com";
+//
+//            emailComposeTask.Show();
         }
 
         void _rateReviewLabel_Tap(object sender)
         {
-            MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
-            marketplaceReviewTask.Show();
+//            MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
+//            marketplaceReviewTask.Show();
         }
 
         public override void LayoutSubviews()

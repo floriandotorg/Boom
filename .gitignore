@@ -31,6 +31,11 @@ local.properties
 # PDT-specific
 .buildpath
 
+#################
+## Xamarin
+#################
+
+*.userprefs
 
 #################
 ## Visual Studio

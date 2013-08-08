@@ -10,8 +10,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
+
+#if WINDOWS
 using AdRotatorXNA;
 using AdRotator.Model;
+#endif
 
 namespace Boom
 {
@@ -21,6 +24,7 @@ namespace Boom
         {
             try
             {
+#if WINDOWS
                 if (!Store.HasPurchased(GameSettings.RemoveAdsProductId))
                 {
                     AdRotatorXNAComponent.Initialize(game);
@@ -40,6 +44,7 @@ namespace Boom
 
                     game.Components.Add(AdRotatorXNAComponent.Current);
                 }
+#endif
             }
             catch
             {
@@ -56,12 +61,14 @@ namespace Boom
 
         public static void UpdateAdStatus()
         {
+#if WINDOWS
             if (Store.HasPurchased(GameSettings.RemoveAdsProductId) && AdRotatorXNAComponent.Current != null)
             {
                 AdRotatorXNAComponent.Current.Enabled = false;
                 AdRotatorXNAComponent.Current.Visible = false;
                 AdRotatorXNAComponent.Current.Game.Components.Remove(AdRotatorXNAComponent.Current);
             }
+#endif
         }
     }
 }

@@ -16,14 +16,14 @@ namespace Boom
     /// <summary>
     /// Dies ist der Haupttyp für Ihr Spiel
     /// </summary>
-    public class PlanesGame : Microsoft.Xna.Framework.Game
+    public class BoomGame : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         private NavigationController _navigationController;
 
-        public PlanesGame()
+		public BoomGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";

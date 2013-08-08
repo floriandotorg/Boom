@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
-using Microsoft.Phone.Tasks;
+//using Microsoft.Phone.Tasks;
 using Pages;
 
 namespace Boom
@@ -77,11 +77,11 @@ namespace Boom
 
         private void share(object sender)
         {
-            ShareLinkTask shareLinkTask = new ShareLinkTask();
-            shareLinkTask.LinkUri = new Uri("http://bit.ly/19Y4EoN", UriKind.Absolute);
-            shareLinkTask.Title = GameSettings.GameName;
-            shareLinkTask.Message = _shareText;
-            shareLinkTask.Show();
+//            ShareLinkTask shareLinkTask = new ShareLinkTask();
+//            shareLinkTask.LinkUri = new Uri("http://bit.ly/19Y4EoN", UriKind.Absolute);
+//            shareLinkTask.Title = GameSettings.GameName;
+//            shareLinkTask.Message = _shareText;
+//            shareLinkTask.Show();
         }
 
         public override void LayoutSubviews()

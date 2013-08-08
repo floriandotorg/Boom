@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
 using Pages;
-using Microsoft.Phone.Tasks;
+//using Microsoft.Phone.Tasks;
 
 namespace Boom
 {
@@ -64,8 +64,8 @@ namespace Boom
 
         void _reviewButton_Tap(object sender)
         {
-            MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
-            marketplaceReviewTask.Show();
+//            MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
+//            marketplaceReviewTask.Show();
 
             Dismiss(true);
         }
