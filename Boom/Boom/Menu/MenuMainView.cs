@@ -150,10 +150,10 @@ namespace Boom
             base.LayoutSubviews();
 
             int menuItemGap = 100;
-            int pos = -235;
+			int pos = -235;
 
             CenterSubview(_titleLabel, pos);
-            pos += 170;
+			pos += 170;
 
             _currentRound = GameSettings.CurrentRound;
 
@@ -169,14 +169,14 @@ namespace Boom
             {
                 _resumeSubButton.Text = "Level " + _currentRound;
 
-                pos -= 25;
-                menuItemGap = 90;
+				pos -= 25;
+				menuItemGap = 90;
 
                 CenterSubview(_startButton, pos);
                 pos += menuItemGap;
 
                 CenterSubview(_resumeButton, pos);
-                CenterSubview(_resumeSubButton, pos + 30);
+				CenterSubview(_resumeSubButton, pos + 30);
                 pos += menuItemGap;
 
                 _resumeButton.Visible = true;

@@ -33,8 +33,10 @@ namespace Boom
 
             graphics.IsFullScreen = true;
             graphics.SupportedOrientations = DisplayOrientation.Portrait;
+#if !IOS
             graphics.PreferredBackBufferWidth = 480;
             graphics.PreferredBackBufferHeight = 800;
+#endif
             graphics.PreferMultiSampling = true;
             graphics.ApplyChanges();
         }

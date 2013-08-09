@@ -48,13 +48,13 @@ namespace Boom
             _reviewButton.Text = "Click to Rate and Review";
             _reviewButton.Font = Load<SpriteFont>("InGameBoldFont");
             _reviewButton.AutoResize = false;
-            _reviewButton.Height = 40;
+			_reviewButton.Height = 40;
             _reviewButton.Tap += _reviewButton_Tap;
 
             _textLabel.Text = "Please help us to improve this game";
             _textLabel.Font = Load<SpriteFont>("InGameFont");
             _textLabel.AutoResize = false;
-            _textLabel.Height = 30;
+			_textLabel.Height = 30;
         }
 
         void _noButton_Tap(object sender)
@@ -75,12 +75,12 @@ namespace Boom
             base.LayoutSubviews();
 
             CenterSubview(_likeLabel, 0);
-            _likeLabel.Y = 15;
+			_likeLabel.Y = 15;
 
             CenterSubview(_textLabel, 0);
 
             CenterSubview(_reviewButton, 0);
-            _reviewButton.Y = Height - 13 - _reviewButton.Height;
+			_reviewButton.Y = Height - 13 - _reviewButton.Height;
         }
     }
 }

@@ -13,12 +13,13 @@ using Pages;
 
 namespace Boom
 {
+
     /// <summary>
     /// Dies ist der Haupttyp für Ihr Spiel
     /// </summary>
     public class BoomGame : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
+		GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         private NavigationController _navigationController;
@@ -26,7 +27,14 @@ namespace Boom
 		public BoomGame()
         {
             graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+
+#if ANDROID
+            Content.RootDirectory = "Content_Android";
+#elif IOS
+			Content.RootDirectory = "Content_iOS";
+#else
+			Content.RootDirectory = "Content";
+#endif
 
             // Frame-Rate ist standardmäßig 30 fps für das Windows Phone.
             TargetElapsedTime = TimeSpan.FromTicks(333333);
@@ -59,7 +67,9 @@ namespace Boom
         protected override void LoadContent()
         {
             // Erstellen Sie einen neuen SpriteBatch, der zum Zeichnen von Texturen verwendet werden kann.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+			spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+
+			Content.Load<SpriteFont>("InGameLargeFont");
 
             _navigationController.LoadContent(spriteBatch, Content);
         }
@@ -101,5 +111,87 @@ namespace Boom
 
             base.Draw(gameTime);
         }
-    }
+
+		/*
+		#region Fields
+		GraphicsDeviceManager graphics;
+		SpriteBatch spriteBatch;
+		Texture2D logoTexture;
+		SpriteFont font;
+		#endregion
+
+		#region Initialization
+
+		public BoomGame()  
+		{
+
+			graphics = new GraphicsDeviceManager(this);
+
+			Content.RootDirectory = "Content_iOS";
+
+			graphics.IsFullScreen = true;
+		}
+
+		/// <summary>
+		/// Overridden from the base Game.Initialize. Once the GraphicsDevice is setup,
+		/// we'll use the viewport to initialize some values.
+		/// </summary>
+		protected override void Initialize()
+		{
+			base.Initialize();
+		}
+
+
+		/// <summary>
+		/// Load your graphics content.
+		/// </summary>
+		protected override void LoadContent()
+		{
+			// Create a new SpriteBatch, which can be use to draw textures.
+			spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
+
+			font = Content.Load<SpriteFont>("InGameLargeFont");
+			logoTexture = Content.Load<Texture2D>("logo");
+		}
+
+		#endregion
+
+		#region Update and Draw
+
+		/// <summary>
+		/// Allows the game to run logic such as updating the world,
+		/// checking for collisions, gathering input, and playing audio.
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		protected override void Update(GameTime gameTime)
+		{
+			// TODO: Add your update logic here			
+
+			base.Update(gameTime);
+		}
+
+		/// <summary>
+		/// This is called when the game should draw itself. 
+		/// </summary>
+		/// <param name="gameTime">Provides a snapshot of timing values.</param>
+		protected override void Draw(GameTime gameTime)
+		{
+			// Clear the backbuffer
+			graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
+
+			spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+
+			// draw the logo
+			spriteBatch.Draw(logoTexture, new Vector2 (130, 200), Color.White);
+
+			spriteBatch.DrawString (font, "Hallo", new Vector2 (100, 100), Color.Black);
+
+			spriteBatch.End();
+
+			//TODO: Add your drawing code here
+			base.Draw(gameTime);
+		}
+
+		#endregion*/
+	}
 }

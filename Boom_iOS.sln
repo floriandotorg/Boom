@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Boom_iOS", "Boom\Boom\Boom_iOS.csproj", "{727E6E2D-5461-410A-B768-AA2D452178AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Release|iPhone = Release|iPhone
+		Ad-Hoc|iPhone = Ad-Hoc|iPhone
+		AppStore|iPhone = AppStore|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{727E6E2D-5461-410A-B768-AA2D452178AE}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
+		{727E6E2D-5461-410A-B768-AA2D452178AE}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
+		{727E6E2D-5461-410A-B768-AA2D452178AE}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
+		{727E6E2D-5461-410A-B768-AA2D452178AE}.AppStore|iPhone.Build.0 = AppStore|iPhone
+		{727E6E2D-5461-410A-B768-AA2D452178AE}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{727E6E2D-5461-410A-B768-AA2D452178AE}.Debug|iPhone.Build.0 = Debug|iPhone
+		{727E6E2D-5461-410A-B768-AA2D452178AE}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{727E6E2D-5461-410A-B768-AA2D452178AE}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{727E6E2D-5461-410A-B768-AA2D452178AE}.Release|iPhone.ActiveCfg = Release|iPhone
+		{727E6E2D-5461-410A-B768-AA2D452178AE}.Release|iPhone.Build.0 = Release|iPhone
+		{727E6E2D-5461-410A-B768-AA2D452178AE}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{727E6E2D-5461-410A-B768-AA2D452178AE}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Boom\Boom\Boom_iOS.csproj
+	EndGlobalSection
+EndGlobal

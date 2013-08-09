@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{727E6E2D-5461-410A-B768-AA2D452178AE}</ProjectGuid>
+    <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Boom_iOS</RootNamespace>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
+    <AssemblyName>Boom_iOS</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Debug</OutputPath>
+    <DefineConstants>DEBUG;IOS;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchLink>None</MtouchLink>
+    <ConsolePause>false</ConsolePause>
+    <MtouchDebug>true</MtouchDebug>
+    <MtouchI18n />
+    <MtouchArch>ARMv7</MtouchArch>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhoneSimulator\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchLink>None</MtouchLink>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhone' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Debug</OutputPath>
+    <DefineConstants>DEBUG;IOS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <MtouchDebug>true</MtouchDebug>
+    <ConsolePause>false</ConsolePause>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <IpaPackageName />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Developer</CodesignKey>
+    <ConsolePause>false</ConsolePause>
+    <DefineConstants>IOS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ad-Hoc|iPhone' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\Ad-Hoc</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <BuildIpa>true</BuildIpa>
+    <ConsolePause>false</ConsolePause>
+    <CodesignProvision>Automatic:AdHoc</CodesignProvision>
+    <DefineConstants>IOS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'AppStore|iPhone' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\iPhone\AppStore</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodesignKey>iPhone Distribution</CodesignKey>
+    <ConsolePause>false</ConsolePause>
+    <CodesignProvision>Automatic:AppStore</CodesignProvision>
+    <DefineConstants>IOS</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="monotouch" />
+    <Reference Include="OpenTK" />
+    <Reference Include="Lidgren.Network">
+      <HintPath>..\..\..\..\Library\Application Support\XamarinStudio-4.0\LocalInstall\Addins\MonoDevelop.MonoGame.3.0.1\assemblies\iOS\Lidgren.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\..\..\..\Library\Application Support\XamarinStudio-4.0\LocalInstall\Addins\MonoDevelop.MonoGame.3.0.1\assemblies\iOS\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Pages_iOS">
+      <HintPath>Pages_iOS.dll</HintPath>
+    </Reference>
+    <Reference Include="Scoreoid.Kit.iOS">
+      <HintPath>Scoreoid.Kit.iOS.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Main.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ads\AdManager.cs" />
+    <Compile Include="Ads\RemoveAdsButton.cs" />
+    <Compile Include="Ads\Store_iOS.cs" />
+    <Compile Include="Game\Ball.cs" />
+    <Compile Include="Game\FailedScreenView.cs" />
+    <Compile Include="Game\GameOverScreenView.cs" />
+    <Compile Include="Game\GameView.cs" />
+    <Compile Include="Game\IRoundDelegate.cs" />
+    <Compile Include="Game\Round.cs" />
+    <Compile Include="Game\StartNewGamePopupView.cs" />
+    <Compile Include="Game\StartScreenView.cs" />
+    <Compile Include="Game\SucessScreenView.cs" />
+    <Compile Include="Highscore\Highscore.cs" />
+    <Compile Include="Highscore\HighscoreSharePopupView.cs" />
+    <Compile Include="Highscore\HighscoreTabView.cs" />
+    <Compile Include="Highscore\HighscoreTableView.cs" />
+    <Compile Include="Menu\MenuHighscoreView.cs" />
+    <Compile Include="Menu\MenuInfoView.cs" />
+    <Compile Include="Menu\MenuMainView.cs" />
+    <Compile Include="Menu\MenuView.cs" />
+    <Compile Include="Menu\RateReviewPopupView.cs" />
+    <Compile Include="Tutorial\TutorialGotItOverlayView.cs" />
+    <Compile Include="Tutorial\TutorialRoundOverlayView.cs" />
+    <Compile Include="Tutorial\TutorialView.cs" />
+    <Compile Include="Utility\BoomGame.cs" />
+    <Compile Include="Utility\GameSettings.cs" />
+    <Compile Include="Utility\NavigationController.cs" />
+    <Compile Include="Utility\PopupView.cs" />
+    <Compile Include="Utility\Program.cs" />
+    <Compile Include="Utility\Screen.cs" />
+    <Compile Include="Utility\SpeakerButton.cs" />
+    <Compile Include="Utility\VolumeManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Info.plist" />
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Default.png" />
+    <BundleResource Include="GameThumbnail.png" />
+    <BundleResource Include="Content_iOS\BackgroundSong.mp3" />
+    <BundleResource Include="Content_iOS\BackgroundSong.xnb" />
+    <BundleResource Include="Content_iOS\BallTexture.xnb" />
+    <BundleResource Include="Content_iOS\BlipSound.xnb" />
+    <BundleResource Include="Content_iOS\CrossTexture.xnb" />
+    <BundleResource Include="Content_iOS\FacebookButtonTexture.xnb" />
+    <BundleResource Include="Content_iOS\InGameLargeFont.xnb" />
+    <BundleResource Include="Content_iOS\InGameSmallFont.xnb" />
+    <BundleResource Include="Content_iOS\MenuFont.xnb" />
+    <BundleResource Include="Content_iOS\SpeakerMuteTexture.xnb" />
+    <BundleResource Include="Content_iOS\SpeakerTexture.xnb" />
+    <BundleResource Include="Content_iOS\TitleFont.xnb" />
+    <BundleResource Include="Content_iOS\TwitterButtonTexture.xnb" />
+    <BundleResource Include="Content_iOS\VictorySound.xnb" />
+    <BundleResource Include="Content_iOS\InGameFont.xnb" />
+    <BundleResource Include="Content_iOS\InGameBoldFont.xnb">
+      <DeployService-Deploy>True</DeployService-Deploy>
+    </BundleResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="Ads\" />
+    <Folder Include="Game\" />
+    <Folder Include="Highscore\" />
+    <Folder Include="Menu\" />
+    <Folder Include="Tutorial\" />
+    <Folder Include="Utility\" />
+    <Folder Include="Content_iOS\" />
+  </ItemGroup>
+</Project>
