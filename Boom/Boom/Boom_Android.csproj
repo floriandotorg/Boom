@@ -22,20 +22,20 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
+    <DefineConstants>DEBUG;ANDROID;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidLinkMode>None</AndroidLinkMode>
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
     <ConsolePause>false</ConsolePause>
+    <DefineConstants>ANDROID</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -111,24 +111,24 @@
     <Folder Include="Highscore\" />
     <Folder Include="Tutorial\" />
     <Folder Include="Menu\" />
-    <Folder Include="Content\" />
+    <Folder Include="Content_Android\" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Content\BackgroundSong.wma" />
-    <AndroidAsset Include="Content\BackgroundSong.xnb" />
-    <AndroidAsset Include="Content\BallTexture.xnb" />
-    <AndroidAsset Include="Content\BlipSound.xnb" />
-    <AndroidAsset Include="Content\CrossTexture.xnb" />
-    <AndroidAsset Include="Content\FacebookButtonTexture.xnb" />
-    <AndroidAsset Include="Content\InGameBoldFont.xnb" />
-    <AndroidAsset Include="Content\InGameFont.xnb" />
-    <AndroidAsset Include="Content\InGameLargeFont.xnb" />
-    <AndroidAsset Include="Content\InGameSmallFont.xnb" />
-    <AndroidAsset Include="Content\MenuFont.xnb" />
-    <AndroidAsset Include="Content\SpeakerMuteTexture.xnb" />
-    <AndroidAsset Include="Content\SpeakerTexture.xnb" />
-    <AndroidAsset Include="Content\TitleFont.xnb" />
-    <AndroidAsset Include="Content\TwitterButtonTexture.xnb" />
-    <AndroidAsset Include="Content\VictorySound.xnb" />
+    <AndroidAsset Include="Content_Android\BackgroundSong.wma" />
+    <AndroidAsset Include="Content_Android\BackgroundSong.xnb" />
+    <AndroidAsset Include="Content_Android\BallTexture.xnb" />
+    <AndroidAsset Include="Content_Android\BlipSound.xnb" />
+    <AndroidAsset Include="Content_Android\CrossTexture.xnb" />
+    <AndroidAsset Include="Content_Android\FacebookButtonTexture.xnb" />
+    <AndroidAsset Include="Content_Android\InGameBoldFont.xnb" />
+    <AndroidAsset Include="Content_Android\InGameFont.xnb" />
+    <AndroidAsset Include="Content_Android\InGameLargeFont.xnb" />
+    <AndroidAsset Include="Content_Android\InGameSmallFont.xnb" />
+    <AndroidAsset Include="Content_Android\MenuFont.xnb" />
+    <AndroidAsset Include="Content_Android\SpeakerMuteTexture.xnb" />
+    <AndroidAsset Include="Content_Android\SpeakerTexture.xnb" />
+    <AndroidAsset Include="Content_Android\TitleFont.xnb" />
+    <AndroidAsset Include="Content_Android\TwitterButtonTexture.xnb" />
+    <AndroidAsset Include="Content_Android\VictorySound.xnb" />
   </ItemGroup>
 </Project>
