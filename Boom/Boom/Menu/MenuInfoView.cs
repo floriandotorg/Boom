@@ -19,7 +19,7 @@ namespace Boom
     class MenuInfoView : View
     {
         private Label _titleLabel, _versionLabel, _byLabel, _musicByLabel;
-        private Button _floydButton, _musicAuthorButton, _rateReviewLabel, _supportLabel, _policyLabel;
+        private Button _floydButton, _musicAuthorButton, _rateReviewLabel, _supportLabel, _policyLabel, _twitterButton, _facebookButton;
 
         public override void Initialize()
         {
@@ -51,6 +51,12 @@ namespace Boom
 
             _policyLabel = new Button();
             AddSubview(_policyLabel);
+
+            _twitterButton = new Button();
+            AddSubview(_twitterButton);
+
+            _facebookButton = new Button();
+            AddSubview(_facebookButton);
         }
 
         public override void LoadContent()
@@ -77,7 +83,7 @@ namespace Boom
             _floydButton.Text = "Floyd Games";
             _floydButton.Font = Load<SpriteFont>("InGameFont");
             _floydButton.Color = Color.White;
-            //_floydButton.Tap += _floydButton_Tap;
+            _floydButton.Tap += _floydButton_Tap;
 
             _musicByLabel.Text = "Music by";
             _musicByLabel.Font = Load<SpriteFont>("InGameFont");
@@ -102,6 +108,34 @@ namespace Boom
             _policyLabel.Font = Load<SpriteFont>("InGameFont");
             _policyLabel.Color = Color.White;
             _policyLabel.Tap += _policyLabel_Tap;
+
+            _twitterButton.AutoResize = false;
+            _twitterButton.Height = 80;
+            _twitterButton.Width = 80;
+            _twitterButton.BackgroundTexture = Load<Texture2D>("TwitterTexture");
+            _twitterButton.BackgroundColor = Color.White;
+            _twitterButton.Tap += _twitterButton_Tap;
+
+            _facebookButton.AutoResize = false;
+            _facebookButton.Height = 80;
+            _facebookButton.Width = 80;
+            _facebookButton.BackgroundTexture = Load<Texture2D>("FacebookTexture");
+            _facebookButton.BackgroundColor = Color.White;
+            _facebookButton.Tap += _facebookButton_Tap;
+        }
+
+        void _facebookButton_Tap(object sender)
+        {
+            WebBrowserTask webBrowserTask = new WebBrowserTask();
+            webBrowserTask.Uri = new Uri("http://facebook.com/boomlygame");
+            webBrowserTask.Show();
+        }
+
+        void _twitterButton_Tap(object sender)
+        {
+            WebBrowserTask webBrowserTask = new WebBrowserTask();
+            webBrowserTask.Uri = new Uri("http://twitter.com/boomlygame");
+            webBrowserTask.Show();
         }
 
         void _musicAuthorButton_Tap(object sender)
@@ -114,14 +148,14 @@ namespace Boom
         void _floydButton_Tap(object sender)
         {
             WebBrowserTask webBrowserTask = new WebBrowserTask();
-            webBrowserTask.Uri = new Uri("http://www.floydgames.com");
+            webBrowserTask.Uri = new Uri("http://floydgames.com");
             webBrowserTask.Show();
         }
 
         void _policyLabel_Tap(object sender)
         {
             WebBrowserTask webBrowserTask = new WebBrowserTask();
-            webBrowserTask.Uri = new Uri("http://www.floydug.com/apps/boomly/wp/privacy-policy-current.html");
+            webBrowserTask.Uri = new Uri("http://floydgames.com/games/boomly/privacy-policy");
             webBrowserTask.Show();
         }
 
@@ -164,6 +198,12 @@ namespace Boom
             CenterSubview(_rateReviewLabel, 150);
             CenterSubview(_supportLabel, 200);
             CenterSubview(_policyLabel, 250);
+
+            CenterSubview(_twitterButton, 0);
+            _twitterButton.X = 40;
+
+            CenterSubview(_facebookButton, 0);
+            _facebookButton.X = Width - _facebookButton.Width - 40;
         }
     }
 }

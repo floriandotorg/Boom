@@ -54,6 +54,8 @@ namespace Boom
             Load<Texture2D>("TwitterButtonTexture");
             Load<Texture2D>("FacebookButtonTexture");
             Load<Texture2D>("CrossTexture");
+            Load<Texture2D>("TwitterTexture");
+            Load<Texture2D>("FacebookTexture");
             Load<SpriteFont>("InGameFont");
             Load<SpriteFont>("TitleFont");
             Load<SpriteFont>("InGameLargeFont");
