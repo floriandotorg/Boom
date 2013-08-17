@@ -43,17 +43,18 @@
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
     <Reference Include="OpenTK" />
-    <Reference Include="Lidgren.Network">
-      <HintPath>..\..\..\..\Library\Application Support\XamarinStudio-4.0\LocalInstall\Addins\MonoDevelop.MonoGame.3.0.1\assemblies\Android\Lidgren.Network.dll</HintPath>
-    </Reference>
-    <Reference Include="MonoGame.Framework">
-      <HintPath>..\..\..\..\Library\Application Support\XamarinStudio-4.0\LocalInstall\Addins\MonoDevelop.MonoGame.3.0.1\assemblies\Android\MonoGame.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="Pages_Android">
       <HintPath>Pages_Android.dll</HintPath>
     </Reference>
     <Reference Include="Scoreoid.Kit.Android">
       <HintPath>Scoreoid.Kit.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Lidgren.Network">
+      <HintPath>..\..\..\..\..\AppData\Local\XamarinStudio-4.0\LocalInstall\Addins\MonoDevelop.MonoGame.3.0.1\assemblies\Android\Lidgren.Network.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoGame.Framework">
+      <HintPath>..\..\..\..\..\AppData\Local\XamarinStudio-4.0\LocalInstall\Addins\MonoDevelop.MonoGame.3.0.1\assemblies\Android\MonoGame.Framework.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -105,7 +106,6 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="Assets\" />
     <Folder Include="Game\" />
     <Folder Include="Ads\" />
     <Folder Include="Highscore\" />
@@ -116,19 +116,19 @@
   <ItemGroup>
     <AndroidAsset Include="Content_Android\BackgroundSong.wma" />
     <AndroidAsset Include="Content_Android\BackgroundSong.xnb" />
-    <AndroidAsset Include="Content_Android\BallTexture.xnb" />
+    <AndroidAsset Include="Content_Android\BallTexture.png" />
     <AndroidAsset Include="Content_Android\BlipSound.xnb" />
-    <AndroidAsset Include="Content_Android\CrossTexture.xnb" />
-    <AndroidAsset Include="Content_Android\FacebookButtonTexture.xnb" />
+    <AndroidAsset Include="Content_Android\CrossTexture.png" />
+    <AndroidAsset Include="Content_Android\FacebookButtonTexture.png" />
     <AndroidAsset Include="Content_Android\InGameBoldFont.xnb" />
     <AndroidAsset Include="Content_Android\InGameFont.xnb" />
     <AndroidAsset Include="Content_Android\InGameLargeFont.xnb" />
     <AndroidAsset Include="Content_Android\InGameSmallFont.xnb" />
     <AndroidAsset Include="Content_Android\MenuFont.xnb" />
-    <AndroidAsset Include="Content_Android\SpeakerMuteTexture.xnb" />
-    <AndroidAsset Include="Content_Android\SpeakerTexture.xnb" />
+    <AndroidAsset Include="Content_Android\SpeakerMuteTexture.png" />
+    <AndroidAsset Include="Content_Android\SpeakerTexture.png" />
     <AndroidAsset Include="Content_Android\TitleFont.xnb" />
-    <AndroidAsset Include="Content_Android\TwitterButtonTexture.xnb" />
+    <AndroidAsset Include="Content_Android\TwitterButtonTexture.png" />
     <AndroidAsset Include="Content_Android\VictorySound.xnb" />
   </ItemGroup>
 </Project>
