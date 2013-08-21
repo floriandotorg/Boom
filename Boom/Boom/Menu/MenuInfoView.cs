@@ -110,15 +110,15 @@ namespace Boom
             _policyLabel.Tap += _policyLabel_Tap;
 
             _twitterButton.AutoResize = false;
-            _twitterButton.Height = 80;
-            _twitterButton.Width = 80;
+            _twitterButton.Height = 70;
+            _twitterButton.Width = 70;
             _twitterButton.BackgroundTexture = Load<Texture2D>("TwitterTexture");
             _twitterButton.BackgroundColor = Color.White;
             _twitterButton.Tap += _twitterButton_Tap;
 
             _facebookButton.AutoResize = false;
-            _facebookButton.Height = 80;
-            _facebookButton.Width = 80;
+            _facebookButton.Height = 70;
+            _facebookButton.Width = 70;
             _facebookButton.BackgroundTexture = Load<Texture2D>("FacebookTexture");
             _facebookButton.BackgroundColor = Color.White;
             _facebookButton.Tap += _facebookButton_Tap;
@@ -199,11 +199,11 @@ namespace Boom
             CenterSubview(_supportLabel, 200);
             CenterSubview(_policyLabel, 250);
 
-            CenterSubview(_twitterButton, 0);
-            _twitterButton.X = 40;
+            CenterSubview(_twitterButton, _twitterButton.Height / 2 + 2);
+            _twitterButton.X = Width - _twitterButton.Width;
 
-            CenterSubview(_facebookButton, 0);
-            _facebookButton.X = Width - _facebookButton.Width - 40;
+            CenterSubview(_facebookButton, -(_facebookButton.Height / 2) - 2);
+            _facebookButton.X = Width - _facebookButton.Width;
         }
     }
 }
