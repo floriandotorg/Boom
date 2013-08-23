@@ -107,9 +107,11 @@
     <Compile Include="Ads\RemoveAdsButton.cs" />
     <Compile Include="Ads\Store.cs" />
     <Compile Include="Game\Ball.cs" />
+    <Compile Include="Game\GameScreenView.cs" />
     <Compile Include="Game\StartNewGamePopupView.cs" />
     <Compile Include="Menu\RateReviewPopupView.cs" />
     <Compile Include="Tutorial\TutorialGotItOverlayView.cs" />
+    <Compile Include="Utility\DismissOnTapView.cs" />
     <Compile Include="Utility\Screen.cs" />
     <Compile Include="Utility\BoomGame.cs" />
     <Compile Include="Highscore\HighscoreSharePopupView.cs" />

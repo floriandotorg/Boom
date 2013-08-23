@@ -13,14 +13,12 @@ using Pages;
 
 namespace Boom
 {
-    class Screen : View
+    class Screen : DismissOnTapView
     {
-        private readonly bool _dismissOnTap, _hasRemoveAdsButton;
+        private readonly bool _hasRemoveAdsButton;
 
         private SpeakerButton _speakerButton;
         private RemoveAdsButton _removeAdsButton;
-
-        private bool _visible;
 
         public Screen() : this(true)
         { }
@@ -28,17 +26,14 @@ namespace Boom
         public Screen(bool dismissOnTap) : this(dismissOnTap, true)
         { }
 
-        public Screen(bool dismissOnTap, bool hasRemoveAdsButton)
+        public Screen(bool dismissOnTap, bool hasRemoveAdsButton) : base(dismissOnTap)
         {
-            _dismissOnTap = dismissOnTap;
             _hasRemoveAdsButton = hasRemoveAdsButton;
         }
 
         public override void Initialize()
         {
             base.Initialize();
-
-            _visible = false;
 
             _speakerButton = new SpeakerButton();
             AddSubview(_speakerButton);
@@ -48,30 +43,6 @@ namespace Boom
                 _removeAdsButton = new RemoveAdsButton();
                 AddSubview(_removeAdsButton);
             }
-        }
-
-        public override void Update(GameTime gameTime, AnimationInfo animationInfo)
-        {
-            base.Update(gameTime, animationInfo);
-
-            _visible = animationInfo.State == AnimationState.Visible;
-        }
-
-        public override bool TouchDown(TouchLocation location)
-        {
-            if (!base.TouchDown(location))
-            {
-                if (_dismissOnTap && _visible)
-                {
-                    Dismiss(true);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }

@@ -13,14 +13,13 @@ using Pages;
 
 namespace Boom
 {
-    class FailedScreenView : Screen
+    class FailedScreenView : DismissOnTapView
     {
-        private string _scoreText, _goalText;
-        private Label _headerLabel, _goalLabel, _tapToRetryLabel, _currentScoreLabel, _scoreLabel;
+        private string _goalText;
+        private Label _headerLabel, _goalLabel, _tapToRetryLabel;
 
-        public FailedScreenView(string goalText, string scoreText)
+        public FailedScreenView(string goalText)
         {
-            _scoreText = scoreText;
             _goalText = goalText;
         }
 
@@ -36,12 +35,6 @@ namespace Boom
 
             _tapToRetryLabel = new Label();
             AddSubview(_tapToRetryLabel);
-
-            _currentScoreLabel = new Label();
-            AddSubview(_currentScoreLabel);
-
-            _scoreLabel = new Label();
-            AddSubview(_scoreLabel);
         }
 
         public override void LoadContent()
@@ -59,12 +52,6 @@ namespace Boom
 
             _tapToRetryLabel.Text = "Tap to retry";
             _tapToRetryLabel.Font = Load<SpriteFont>("InGameFont");
-
-            _currentScoreLabel.Text = "Current Score";
-            _currentScoreLabel.Font = Load<SpriteFont>("InGameFont");
-
-            _scoreLabel.Text = _scoreText;
-            _scoreLabel.Font = Load<SpriteFont>("InGameFont");
         }
 
         public override void LayoutSubviews()
@@ -75,9 +62,7 @@ namespace Boom
 
             CenterSubview(_headerLabel, (int)(-h / 2f));
             CenterSubview(_goalLabel, (int)(-h / 2f) + 60);
-            CenterSubview(_tapToRetryLabel, (int)((-h / 2f) + h * .382f));
-            CenterSubview(_currentScoreLabel, (int)((-h / 2f) + h - 50));
-            CenterSubview(_scoreLabel, (int)((-h / 2f) + h - 50) + 40);
+            CenterSubview(_tapToRetryLabel, 30);
         }
     }
 }

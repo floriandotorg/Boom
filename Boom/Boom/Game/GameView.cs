@@ -53,9 +53,9 @@ namespace Boom
 
             AnimationInfo roundAnimationInfo = animationInfo;
 
-            if (OverlayAnimationInfo != null && OverlayAnimationInfo.State == AnimationState.FadeIn)
+            if (RoundOverlayAnimationInfo != null && RoundOverlayAnimationInfo.State == AnimationState.FadeIn)
             {
-                roundAnimationInfo = OverlayAnimationInfo;
+                roundAnimationInfo = RoundOverlayAnimationInfo;
             }
 
             if (animationInfo.State == AnimationState.FadeOut)
@@ -221,7 +221,15 @@ namespace Boom
         {
             get
             {
-                return Load<SpriteFont>("InGameFont");
+                return Load<SpriteFont>("InGameScoreFont");
+            }
+        }
+
+        public AnimationInfo RoundOverlayAnimationInfo
+        {
+            get
+            {
+                return (Overlay == null) ? null : OverlayAnimationInfo;
             }
         }
 

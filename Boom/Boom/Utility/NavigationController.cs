@@ -60,6 +60,7 @@ namespace Boom
             Load<SpriteFont>("TitleFont");
             Load<SpriteFont>("InGameLargeFont");
             Load<SpriteFont>("InGameBoldFont");
+            Load<SpriteFont>("InGameScoreFont");
             Load<SpriteFont>("InGameSmallFont");
             Load<SpriteFont>("MenuFont");
             Load<SoundEffect>("BlipSound");

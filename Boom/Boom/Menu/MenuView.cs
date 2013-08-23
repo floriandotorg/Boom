@@ -39,12 +39,12 @@ namespace Boom
                 }
                 else
                 {
-                    NavigationController.Navigate(new GameView(1, 0), true);
+                    NavigationController.Navigate(new GameScreenView(1, 0), true);
                 }
             }
             else
             {
-                NavigationController.Navigate(new GameView(GameSettings.CurrentRound, GameSettings.CurrentScore), true);
+                NavigationController.Navigate(new GameScreenView(GameSettings.CurrentRound, GameSettings.CurrentScore), true);
             }
         }
 
@@ -177,7 +177,15 @@ namespace Boom
         {
             get
             {
-                return Load<SpriteFont>("InGameFont");
+                return Load<SpriteFont>("InGameScoreFont");
+            }
+        }
+
+        public AnimationInfo RoundOverlayAnimationInfo
+        {
+            get
+            {
+                return (Overlay == null) ? null : OverlayAnimationInfo;
             }
         }
 

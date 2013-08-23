@@ -13,7 +13,7 @@ using Pages;
 
 namespace Boom
 {
-    class SucessScreenView : Screen
+    class SucessScreenView : DismissOnTapView
     {
         private string _scoreText, _goalText;
         private Label _headerLabel, _goalLabel, _tapToResumeLabel, _currentScoreLabel, _scoreLabel;
@@ -81,7 +81,7 @@ namespace Boom
             CenterSubview(_goalLabel, (int)(-h / 2f) + 60);
             CenterSubview(_tapToResumeLabel, (int)((-h / 2f) + h * .382f));
             CenterSubview(_currentScoreLabel, (int)((-h / 2f) + h - 50));
-            CenterSubview(_scoreLabel, (int)((-h / 2f) + h - 50) + 40);
+            CenterSubview(_scoreLabel, (int)((-h / 2f) + h - 50) + 32);
         }
     }
 }

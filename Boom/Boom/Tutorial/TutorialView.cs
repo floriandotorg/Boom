@@ -29,7 +29,7 @@ namespace Boom
             base.Initialize();
 
             _titleLabel = new Label();
-            AddSubview(_titleLabel);
+            AddSubview(_titleLabel); 
         }
 
         public override void LoadContent()
@@ -76,7 +76,7 @@ namespace Boom
 #if !DEBUG
                 GameSettings.DidSeeTutorial = true;
 #endif
-                NavigationController.SwitchTo(new GameView(1, 0), true);
+                NavigationController.SwitchTo(new GameScreenView(1, 0), true);
             }
         }
 

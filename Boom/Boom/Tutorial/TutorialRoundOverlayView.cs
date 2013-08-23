@@ -216,7 +216,15 @@ namespace Boom
         {
             get
             {
-                return Load<SpriteFont>("InGameFont");
+                return Load<SpriteFont>("InGameScoreFont");
+            }
+        }
+
+        public AnimationInfo RoundOverlayAnimationInfo
+        {
+            get
+            {
+                return (Overlay == null) ? null : OverlayAnimationInfo;
             }
         }
 

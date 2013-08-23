@@ -13,15 +13,14 @@ using Pages;
 
 namespace Boom
 {
-    class StartScreenView : Screen
+    class StartScreenView : DismissOnTapView
     {
-        private string _headerText, _scoreText, _goalText;
-        private Label _headerLabel, _goalLabel, _tapToStartLabel, _currentScoreLabel, _scoreLabel;
+        private string _headerText, _goalText;
+        private Label _headerLabel, _goalLabel, _tapToStartLabel;
 
-        public StartScreenView(string headerText, string goalText, string scoreText) : base(true, false)
+        public StartScreenView(string headerText, string goalText) : base(true)
         {
             _headerText = headerText;
-            _scoreText = scoreText;
             _goalText = goalText;
         }
 
@@ -37,12 +36,6 @@ namespace Boom
 
             _tapToStartLabel = new Label();
             AddSubview(_tapToStartLabel);
-
-            _currentScoreLabel = new Label();
-            AddSubview(_currentScoreLabel);
-            
-            _scoreLabel = new Label();
-            AddSubview(_scoreLabel);
         }
 
         public override void LoadContent()
@@ -59,12 +52,6 @@ namespace Boom
 
             _tapToStartLabel.Text = "Tap to start";
             _tapToStartLabel.Font = Load<SpriteFont>("InGameFont");
-
-            _currentScoreLabel.Text = "Current Score";
-            _currentScoreLabel.Font = Load<SpriteFont>("InGameFont");
-
-            _scoreLabel.Text = _scoreText;
-            _scoreLabel.Font = Load<SpriteFont>("InGameFont");
         }
 
         public override void LayoutSubviews()
@@ -75,9 +62,7 @@ namespace Boom
 
             CenterSubview(_headerLabel, (int)(-h / 2f));
             CenterSubview(_goalLabel, (int)(-h / 2f) + 60);
-            CenterSubview(_tapToStartLabel, (int)((-h / 2f) + h * .382f));
-            CenterSubview(_currentScoreLabel, (int)((-h / 2f) + h - 50));
-            CenterSubview(_scoreLabel, (int)((-h / 2f) + h - 50) + 40);
+            CenterSubview(_tapToStartLabel, 30);
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Boom
         SoundEffect BlipSound { get; }
         SoundEffect VictorySound { get; }
         SpriteFont Font { get; }
+        AnimationInfo RoundOverlayAnimationInfo { get; }
 
         void ShowOverlay(View overlay);
     }

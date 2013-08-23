@@ -96,7 +96,7 @@ namespace Boom
                     roundName = "Final Level";
                 }
 
-                _roundDelegate.ShowOverlay(new StartScreenView(roundName, "" + _roundSettings.Goal + " of " + _roundSettings.NumBalls, "" + (_score + Score)));
+                _roundDelegate.ShowOverlay(new StartScreenView(roundName, String.Format("{0} of {1}", _roundSettings.Goal, _roundSettings.NumBalls)));
             }
             else
             {
@@ -110,7 +110,7 @@ namespace Boom
             {
                 _state = State.FailedScreen;
 
-                _roundDelegate.ShowOverlay(new FailedScreenView(Score + "/" + _roundSettings.Goal + " of " + _roundSettings.NumBalls, "" + _score));
+                _roundDelegate.ShowOverlay(new FailedScreenView(String.Format("{0} / {1}", Score, _roundSettings.Goal)));
             }
             else
             {
@@ -125,7 +125,7 @@ namespace Boom
             {
                 _state = State.SucessScreen;
 
-                _roundDelegate.ShowOverlay(new SucessScreenView(Score + "/" + _roundSettings.Goal + " of " + _roundSettings.NumBalls, "" + (_score + Score)));
+                _roundDelegate.ShowOverlay(new SucessScreenView(String.Format("{0} / {1}", Score, _roundSettings.Goal), Convert.ToString(_score + Score)));
             }
             else
             {
@@ -301,17 +301,28 @@ namespace Boom
         
         public void Draw(SpriteBatch spriteBatch, AnimationInfo animationInfo)
         {
-            foreach (Ball ball in balls)
-            {
-                ball.Draw(spriteBatch, animationInfo);
-            }
-
             if (_roundDelegate.IsScoreVisible && (_state == State.InGame || _state == State.StartScreen || _state == State.FailedScreen))
             {
                 float opacity = Convert.ToSingle(Math.Min(1, balls.Skip(1).Max(x => x.Size) / Ball.RadiusNormalSize));
-                string text = "Points: " + Score + "/" + _roundSettings.Goal + " of " + _roundSettings.NumBalls;
-                Vector2 position = new Vector2(10, _viewport.Height - _font.MeasureString(text).Y - 10);
-                spriteBatch.DrawString(_font, text, position, Color.White * animationInfo.Value * opacity);
+
+                if (_roundDelegate.RoundOverlayAnimationInfo != null)
+                {
+                    opacity *= 1f - _roundDelegate.RoundOverlayAnimationInfo.Value;
+                }
+
+                if (_state == State.StartScreen && _roundDelegate.RoundOverlayAnimationInfo.State == AnimationState.FadeIn)
+                {
+                    opacity = 0;
+                }
+
+                string text = Score + "/" + _roundSettings.Goal;
+                Vector2 position = new Vector2((_viewport.Width - _font.MeasureString(text).X) / 2, 200);
+                spriteBatch.DrawString(_font, text, position, new Color(60,60,60) * animationInfo.Value * opacity);
+            }
+
+            foreach (Ball ball in balls)
+            {
+                ball.Draw(spriteBatch, animationInfo);
             }
         }
     }
