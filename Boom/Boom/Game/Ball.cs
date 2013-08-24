@@ -95,6 +95,14 @@ namespace Boom
             }
         }
 
+        public bool Shrinking
+        {
+            get 
+            {
+                return state == State.Shrinking || state == State.Destroyed;
+            }
+        }
+
         public double Size
         {
             get

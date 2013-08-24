@@ -91,9 +91,15 @@ namespace Boom
                 _state = State.StartScreen;
 
                 string roundName = "Level " + _roundSettings.RoundNo;
+                
                 if (_roundSettings.IsFinalRound)
                 {
                     roundName = "Final Level";
+                }
+
+                if (_roundDelegate.IsTutorial)
+                {
+                    roundName = "Tutorial";
                 }
 
                 _roundDelegate.ShowOverlay(new StartScreenView(roundName, String.Format("{0} of {1}", _roundSettings.Goal, _roundSettings.NumBalls)));
@@ -125,7 +131,14 @@ namespace Boom
             {
                 _state = State.SucessScreen;
 
-                _roundDelegate.ShowOverlay(new SucessScreenView(String.Format("{0} / {1}", Score, _roundSettings.Goal), Convert.ToString(_score + Score)));
+                string scoreText = Convert.ToString(_score + Score);
+
+                if (_roundDelegate.IsTutorial)
+                {
+                    scoreText = null;
+                }
+
+                _roundDelegate.ShowOverlay(new SucessScreenView(String.Format("{0} / {1}", Score, _roundSettings.Goal), scoreText));
             }
             else
             {
@@ -154,6 +167,11 @@ namespace Boom
             return result;
         }
 
+        public float tutorialFirstBallY()
+        {
+            return 245 + _font.MeasureString("0/0").Y;
+        }
+
         private void createBalls(int num)
         {
             for (int i = 0; i < num; i++)
@@ -169,7 +187,7 @@ namespace Boom
 
                 if (_roundDelegate.IsTutorial)
                 {
-                    center = new Vector2(_viewport.Width / 2 - Ball.RadiusNormalSize / 2, 265 + i * Ball.RadiusHugeSize);
+                    center = new Vector2((float)_viewport.Width / 2f, tutorialFirstBallY() + i * Ball.RadiusHugeSize);
                     velocity = Vector2.Zero;
                 }
                 else
@@ -226,14 +244,6 @@ namespace Boom
                 }
             }
 
-            if (_roundDelegate.IsTutorial && _state != State.RoundEnded)
-            {
-                if (!balls[0].Destroyed && !balls[0].Expanding && balls[0].Size <= 55 && balls.Where(x => x.Collided).Count() == 1)
-                {
-                    _state = State.RoundEnded;
-                }
-            }
-
             if (_state == State.InGame && balls.Where(x => x.Size >= 5).Count() == 0)
             {
                 if (Score >= _roundSettings.Goal)
@@ -256,7 +266,7 @@ namespace Boom
             }
         }
 
-        public void OverlayWillDismiss()
+        public bool OverlayWillDismiss()
         {
             if (_state == State.FailedScreen)
             {
@@ -266,7 +276,10 @@ namespace Boom
             if (_state == State.SucessScreen)
             {
                 backgroundColor.Value = 0;
+                return false;
             }
+
+            return true;
         }
 
         public bool OverlayDismissed()
@@ -301,7 +314,7 @@ namespace Boom
         
         public void Draw(SpriteBatch spriteBatch, AnimationInfo animationInfo)
         {
-            if (_roundDelegate.IsScoreVisible && (_state == State.InGame || _state == State.StartScreen || _state == State.FailedScreen))
+            if (_state == State.InGame || _state == State.StartScreen || _state == State.FailedScreen)
             {
                 float opacity = Convert.ToSingle(Math.Min(1, balls.Skip(1).Max(x => x.Size) / Ball.RadiusNormalSize));
 
@@ -315,9 +328,24 @@ namespace Boom
                     opacity = 0;
                 }
 
-                string text = Score + "/" + _roundSettings.Goal;
-                Vector2 position = new Vector2((_viewport.Width - _font.MeasureString(text).X) / 2, 200);
-                spriteBatch.DrawString(_font, text, position, new Color(60,60,60) * animationInfo.Value * opacity);
+                if (_roundDelegate.IsScoreVisible)
+                {
+                    string text = Score + "/" + _roundSettings.Goal;
+                    Vector2 position = new Vector2((_viewport.Width - _font.MeasureString(text).X) / 2, 200);
+                    spriteBatch.DrawString(_font, text, position, new Color(60, 60, 60) * animationInfo.Value * opacity);
+                }
+
+                if (_roundDelegate.IsTutorial)
+                {
+                    if (catcher && balls[0].Shrinking)
+                    {
+                        opacity *= Convert.ToSingle(balls[0].Size / Ball.RadiusHugeSize);
+                    }
+
+                    string text = "tap here";
+                    Vector2 position = new Vector2((_viewport.Width - _roundDelegate.TapHereFont.MeasureString(text).X) / 2f, tutorialFirstBallY() + (float)_roundSettings.NumBalls * (float)Ball.RadiusHugeSize - 15f);
+                    spriteBatch.DrawString(_roundDelegate.TapHereFont, text, position, new Color(80, 80, 80) * animationInfo.Value * opacity);
+                }
             }
 
             foreach (Ball ball in balls)

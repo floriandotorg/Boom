@@ -37,11 +37,14 @@ namespace Boom
             _tapToResumeLabel = new Label();
             AddSubview(_tapToResumeLabel);
 
-            _currentScoreLabel = new Label();
-            AddSubview(_currentScoreLabel);
+            if (_scoreText != null)
+            {
+                _currentScoreLabel = new Label();
+                AddSubview(_currentScoreLabel);
 
-            _scoreLabel = new Label();
-            AddSubview(_scoreLabel);
+                _scoreLabel = new Label();
+                AddSubview(_scoreLabel);
+            }
         }
 
         public override void LoadContent()
@@ -62,13 +65,16 @@ namespace Boom
             _tapToResumeLabel.Font = Load<SpriteFont>("InGameFont");
             _tapToResumeLabel.Color = Color.Black;
 
-            _currentScoreLabel.Text = "Current Score";
-            _currentScoreLabel.Font = Load<SpriteFont>("InGameFont");
-            _currentScoreLabel.Color = Color.Black;
+            if (_scoreText != null)
+            {
+                _currentScoreLabel.Text = "Current Score";
+                _currentScoreLabel.Font = Load<SpriteFont>("InGameFont");
+                _currentScoreLabel.Color = Color.Black;
 
-            _scoreLabel.Text = _scoreText;
-            _scoreLabel.Font = Load<SpriteFont>("InGameFont");
-            _scoreLabel.Color = Color.Black;
+                _scoreLabel.Text = _scoreText;
+                _scoreLabel.Font = Load<SpriteFont>("InGameFont");
+                _scoreLabel.Color = Color.Black;
+            }
         }
 
         public override void LayoutSubviews()
@@ -79,9 +85,17 @@ namespace Boom
 
             CenterSubview(_headerLabel, (int)(-h / 2f));
             CenterSubview(_goalLabel, (int)(-h / 2f) + 60);
-            CenterSubview(_tapToResumeLabel, (int)((-h / 2f) + h * .382f));
-            CenterSubview(_currentScoreLabel, (int)((-h / 2f) + h - 50));
-            CenterSubview(_scoreLabel, (int)((-h / 2f) + h - 50) + 32);
+
+            if (_scoreText != null)
+            {
+                CenterSubview(_tapToResumeLabel, (int)((-h / 2f) + h * .382f));
+                CenterSubview(_currentScoreLabel, (int)((-h / 2f) + h - 50));
+                CenterSubview(_scoreLabel, (int)((-h / 2f) + h - 50) + 32);
+            }
+            else
+            {
+                CenterSubview(_tapToResumeLabel, 30);
+            }
         }
     }
 }

@@ -13,13 +13,13 @@ using Pages;
 
 namespace Boom
 {
-    class TutorialView : Screen
+    class TutorialView : View, IRoundDelegate
     {
+        private Round _round;
+
         private readonly bool _preGameTutorial;
 
-        private Label _titleLabel;
-
-        public TutorialView(bool preGameTutorial) : base(false)
+        public TutorialView(bool preGameTutorial)
         {
             _preGameTutorial = preGameTutorial;
         }
@@ -27,55 +27,49 @@ namespace Boom
         public override void Initialize()
         {
             base.Initialize();
-
-            _titleLabel = new Label();
-            AddSubview(_titleLabel); 
         }
 
         public override void LoadContent()
         {
             base.LoadContent();
 
-            BackgroundColor = Color.Transparent;
-
-            _titleLabel.Text = "Tutorial";
-            _titleLabel.Font = Load<SpriteFont>("InGameLargeFont");
-            _titleLabel.Color = Color.White;
-        }
-
-        public override void LayoutSubviews()
-        {
-            base.LayoutSubviews();
-
-            CenterSubview(_titleLabel, -250);
-
-            ShowOverlay(new TutorialRoundOverlayView(_preGameTutorial), true);
+            _round = new Round(this);
         }
 
         public override void Update(GameTime gameTime, AnimationInfo animationInfo)
         {
             base.Update(gameTime, animationInfo);
+
+            _round.Update();
         }
 
         public override void Draw(GameTime gameTime, AnimationInfo animationInfo)
         {
             base.Draw(gameTime, animationInfo);
 
-            if (OverlayAnimationInfo != null && OverlayAnimationInfo.State == AnimationState.FadeOut)
+            _round.Draw(SpriteBatch, animationInfo);
+        }
+
+        public override bool TouchDown(TouchLocation location)
+        {
+            if (!base.TouchDown(location))
             {
-                SpriteBatch.Draw(Load<Texture2D>("Rectangle"), RectangleToSystem(Viewport.Bounds), Color.Black * (1f - OverlayAnimationInfo.Value));
+                _round.Touch(location);
             }
+
+            return true;
         }
 
         public override void OverlayWillDismiss(View overlay)
         {
             base.OverlayWillDismiss(overlay);
 
-            if (_preGameTutorial && (overlay as TutorialRoundOverlayView).Result == TutorialGotItResult.Start)
+            if (!_round.OverlayWillDismiss() && _preGameTutorial && _round.Score != 0)
             {
 #if !DEBUG
                 GameSettings.DidSeeTutorial = true;
 #endif
+
                 NavigationController.SwitchTo(new GameScreenView(1, 0), true);
             }
         }
@@ -84,32 +78,115 @@ namespace Boom
         {
             base.OverlayDismissed(overlay);
 
-            ShowOverlay(new TutorialRoundOverlayView(_preGameTutorial), true);
+            if (!_round.OverlayDismissed() && !_preGameTutorial)
+            {
+                _round = new Round(this);
+            }
         }
 
         public override Color ClearColor
         {
             get
             {
-                if (Overlay != null)
-                {
-                    return Overlay.ClearColor;
-                }
-                else
-                {
-                    return base.ClearColor;
-                }
+                return _round.BackgroundColor();
             }
         }
 
-        public override bool BackButtonPressed()
+        #region Round Delegate
+
+        public RoundSettings RoundSettings
         {
-            if (Overlay != null)
+            get
             {
-                Overlay.Dismiss(true);
+                return new RoundSettings(5, 5, 0, false);
             }
-
-            return base.BackButtonPressed();
         }
+
+        public int Score
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        public bool ShouldShowOverlays
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public bool IsScoreVisible
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public bool IsTutorial
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public Texture2D BallTexture
+        {
+            get
+            {
+                return Load<Texture2D>("BallTexture");
+            }
+        }
+
+        public SoundEffect BlipSound
+        {
+            get
+            {
+                return Load<SoundEffect>("BlipSound");
+            }
+        }
+
+        public SoundEffect VictorySound
+        {
+            get
+            {
+                return Load<SoundEffect>("VictorySound");
+            }
+        }
+
+        public SpriteFont Font
+        {
+            get
+            {
+                return Load<SpriteFont>("InGameScoreFont");
+            }
+        }
+
+        public SpriteFont TapHereFont
+        {
+            get
+            {
+                return Load<SpriteFont>("InGameFont");
+            }
+        }
+
+        public AnimationInfo RoundOverlayAnimationInfo
+        {
+            get
+            {
+                return (Overlay == null) ? null : OverlayAnimationInfo;
+            }
+        }
+
+        public void ShowOverlay(View overlay)
+        {
+            ShowOverlay(overlay, true);
+        }
+
+        #endregion
     }
 }

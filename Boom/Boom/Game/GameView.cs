@@ -225,6 +225,14 @@ namespace Boom
             }
         }
 
+        public SpriteFont TapHereFont
+        {
+            get
+            {
+                return Load<SpriteFont>("InGameFont");
+            }
+        }
+
         public AnimationInfo RoundOverlayAnimationInfo
         {
             get

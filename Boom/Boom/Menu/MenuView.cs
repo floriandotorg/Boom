@@ -35,7 +35,7 @@ namespace Boom
             {
                 if (GameSettings.DidSeeTutorial == false)
                 {
-                    NavigationController.Navigate(new TutorialView(true), true);
+                    NavigationController.Navigate(new TutorialScreenView(true), true);
                 }
                 else
                 {
@@ -178,6 +178,14 @@ namespace Boom
             get
             {
                 return Load<SpriteFont>("InGameScoreFont");
+            }
+        }
+
+        public SpriteFont TapHereFont
+        {
+            get
+            {
+                return Load<SpriteFont>("InGameFont");
             }
         }
 

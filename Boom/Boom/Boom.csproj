@@ -110,7 +110,7 @@
     <Compile Include="Game\GameScreenView.cs" />
     <Compile Include="Game\StartNewGamePopupView.cs" />
     <Compile Include="Menu\RateReviewPopupView.cs" />
-    <Compile Include="Tutorial\TutorialGotItOverlayView.cs" />
+    <Compile Include="Tutorial\TutorialScreenView.cs" />
     <Compile Include="Utility\DismissOnTapView.cs" />
     <Compile Include="Utility\Screen.cs" />
     <Compile Include="Utility\BoomGame.cs" />
@@ -125,7 +125,6 @@
     <Compile Include="Highscore\HighscoreTableView.cs" />
     <Compile Include="Game\IRoundDelegate.cs" />
     <Compile Include="Utility\PopupView.cs" />
-    <Compile Include="Tutorial\TutorialRoundOverlayView.cs" />
     <Compile Include="Tutorial\TutorialView.cs" />
     <Compile Include="Utility\VolumeManager.cs" />
     <Compile Include="Utility\SpeakerButton.cs" />

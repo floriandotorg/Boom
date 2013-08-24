@@ -55,6 +55,7 @@ namespace Boom
         {
             try
             {
+                return true;
                 if (Available)
                 {
                     if (Instance._store.LicenseInformation.ProductLicenses.Keys.Contains(productID) && Instance._store.LicenseInformation.ProductLicenses[productID].IsActive)
